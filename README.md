@@ -10,6 +10,8 @@ Concept website for **The Weight Date** gym, Prayagraj — one membership, two b
 npx serve .
 ```
 
+**Member app demo:** `app/` — member + trainer views (OTP login demo code 1234), trainer-set workouts and diet, goals, slot booking, membership. Sample data saved in the browser.
+
 Imagery and hero video generated with Google Flow (AI). Prices on the page are samples.
 
 Concept website · sample prices · not an official site · Design by Arqora

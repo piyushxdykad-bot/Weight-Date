@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d0b0b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Weight Date App</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a phone-width app on the gym's carbon floor; on desktop a brand panel with demo controls sits beside it. */
+:root{
+  color-scheme:dark;
+  --ink:#0d0b0b; --iron:#161313; --steel:#1f1a19; --graphite:#2a2423;
+  --chalk:#efe8df; --ash:#9b918b; --ember:#d2311f; --oxblood:#6d140e; --brass:#c8a66a; --ok:#5bd08a; --warn:#e8b04a;
+  --line:rgba(239,232,223,.10);
+  --f-d:"Big Shoulders Display","Oswald","Arial Narrow",Impact,sans-serif;
+  --f-s:"Instrument Serif",Georgia,serif;
+  --f-b:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
+  --f-m:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ink);color:var(--chalk);font:400 15px/1.5 var(--f-b);-webkit-font-smoothing:antialiased;overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
+input,select,textarea{font:inherit;color:var(--chalk)}
+:focus-visible{outline:2px solid var(--brass);outline-offset:2px;border-radius:6px}
+.num{font-variant-numeric:tabular-nums}
+#root{height:100%}
+
+/* desktop stage */
+.stage{height:100%;display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:clamp(24px,4vw,64px);align-items:center;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px;max-width:1240px;margin-inline:auto;background:radial-gradient(60% 60% at 80% 40%,rgba(210,49,31,.18),transparent 70%)}
+.pitch{display:grid;gap:26px;max-width:520px}
+.pitch .eb{font:600 12px/1 var(--f-m);letter-spacing:.18em;text-transform:uppercase;color:var(--brass)}
+.pitch h1{margin:0;font:900 clamp(56px,6vw,96px)/.85 var(--f-d);text-transform:uppercase}
+.pitch h1 i{font:italic 400 1.05em/.8 var(--f-s);color:var(--ember);text-transform:none}
+.pitch p{margin:0;color:var(--ash);font-size:17px;max-width:46ch}
+.demo-box{border:1px solid var(--line);border-radius:20px;padding:18px;display:grid;gap:12px;background:var(--iron)}
+.demo-box .row{display:flex;gap:8px;flex-wrap:wrap}
+.chipbtn{border:1px solid var(--line);border-radius:999px;padding:10px 14px;font:600 11px/1 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--ash);transition:all .3s var(--ease)}
+.chipbtn[aria-pressed="true"],.chipbtn.on{background:var(--chalk);color:var(--ink);border-color:var(--chalk)}
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;font-size:14px;color:var(--chalk)}
+.feat span::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ember);margin-right:10px;vertical-align:middle}
+.phone{width:400px;max-width:100%;height:min(840px,calc(100vh - 40px));border-radius:44px;border:1px solid rgba(239,232,223,.14);box-shadow:0 0 0 10px #050404,0 40px 120px rgba(0,0,0,.6),0 0 80px rgba(210,49,31,.12);overflow:hidden;position:relative;background:var(--ink)}
+@media (max-width:900px){
+  body{overflow:auto}
+  .stage{display:block;padding:0;max-width:none;background:none;height:100%}
+  .pitch{display:none}
+  .phone{width:100%;height:100%;border-radius:0;border:0;box-shadow:none}
+}
+
+/* app shell */
+.app{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--ink)}
+.screen{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:calc(14px + env(safe-area-inset-top,0px)) 18px 110px;scroll-behavior:smooth}
+.screen::-webkit-scrollbar{width:0}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.topbar h2{margin:0;font:900 30px/1 var(--f-d);text-transform:uppercase}
+.topbar .sub{font:500 11px/1 var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--ash);margin-bottom:6px}
+.iconbtn{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;position:relative;flex:0 0 auto}
+.iconbtn .dot{position:absolute;top:9px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--ember);box-shadow:0 0 0 2px var(--ink)}
+.tabs{position:absolute;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));height:68px;border-radius:24px;background:color-mix(in srgb,var(--steel) 88%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:6px;z-index:20}
+.tab{display:grid;place-items:center;gap:2px;border-radius:18px;color:var(--ash);font:600 10px/1 var(--f-m);letter-spacing:.08em;text-transform:uppercase;transition:color .3s,background .3s;padding-top:6px}
+.tab svg{width:22px;height:22px}
+.tab[aria-current="page"]{color:var(--chalk);background:rgba(239,232,223,.06)}
+.tab[aria-current="page"] svg{color:var(--ember)}
+
+/* atoms */
+.card{background:var(--iron);border:1px solid var(--line);border-radius:22px;padding:18px;display:grid;gap:12px;min-width:0}
+.card.hot{background:radial-gradient(120% 100% at 100% 0%,rgba(210,49,31,.35),transparent 60%),linear-gradient(180deg,var(--steel),var(--iron));border-color:rgba(210,49,31,.35)}
+.k{font:600 10.5px/1.2 var(--f-m);letter-spacing:.16em;text-transform:uppercase;color:var(--ash)}
+.k.brass{color:var(--brass)}
+.big{font:900 44px/.85 var(--f-d)}
+.h3{font:800 22px/1 var(--f-d);text-transform:uppercase;margin:0}
+.serif{font:italic 400 1.1em/1 var(--f-s);color:var(--ember)}
+.muted{color:var(--ash)}
+.stack{display:grid;gap:14px}
+.row{display:flex;align-items:center;gap:12px;min-width:0}
+.row.between{justify-content:space-between}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 22px;border-radius:999px;background:var(--ember);color:var(--chalk);font:600 12px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;transition:transform .2s var(--ease),background .3s,opacity .3s;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn.full{width:100%}
+.btn.ghost{background:transparent;border:1px solid var(--line)}
+.btn.light{background:var(--chalk);color:var(--ink)}
+.btn.brass{background:var(--brass);color:var(--ink)}
+.btn.sm{height:38px;padding:0 14px;font-size:10.5px}
+.btn[disabled]{opacity:.4;pointer-events:none}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font:600 10px/1 var(--f-m);letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line);color:var(--ash);white-space:nowrap}
+.pill.ok{color:var(--ok);border-color:rgba(91,208,138,.35)}
+.pill.warn{color:var(--warn);border-color:rgba(232,176,74,.4)}
+.pill.red{color:#ff8a7a;border-color:rgba(210,49,31,.5)}
+.pill.solid{background:var(--ember);color:var(--chalk);border-color:var(--ember)}
+.seg{display:flex;padding:4px;border-radius:999px;background:var(--iron);border:1px solid var(--line);gap:4px;overflow-x:auto}
+.seg::-webkit-scrollbar{display:none}
+.seg button{flex:1 0 auto;padding:10px 12px;border-radius:999px;font:600 10.5px/1 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--ash);transition:all .3s var(--ease);white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--chalk);color:var(--ink)}
+.field{display:grid;gap:8px}
+.field>span{font:600 10.5px/1 var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--ash)}
+.input{display:flex;align-items:center;height:52px;border-radius:16px;background:var(--ink);border:1px solid var(--line);padding:0 14px;gap:8px;transition:border-color .3s}
+.input:focus-within{border-color:var(--brass)}
+.input input,.input select{flex:1;min-width:0;width:100%;background:transparent;border:0;outline:none;font-size:16px;color-scheme:dark}
+.input select option{background:var(--iron)}
+.input em{font:500 12px/1 var(--f-m);color:var(--ash);font-style:normal}
+textarea.ta{width:100%;min-height:90px;background:var(--ink);border:1px solid var(--line);border-radius:16px;padding:12px 14px;outline:none;resize:vertical;font-size:15px}
+textarea.ta:focus{border-color:var(--brass)}
+.bar{height:8px;border-radius:999px;background:var(--graphite);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--brass),var(--ember));transition:width .9s var(--ease)}
+.list{display:grid;border-top:1px solid var(--line)}
+.li{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);min-width:0;text-align:left;width:100%}
+.li .t{flex:1;min-width:0}
+.li .t b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li .t small{color:var(--ash);font-size:13px}
+.avatar{width:44px;height:44px;border-radius:50%;flex:0 0 44px;background:var(--graphite) center/cover;display:grid;place-items:center;font:800 18px/1 var(--f-d);color:var(--brass);border:1px solid var(--line)}
+.fade-in{animation:fin .5s var(--ease) both}
+@keyframes fin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.ring{transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-linecap:round;transition:stroke-dashoffset 1s var(--ease)}
+
+/* sheet */
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:40;animation:fi .3s both}
+@keyframes fi{from{opacity:0}}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:41;background:var(--steel);border-radius:28px 28px 0 0;border-top:1px solid var(--line);padding:10px 18px calc(22px + env(safe-area-inset-bottom,0px));max-height:88%;overflow-y:auto;animation:sup .45s var(--ease) both}
+@keyframes sup{from{transform:translateY(100%)}}
+.sheet .grab{width:40px;height:4px;border-radius:4px;background:var(--graphite);margin:0 auto 14px}
+.toast{position:absolute;left:50%;bottom:96px;transform:translateX(-50%);z-index:60;background:var(--chalk);color:var(--ink);padding:12px 18px;border-radius:999px;font:600 12px/1 var(--f-m);letter-spacing:.06em;white-space:nowrap;animation:tin .4s var(--ease) both;max-width:90%;overflow:hidden;text-overflow:ellipsis}
+@keyframes tin{from{opacity:0;transform:translate(-50%,10px)}}
+
+/* login */
+.login{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:24px 22px calc(26px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,rgba(13,11,11,.15),rgba(13,11,11,.75) 45%,var(--ink) 72%),url("img/plate.jpg") 60% 0%/cover no-repeat}
+.login h1{margin:0;font:900 64px/.84 var(--f-d);text-transform:uppercase}
+.login h1 i{font:italic 400 1.08em/.8 var(--f-s);color:var(--ember);text-transform:none}
+.otp{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.otp input{height:60px;border-radius:16px;background:var(--ink);border:1px solid var(--line);text-align:center;font:800 28px/1 var(--f-d);outline:none}
+.otp input:focus{border-color:var(--brass)}
+.brandmark{display:flex;align-items:center;gap:10px;font:900 20px/1 var(--f-d);text-transform:uppercase;letter-spacing:.04em}
+.brandmark i{font:italic 400 20px/1 var(--f-s);color:var(--ember);text-transform:none;letter-spacing:0}
+
+/* workout */
+.daystrip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.daystrip button{display:grid;gap:4px;justify-items:center;padding:10px 0;border-radius:16px;border:1px solid var(--line);font:600 10px/1 var(--f-m);letter-spacing:.08em;text-transform:uppercase;color:var(--ash)}
+.daystrip button b{font:800 18px/1 var(--f-d);color:var(--chalk)}
+.daystrip button[aria-pressed="true"]{background:var(--ember);border-color:var(--ember);color:var(--chalk)}
+.daystrip button.done::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--ok)}
+.ex{background:var(--iron);border:1px solid var(--line);border-radius:22px;padding:16px;display:grid;gap:12px}
+.ex.complete{border-color:rgba(91,208,138,.35)}
+.ex h4{margin:0;font:800 20px/1 var(--f-d);text-transform:uppercase}
+.sets{display:flex;gap:8px;flex-wrap:wrap}
+.set{width:52px;height:52px;border-radius:14px;border:1px solid var(--line);display:grid;place-items:center;gap:0;font:800 16px/1 var(--f-d);transition:all .3s var(--ease);position:relative}
+.set small{font:500 9px/1 var(--f-m);color:var(--ash);letter-spacing:.06em}
+.set[aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:var(--ink)}
+.set[aria-pressed="true"] small{color:var(--ink)}
+.kg{display:flex;align-items:center;gap:6px}
+.kg button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);font-size:18px;line-height:1}
+.kg b{min-width:56px;text-align:center;font:800 20px/1 var(--f-d)}
+.coach-note{border-left:2px solid var(--brass);padding:4px 0 4px 12px;color:var(--chalk);font:italic 400 18px/1.25 var(--f-s)}
+
+/* diet */
+.meal{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:14px;border-radius:20px;border:1px solid var(--line);background:var(--iron);text-align:left;width:100%;transition:all .3s var(--ease)}
+.meal .tick{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--ash);display:grid;place-items:center;transition:all .3s}
+.meal[aria-pressed="true"]{border-color:rgba(91,208,138,.35)}
+.meal[aria-pressed="true"] .tick{background:var(--ok);border-color:var(--ok);color:var(--ink)}
+.meal b{display:block;font-weight:600}
+.meal small{color:var(--ash)}
+.glasses{display:flex;gap:6px;flex-wrap:wrap}
+.glass{width:26px;height:36px;border-radius:4px 4px 8px 8px;border:1.5px solid var(--line);position:relative;overflow:hidden}
+.glass i{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(180deg,#6fb0ff,#2f6fd0);transition:height .5s var(--ease)}
+.glass.on i{height:80%}
+
+/* calendar heat */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal span{aspect-ratio:1;border-radius:8px;display:grid;place-items:center;font:600 11px/1 var(--f-m);color:var(--ash);background:var(--iron)}
+.cal span.h{background:var(--ember);color:var(--chalk)}
+.cal span.t{outline:1.5px solid var(--brass)}
+.cal span.x{opacity:.25}
+.cal .dn{background:none;font-size:9.5px;letter-spacing:.1em}
+
+/* crowd */
+.crowd{display:flex;align-items:flex-end;gap:4px;height:90px}
+.crowd i{flex:1;border-radius:4px 4px 2px 2px;background:var(--graphite);position:relative}
+.crowd i.b{background:linear-gradient(180deg,var(--ember),var(--oxblood))}
+.crowd i.now{outline:1.5px solid var(--brass);outline-offset:2px}
+.crowd-lbl{display:flex;justify-content:space-between;font:500 10px/1 var(--f-m);color:var(--ash)}
+
+/* trainer */
+.mtile{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:14px;border-radius:20px;border:1px solid var(--line);background:var(--iron);width:100%;text-align:left}
+.edit-ex{display:grid;grid-template-columns:1fr 56px 56px 64px 32px;gap:6px;align-items:center}
+.edit-ex input{height:40px;border-radius:12px;background:var(--ink);border:1px solid var(--line);padding:0 10px;outline:none;min-width:0;width:100%;font-size:14px}
+.edit-ex input:focus{border-color:var(--brass)}
+.edit-ex .hd{font:600 9.5px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--ash)}
+.x-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);color:var(--ash);display:grid;place-items:center}
+.photo-hero{height:170px;border-radius:22px;background:center/cover;position:relative;overflow:hidden;border:1px solid var(--line)}
+.photo-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(13,11,11,.9))}
+.photo-hero>div{position:absolute;left:16px;right:16px;bottom:14px;z-index:1}
+.qr{background:var(--chalk);border-radius:18px;padding:14px;display:grid;place-items:center}
+.demo-flag{font:600 9.5px/1 var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--ash);text-align:center;padding:6px 0 0}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <aside class="pitch" aria-label="About this demo">
+    <span class="eb">The Weight Date · member app</span>
+    <h1>Your gym,<br/><i>in their pocket.</i></h1>
+    <p>Members log workouts and meals their coach assigns, track goals, book slots and renew. Trainers edit plans and send notes that show up instantly.</p>
+    <div class="feat"><span>OTP login</span><span>Trainer-set workouts</span><span>Set logging + rest timer</span><span>Diet chart + water</span><span>Goals & weight chart</span><span>Slot booking + pass</span><span>Membership & freeze</span><span>Trainer panel</span></div>
+    <div class="demo-box">
+      <span class="eb" style="color:var(--ash)">Demo controls</span>
+      <div class="row" id="demoRole">
+        <button class="chipbtn" data-r="member">Member view</button>
+        <button class="chipbtn" data-r="trainer">Trainer view</button>
+        <button class="chipbtn" data-r="out">Login screen</button>
+      </div>
+      <div class="row"><button class="chipbtn" id="demoReset">Reset demo data</button></div>
+      <span class="muted" style="font-size:13px">Sample members and prices. Changes save in this browser only. Login code: 1234.</span>
+    </div>
+  </aside>
+  <div class="phone"><div id="root" style="position:relative;height:100%"></div></div>
+</div>
+<script>
+(function(){
+  const btns=[...document.querySelectorAll('#demoRole [data-r]')];
+  btns.forEach(b=>b.addEventListener('click',()=>window.__twd&&window.__twd.setRole(b.dataset.r)));
+  document.getElementById('demoReset').addEventListener('click',()=>window.__twd&&window.__twd.reset());
+  window.addEventListener('twd-role',e=>btns.forEach(b=>b.setAttribute('aria-pressed',b.dataset.r===e.detail)));
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/preact@10.19.3/dist/preact.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/preact@10.19.3/hooks/dist/hooks.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/htm@3.1.1/dist/htm.umd.js"></script>
+<script>
+(function(){
+"use strict";
+const {h,render}=preact; const {useState,useEffect,useRef,useMemo}=preactHooks; const html=htm.bind(h);
+
+/* ---------------- dates (IST) ---------------- */
+const nowIST=()=>{const n=new Date();return new Date(n.getTime()+n.getTimezoneOffset()*60000+330*60000)};
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const parse=s=>new Date(s+'T00:00:00');
+const TODAY=iso(nowIST());
+const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const fmtD=s=>parse(s).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+const fmtDL=s=>parse(s).toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'});
+const daysBetween=(a,b)=>Math.round((parse(b)-parse(a))/86400000);
+const inr=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+
+/* ---------------- seed data ---------------- */
+const BRANCHES={
+  tt:{name:'Tagore Town',addr:'47A/1, Bansi Bhawan Chauraha, near IICS College, Prayagraj',slots:[[6,12],[16,22]],hours:'Mon–Sat · 6–12 & 16–22',maps:'https://maps.app.goo.gl/rMyX7ozr1tq4XDjE7',ig:'@theweightdate_tagoretown'},
+  cl:{name:'Civil Lines',addr:'128, Thornhill Road, near Dhobi Ghat petrol pump, Prayagraj',slots:[[6,22]],hours:'Mon–Sat · 6:00–22:00',maps:'https://www.google.com/maps/search/?api=1&query=The+Weight+Date+128+Thornhill+Road+Prayagraj',ig:'@theweightdate'}
+};
+const TRAINERS={
+  charlie:{name:'Charlie',branch:'tt',spec:'Fat loss & diet',img:'img/coach-clipboard.jpg'},
+  sakib:{name:'Sakib',branch:'tt',spec:'Form & technique',img:'img/coach-adjust.jpg'},
+  sujeet:{name:'Sujeet',branch:'cl',spec:'Personal training',img:'img/coach-arms.jpg'},
+  tarun:{name:'Tarun',branch:'cl',spec:'Strength & women\'s training',img:'img/coach-walk.jpg'}
+};
+const PLANS=[{id:'m1',name:'Monthly',months:1,price:1500},{id:'m3',name:'Quarterly',months:3,price:4000},{id:'m6',name:'6 Months',months:6,price:7200},{id:'m12',name:'Yearly',months:12,price:12000}];
+const E=(n,s,r,kg,note)=>({n,s,r,kg,note:note||''});
+const SPLIT_FAT={
+  Mon:{t:'Push',ex:[E('Bench press',4,'8',60,'Pause 1 sec on the chest'),E('Incline DB press',3,'10',22),E('Seated shoulder press',3,'10',30),E('Lateral raise',3,'15',8),E('Triceps pushdown',3,'12',25)]},
+  Tue:{t:'Pull',ex:[E('Deadlift',3,'5',100,'Brace hard, bar close to shins'),E('Lat pulldown',4,'10',55),E('Seated cable row',3,'10',50),E('Face pull',3,'15',20),E('DB curl',3,'12',12)]},
+  Wed:{t:'Legs',ex:[E('Back squat',4,'6',80,'Hit depth, knees out'),E('Romanian deadlift',3,'8',70),E('Leg press',3,'12',160),E('Walking lunge',3,'12',16),E('Standing calf raise',4,'15',60)]},
+  Thu:{t:'Conditioning',ex:[E('Assault bike intervals',6,'30s',0,'30s hard, 60s easy'),E('Kettlebell swing',4,'15',24),E('Slam ball',3,'12',10),E('Plank',3,'45s',0)]},
+  Fri:{t:'Upper',ex:[E('Incline bench press',4,'8',50),E('Pull-up (assisted)',4,'8',0),E('DB shoulder press',3,'10',18),E('Cable fly',3,'12',15),E('Hammer curl',3,'12',12)]},
+  Sat:{t:'Legs + core',ex:[E('Front squat',3,'8',60),E('Hip thrust',4,'10',80),E('Leg curl',3,'12',35),E('Hanging knee raise',3,'12',0),E('Stairmaster',1,'12 min',0)]},
+  Sun:{t:'Rest',ex:[]}
+};
+const DIET_FAT=[
+  {t:'Breakfast',time:'08:00',items:'Moong dal chilla ×2 with curd',p:22},
+  {t:'Mid-morning',time:'11:00',items:'Sprouts chaat with lemon, green tea',p:12},
+  {t:'Lunch',time:'14:00',items:'2 rotis, dal, seasonal sabzi, salad',p:18},
+  {t:'Pre-workout',time:'17:30',items:'Banana and black coffee',p:2},
+  {t:'Post-workout',time:'19:30',items:'Glass of milk or whey',p:24},
+  {t:'Dinner',time:'21:00',items:'Paneer tikka 150 g with sautéed veg',p:28}
+];
+function weightSeries(start,end,weeks){const out=[];for(let i=weeks;i>=0;i--){const d=iso(addDays(nowIST(),-i*7));const t=(weeks-i)/weeks;out.push({d,w:+(start+(end-start)*t+(Math.sin(i*1.7)*.35)).toFixed(1)})}return out}
+function attendanceSeed(rate,seed){const out=[];let s=seed;for(let i=1;i<60;i++){const d=addDays(nowIST(),-i);if(d.getDay()===0)continue;s=(s*9301+49297)%233280;if(s/233280<rate)out.push(iso(d))}return out}
+function seed(){
+  const t=nowIST();
+  const mk=(id,name,phone,branch,trainer,plan,startOff,goal,w0,w1,h,rate,sd)=>{const P=PLANS.find(p=>p.id===plan);const start=iso(addDays(t,startOff));const end=iso(addDays(parse(start),Math.round(P.months*30.4)));
+    return {id,name,phone,branch,trainer,height:h,plan:{id:plan,name:P.name,start,end,price:P.price,frozen:0},
+      goal,weights:weightSeries(w0,w1,10),attendance:attendanceSeed(rate,sd),split:JSON.parse(JSON.stringify(SPLIT_FAT)),diet:JSON.parse(JSON.stringify(DIET_FAT)),
+      logs:{},dietLog:{},water:{},bookings:[],notes:[],payments:[{d:start,amt:P.price,what:P.name+' membership',mode:'UPI'}]}};
+  const m=[
+    mk('m-aman','Aman Verma','98765 43210','tt','charlie','m3',-52,{type:'lose',target:80,by:iso(addDays(t,70))},92,86.4,175,.72,11),
+    mk('m-riya','Riya Shukla','98390 11223','cl','tarun','m12',-140,{type:'strong',target:58,by:iso(addDays(t,120))},60,58.6,162,.8,23),
+    mk('m-faiz','Mohd Faiz','94150 88771','cl','sujeet','m1',-27,{type:'build',target:72,by:iso(addDays(t,90))},64,66.2,178,.55,37),
+    mk('m-neha','Neha Tripathi','99360 45512','tt','sakib','m6',-90,{type:'fit',target:60,by:iso(addDays(t,60))},66,62.5,158,.6,51)
+  ];
+  m[0].notes=[{from:'charlie',d:iso(addDays(t,-1)),text:'Great week, Aman. Bench goes to 62.5 kg on Monday. Keep dinner light.'}];
+  m[0].bookings=[{d:nextOpen(1),slot:'Evening',branch:'tt'}];
+  m[1].split.Mon={t:'Squat focus',ex:[E('Back squat',5,'5',60,'Top set at RPE 8'),E('Paused squat',3,'3',45),E('Bulgarian split squat',3,'8',12),E('Leg curl',3,'12',25)]};
+  return {v:3,session:null,members:m,
+    news:[{d:iso(addDays(t,-2)),t:'New VIVA Tunturi dumbbells',b:'Our 40 kg pairs are now commercial-grade TPU at both branches.'},{d:iso(addDays(t,-6)),t:'Sunday closed',b:'Both branches stay closed on Sundays. Recover well.'},{d:iso(addDays(t,-12)),t:'17 medals at districts',b:'Our powerlifting team won the most medals in the district. Proud of you all.'}]};
+}
+function nextOpen(n){let d=nowIST(),c=0;while(c<n){d=addDays(d,1);if(d.getDay()!==0)c++}return iso(d)}
+
+/* ---------------- store ---------------- */
+const KEY='twd-app-demo-v3';
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.v===3)return s}catch(e){}return seed()}
+function save(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
+
+/* ---------------- icons ---------------- */
+const P={
+ home:'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',
+ dumb:'M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12',
+ bowl:'M3 12h18a9 9 0 0 1-18 0zM8 8c0-2 2-2 2-4M12 8c0-2 2-2 2-4',
+ chart:'M4 20V10M10 20V4M16 20v-7M22 20H2',
+ grid:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',
+ bell:'M6 16V11a6 6 0 1 1 12 0v5l2 2H4zM10 21h4',
+ user:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0',
+ check:'M5 12l5 5 9-10',
+ plus:'M12 5v14M5 12h14',
+ minus:'M5 12h14',
+ x:'M6 6l12 12M18 6L6 18',
+ back:'M15 5l-7 7 7 7',
+ card:'M3 6h18v12H3zM3 10h18',
+ cal:'M4 6h16v14H4zM4 10h16M9 3v4M15 3v4',
+ pin:'M12 21s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',
+ qr:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2zM14 18h2M18 14h2',
+ timer:'M12 8v5l3 2M12 21a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM9 2h6',
+ users:'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M17 11a3 3 0 1 0 0-6M22 21a6 6 0 0 0-5-6',
+ flame:'M12 22a7 7 0 0 0 7-7c0-5-7-12-7-12s-1 4-4 7a7 7 0 0 0 4 12z',
+ drop:'M12 3s7 7.5 7 12a7 7 0 0 1-14 0c0-4.5 7-12 7-12z',
+ msg:'M4 5h16v11H8l-4 4z',
+ info:'M12 8h.01M11 12h1v5h1M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z',
+ out:'M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10',
+ edit:'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',
+ snow:'M12 2v20M4 6l16 12M20 6L4 18'
+};
+const I=(n,s=22,c)=>html`<svg width=${s} height=${s} viewBox="0 0 24 24" fill="none" stroke=${c||'currentColor'} stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d=${P[n]}/></svg>`;
+
+/* ---------------- helpers ---------------- */
+function openNow(b){const n=nowIST();if(n.getDay()===0)return{open:false,txt:'Closed · Sunday'};const m=n.getHours()+n.getMinutes()/60;const s=BRANCHES[b].slots.find(x=>m>=x[0]&&m<x[1]);if(s)return{open:true,txt:'Open · till '+String(s[1]).padStart(2,'0')+':00'};const nx=BRANCHES[b].slots.find(x=>m<x[0]);return{open:false,txt:nx?'Opens '+String(nx[0]).padStart(2,'0')+':00':'Opens 06:00 tomorrow'}}
+function streak(att){let s=0,d=nowIST();if(!att.includes(iso(d)))d=addDays(d,-1);for(let k=0;k<120;k++){if(d.getDay()===0){d=addDays(d,-1);continue}if(att.includes(iso(d))){s++;d=addDays(d,-1)}else break}return s}
+const Ring=({v,size=88,stroke=9,color='var(--ember)',track='var(--graphite)',children})=>{const r=(size-stroke)/2,c=2*Math.PI*r;return html`<div style=${{position:'relative',width:size+'px',height:size+'px',flex:'0 0 auto'}}><svg class="ring" width=${size} height=${size}><circle cx=${size/2} cy=${size/2} r=${r} stroke=${track} stroke-width=${stroke}/><circle cx=${size/2} cy=${size/2} r=${r} stroke=${color} stroke-width=${stroke} stroke-dasharray=${c} stroke-dashoffset=${c*(1-Math.max(0,Math.min(1,v)))}/></svg><div style=${{position:'absolute',inset:0,display:'grid',placeContent:'center',textAlign:'center'}}>${children}</div></div>`};
+const GOALS={lose:'Lose weight',build:'Build muscle',strong:'Get strong',fit:'General fitness'};
+
+/* weight chart, drawn to scale */
+function WeightChart({pts,target}){
+  const W=320,H=150,pl=30,pr=10,pt=12,pb=22;
+  const ws=pts.map(p=>p.w).concat(target?[target]:[]);let lo=Math.floor(Math.min(...ws)-1),hi=Math.ceil(Math.max(...ws)+1);if(hi-lo<4)hi=lo+4;
+  const step=(hi-lo)>8?4:2;lo=Math.floor(lo/step)*step;hi=Math.ceil(hi/step)*step;
+  const x=i=>pl+i*(W-pl-pr)/Math.max(1,pts.length-1),y=v=>pt+(hi-v)*(H-pt-pb)/(hi-lo);
+  const d=pts.map((p,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(p.w).toFixed(1)).join(' ');
+  const area=d+' L'+x(pts.length-1)+' '+(H-pb)+' L'+x(0)+' '+(H-pb)+' Z';
+  const ticks=[];for(let v=lo;v<=hi;v+=step)ticks.push(v);
+  return html`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Weight trend">
+    <defs><linearGradient id="wg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d2311f" stop-opacity=".35"/><stop offset="1" stop-color="#d2311f" stop-opacity="0"/></linearGradient></defs>
+    ${ticks.map(v=>html`<g><line x1=${pl} x2=${W-pr} y1=${y(v)} y2=${y(v)} stroke="rgba(239,232,223,.07)"/><text x=${pl-6} y=${y(v)+3} fill="#9b918b" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="end">${v}</text></g>`)}
+    ${target?html`<g><line x1=${pl} x2=${W-pr} y1=${y(target)} y2=${y(target)} stroke="#c8a66a" stroke-dasharray="4 4"/><text x=${W-pr} y=${y(target)-5} fill="#c8a66a" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="end">target ${target}</text></g>`:''}
+    <path d=${area} fill="url(#wg)"/><path d=${d} fill="none" stroke="#d2311f" stroke-width="2.2" stroke-linejoin="round"/>
+    ${pts.map((p,i)=>i===pts.length-1?html`<circle cx=${x(i)} cy=${y(p.w)} r="4.5" fill="#efe8df" stroke="#d2311f" stroke-width="2"/>`:'')}
+    <text x=${pl} y=${H-6} fill="#9b918b" font-size="9" font-family="JetBrains Mono,monospace">${fmtD(pts[0].d)}</text>
+    <text x=${W-pr} y=${H-6} fill="#9b918b" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="end">${fmtD(pts[pts.length-1].d)}</text>
+  </svg>`;
+}
+
+/* decorative check-in pass pattern from member id */
+function QR({id}){let s=0;for(const c of id)s=(s*31+c.charCodeAt(0))>>>0;const N=21,cells=[];const rnd=()=>{s=(s*1103515245+12345)>>>0;return s/4294967296};
+  const finder=(x,y)=>x<7&&y<7||x>=N-7&&y<7||x<7&&y>=N-7;
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){let on;if(finder(x,y)){const fx=x>=N-7?x-(N-7):x,fy=y>=N-7?y-(N-7):y;on=fx===0||fy===0||fx===6||fy===6||(fx>=2&&fx<=4&&fy>=2&&fy<=4)}else on=rnd()>.52;if(on)cells.push(html`<rect x=${x} y=${y} width="1" height="1"/>`)}
+  return html`<svg viewBox="-1 -1 23 23" width="168" height="168" fill="#0d0b0b" aria-label="Check-in pass">${cells}</svg>`}
+
+/* ================= APP ================= */
+function App(){
+  const [S,setS]=useState(load);
+  const [toast,setToast]=useState('');
+  const tRef=useRef();
+  const up=fn=>setS(prev=>{const n=JSON.parse(JSON.stringify(prev));fn(n);save(n);return n});
+  const say=m=>{setToast(m);clearTimeout(tRef.current);tRef.current=setTimeout(()=>setToast(''),2200)};
+  useEffect(()=>{window.__twd={setRole:r=>up(s=>{s.session=r==='trainer'?{role:'trainer',tid:'charlie'}:r==='member'?{role:'member',mid:'m-aman'}:null}),reset:()=>{try{localStorage.removeItem(KEY)}catch(e){}setS(seed());say('Demo data reset')}};window.dispatchEvent(new Event('twd-ready'))},[]);
+  useEffect(()=>{window.dispatchEvent(new CustomEvent('twd-role',{detail:S.session?S.session.role:'out'}))},[S.session]);
+  const ctx={S,up,say};
+  let body;
+  if(!S.session)body=html`<${Login} ...${ctx}/>`;
+  else if(S.session.role==='trainer')body=html`<${Trainer} ...${ctx}/>`;
+  else body=html`<${Member} ...${ctx}/>`;
+  return html`<div class="app">${body}${toast&&html`<div class="toast" role="status">${toast}</div>`}</div>`;
+}
+
+/* ---------------- login ---------------- */
+function Login({up,say}){
+  const [role,setRole]=useState('member');const [phone,setPhone]=useState('98765 43210');const [step,setStep]=useState(1);const [otp,setOtp]=useState(['','','','']);const refs=[useRef(),useRef(),useRef(),useRef()];
+  const send=()=>{if(phone.replace(/\D/g,'').length<10){say('Enter a 10-digit mobile number');return}setStep(2);setTimeout(()=>refs[0].current&&refs[0].current.focus(),50)};
+  const setD=(i,v)=>{v=v.replace(/\D/g,'').slice(-1);const o=[...otp];o[i]=v;setOtp(o);if(v&&i<3)refs[i+1].current.focus();if(o.join('').length===4)verify(o.join(''))};
+  const verify=code=>{if(code!=='1234'){say('Demo code is 1234');return}up(s=>{s.session=role==='trainer'?{role:'trainer',tid:'charlie'}:{role:'member',mid:'m-aman'}});say(role==='trainer'?'Welcome, Coach Charlie':'Welcome back, Aman')};
+  return html`<div class="login">
+    <div class="stack fade-in" style="gap:22px">
+      <div class="brandmark"><svg width="30" height="30" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18.5" fill="none" stroke="#d2311f" stroke-width="3"/><circle cx="20" cy="20" r="12" fill="#6d140e"/><circle cx="20" cy="20" r="4.2" fill="#0d0b0b" stroke="#c8a66a" stroke-width="1.6"/></svg>Weight<i>date</i></div>
+      <h1>Keep the<br/><i>date.</i></h1>
+      <p class="muted" style="margin:0">Your workouts, diet, goals and membership for both branches, in one place.</p>
+      <div class="seg" role="group" aria-label="Sign in as">
+        <button aria-pressed=${role==='member'} onClick=${()=>setRole('member')}>I'm a member</button>
+        <button aria-pressed=${role==='trainer'} onClick=${()=>setRole('trainer')}>I'm a trainer</button>
+      </div>
+      ${step===1?html`<div class="stack">
+        <label class="field" for="ph"><span>Mobile number</span><div class="input"><em>+91</em><input id="ph" type="tel" inputmode="tel" value=${phone} onInput=${e=>setPhone(e.target.value)}/></div></label>
+        <button class="btn full" onClick=${send}>Send OTP</button>
+      </div>`:html`<div class="stack fade-in">
+        <div class="field"><span>Enter the 4-digit code sent to +91 ${phone}</span>
+          <div class="otp">${otp.map((v,i)=>html`<input id=${'otp'+i} ref=${refs[i]} inputmode="numeric" maxlength="1" aria-label=${'Digit '+(i+1)} value=${v} onInput=${e=>setD(i,e.target.value)} onKeyDown=${e=>{if(e.key==='Backspace'&&!otp[i]&&i>0)refs[i-1].current.focus()}}/>`)}</div>
+        </div>
+        <button class="btn full" onClick=${()=>verify(otp.join(''))}>Verify & sign in</button>
+        <button class="btn ghost full" onClick=${()=>{setStep(1);setOtp(['','','',''])}}>Change number</button>
+      </div>`}
+      <p class="demo-flag">Demo · use code 1234 · no real SMS is sent</p>
+    </div>
+  </div>`;
+}
+
+/* ---------------- member shell ---------------- */
+function Member(ctx){
+  const {S}=ctx;const me=S.members.find(m=>m.id===S.session.mid);
+  const [tab,setTab]=useState('home');const [sub,setSub]=useState(null);
+  const scr=useRef();
+  useEffect(()=>{scr.current&&(scr.current.scrollTop=0)},[tab,sub]);
+  const go=(t,s)=>{setTab(t);setSub(s||null)};
+  const c={...ctx,me,go};
+  let view;
+  if(sub==='membership')view=html`<${Membership} ...${c}/>`;
+  else if(sub==='book')view=html`<${Book} ...${c}/>`;
+  else if(sub==='attendance')view=html`<${Attendance} ...${c}/>`;
+  else if(sub==='gym')view=html`<${GymInfo} ...${c}/>`;
+  else if(sub==='news')view=html`<${News} ...${c}/>`;
+  else if(sub==='profile')view=html`<${Profile} ...${c}/>`;
+  else if(tab==='home')view=html`<${Home} ...${c}/>`;
+  else if(tab==='workout')view=html`<${Workout} ...${c}/>`;
+  else if(tab==='diet')view=html`<${Diet} ...${c}/>`;
+  else if(tab==='progress')view=html`<${Progress} ...${c}/>`;
+  else view=html`<${More} ...${c}/>`;
+  const tabs=[['home','Home','home'],['workout','Train','dumb'],['diet','Diet','bowl'],['progress','Goals','chart'],['more','More','grid']];
+  return html`<div class="screen" ref=${scr}>${view}</div>
+    <nav class="tabs" aria-label="Main">${tabs.map(([id,l,ic])=>html`<button class="tab" aria-current=${tab===id&&!sub?'page':'false'} onClick=${()=>go(id)}>${I(ic)}<span>${l}</span></button>`)}</nav>`;
+}
+const Back=({go,to='more',title,sub})=>html`<div class="topbar"><div class="row"><button class="iconbtn" aria-label="Back" onClick=${()=>go(to)}>${I('back',20)}</button><div><div class="sub">${sub||''}</div><h2>${title}</h2></div></div></div>`;
+
+/* ---------------- home ---------------- */
+function Home({S,me,go,up,say}){
+  const dow=DOW[nowIST().getDay()];const day=me.split[dow];const log=me.logs[TODAY]||{};
+  const total=day.ex.reduce((a,e)=>a+e.s,0),done=Object.values(log).reduce((a,arr)=>a+arr.filter(Boolean).length,0);
+  const left=daysBetween(TODAY,me.plan.end),span=daysBetween(me.plan.start,me.plan.end);
+  const st=streak(me.attendance);const trainer=TRAINERS[me.trainer];const note=me.notes[0];
+  const dl=me.dietLog[TODAY]||[];const pDone=me.diet.reduce((a,m,i)=>a+(dl[i]?m.p:0),0),pAll=me.diet.reduce((a,m)=>a+m.p,0);
+  const wNow=me.weights[me.weights.length-1].w;
+  const hr=nowIST().getHours();const greet=hr<12?'Good morning':hr<17?'Good afternoon':'Good evening';
+  const checkedIn=me.attendance.includes(TODAY);
+  const nb=me.bookings.filter(b=>b.d>=TODAY).sort((a,b)=>a.d<b.d?-1:1)[0];
+  return html`<div class="stack fade-in">
+    <div class="topbar"><div><div class="sub">${greet}</div><h2>${me.name.split(' ')[0]}</h2></div>
+      <div class="row" style="gap:8px"><button class="iconbtn" aria-label="Notifications" onClick=${()=>go('more','news')}>${I('bell',20)}<span class="dot"></span></button><button class="iconbtn" aria-label="Profile" onClick=${()=>go('more','profile')}>${I('user',20)}</button></div></div>
+
+    <div class="card hot">
+      <div class="row between"><span class="k brass" style="white-space:nowrap">Today · ${dow}</span><span class=${'pill '+(openNow(me.branch).open?'ok':'')}>${BRANCHES[me.branch].name} · ${openNow(me.branch).txt}</span></div>
+      ${day.ex.length?html`<div class="row between" style="align-items:flex-end">
+        <div><div class="big" style="font-size:52px">${day.t}</div><div class="muted" style="margin-top:6px">${day.ex.length} exercises · ${total} sets · by Coach ${trainer.name}</div></div>
+        <${Ring} v=${total?done/total:0} size=${76}><b class="num" style="font:800 20px/1 var(--f-d)">${done}/${total}</b><span class="k" style="font-size:8.5px">sets</span><//>
+      </div>
+      <button class="btn light full" onClick=${()=>go('workout')}>${done?'Continue workout':'Start workout'} ${I('dumb',18)}</button>`
+      :html`<div class="big">Rest day</div><p class="muted" style="margin:0">Both branches are closed on Sunday. Walk, stretch, sleep well.</p>`}
+    </div>
+
+    <div class="grid2">
+      <button class="card" style="text-align:left" onClick=${()=>go('more','attendance')}><span class="k">Streak</span><div class="row" style="gap:8px">${I('flame',26,'#d2311f')}<span class="big num">${st}</span></div><span class="muted" style="font-size:13px">gym days in a row</span></button>
+      <button class="card" style="text-align:left" onClick=${()=>go('progress')}><span class="k">Weight</span><div class="row" style="gap:6px;align-items:baseline"><span class="big num">${wNow}</span><span class="muted">kg</span></div><span class="muted" style="font-size:13px">goal ${me.goal.target} kg</span></button>
+    </div>
+
+    <div class="card">
+      <div class="row between"><span class="k">Check-in</span>${checkedIn?html`<span class="pill ok">${I('check',12)} In today</span>`:html`<span class="pill">Not yet</span>`}</div>
+      <div class="row between" style="flex-wrap:wrap">
+        <div><b style="font-size:17px">${nb?fmtDL(nb.d)+' · '+nb.slot:'No slot booked'}</b><div class="muted" style="font-size:13px">${nb?BRANCHES[nb.branch].name:'Book a morning or evening slot'}</div></div>
+        <div class="row" style="gap:8px"><button class="btn sm ghost" onClick=${()=>go('more','book')}>Book</button>
+        <button class="btn sm" disabled=${checkedIn||nowIST().getDay()===0} onClick=${()=>{up(s=>{const m=s.members.find(x=>x.id===me.id);m.attendance.push(TODAY)});say('Checked in at '+BRANCHES[me.branch].name)}}>${I('qr',16)} Check in</button></div>
+      </div>
+    </div>
+
+    ${note&&html`<div class="card"><div class="row"><div class="avatar" style=${{backgroundImage:'url('+TRAINERS[note.from].img+')'}}></div><div><span class="k brass">From Coach ${TRAINERS[note.from].name}</span><div class="muted" style="font-size:12px">${fmtD(note.d)}</div></div></div><p class="coach-note" style="margin:0">${note.text}</p></div>`}
+
+    <button class="card" style="text-align:left" onClick=${()=>go('diet')}>
+      <div class="row between"><span class="k">Diet today</span><span class="pill">${dl.filter(Boolean).length}/${me.diet.length} meals</span></div>
+      <div class="row between"><b>Protein ${pDone} / ${pAll} g</b><span class="muted" style="font-size:13px">plan by Coach ${trainer.name}</span></div>
+      <div class="bar"><i style=${{width:(pAll?pDone/pAll*100:0)+'%'}}></i></div>
+    </button>
+
+    <button class="card" style="text-align:left" onClick=${()=>go('more','membership')}>
+      <div class="row between"><span class="k">Membership</span><span class=${'pill '+(left<=7?'warn':'ok')}>${left<=0?'Expired':left+' days left'}</span></div>
+      <div class="row between"><b style="font-size:17px">${me.plan.name} · both branches</b><span class="muted num" style="font-size:13px">till ${fmtD(me.plan.end)}</span></div>
+      <div class="bar"><i style=${{width:Math.max(0,Math.min(100,(1-left/span)*100))+'%'}}></i></div>
+    </button>
+
+    <div class="photo-hero" style="background-image:url(img/team.jpg)"><div><span class="k brass">Latest</span><div class="h3" style="margin-top:6px">${S.news[0].t}</div></div></div>
+  </div>`;
+}
+
+/* ---------------- workout ---------------- */
+function Workout({me,up,say}){
+  const todayDow=DOW[nowIST().getDay()];const [dow,setDow]=useState(todayDow);
+  const day=me.split[dow];const isToday=dow===todayDow;const log=(isToday&&me.logs[TODAY])||{};
+  const [timer,setTimer]=useState(null);
+  const weekDates={};{const t=nowIST();for(let i=0;i<7;i++){const d=addDays(t,i-t.getDay());weekDates[DOW[d.getDay()]]=iso(d)}}
+  const toggle=(ei,si)=>{if(!isToday){say('You can log sets for today only');return}
+    let nowOn=false;up(s=>{const m=s.members.find(x=>x.id===me.id);const L=m.logs[TODAY]=m.logs[TODAY]||{};const a=L[ei]=L[ei]||Array(day.ex[ei].s).fill(false);a[si]=!a[si];nowOn=a[si]});
+    setTimeout(()=>{if(nowOn)setTimer({sec:90,left:90,label:day.ex[ei].n})},0)};
+  const kg=(ei,d)=>up(s=>{const m=s.members.find(x=>x.id===me.id);const e=m.split[dow].ex[ei];e.kg=Math.max(0,+(e.kg+d).toFixed(1))});
+  const total=day.ex.reduce((a,e)=>a+e.s,0),done=Object.values(log).reduce((a,arr)=>a+arr.filter(Boolean).length,0);
+  const finish=()=>{up(s=>{const m=s.members.find(x=>x.id===me.id);if(!m.attendance.includes(TODAY))m.attendance.push(TODAY)});say('Workout logged. See you next session')};
+  return html`<div class="stack fade-in">
+    <div class="topbar"><div><div class="sub">Plan by Coach ${TRAINERS[me.trainer].name}</div><h2>Training</h2></div><span class="pill">${GOALS[me.goal.type]}</span></div>
+    <div class="daystrip" role="group" aria-label="Day">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>html`<button aria-pressed=${d===dow} class=${me.attendance.includes(weekDates[d])?'done':''} onClick=${()=>setDow(d)}>${d}<b>${parse(weekDates[d]).getDate()}</b></button>`)}</div>
+    <div class="row between"><div><div class="big" style="font-size:40px">${day.t}</div><div class="muted">${isToday?'Today':'Preview · '+dow}</div></div>
+      ${isToday&&total?html`<${Ring} v=${done/total} size=${64} stroke=${7}><b class="num" style="font:800 16px/1 var(--f-d)">${Math.round(done/total*100)}%</b><//>`:''}</div>
+    ${!day.ex.length&&html`<div class="card"><b class="h3">Rest & recover</b><p class="muted" style="margin:0">Both branches are closed on Sunday. A 30-minute walk and some mobility work keep you fresh for Monday.</p></div>`}
+    ${day.ex.map((e,ei)=>{const a=log[ei]||[];const c=a.filter(Boolean).length;return html`<div class=${'ex '+(c===e.s?'complete':'')}>
+      <div class="row between" style="align-items:flex-start"><div style="min-width:0"><span class="k">${String(ei+1).padStart(2,'0')} · ${e.s} × ${e.r}</span><h4 style="margin-top:6px">${e.n}</h4></div>
+        ${e.kg>0?html`<div class="kg"><button aria-label="Less weight" onClick=${()=>kg(ei,-2.5)}>−</button><b class="num">${e.kg}<small style="font:500 10px var(--f-m);color:var(--ash)"> kg</small></b><button aria-label="More weight" onClick=${()=>kg(ei,2.5)}>+</button></div>`:html`<span class="pill">Bodyweight</span>`}</div>
+      ${e.note&&html`<p class="muted" style="margin:0;font-size:13px">Coach: ${e.note}</p>`}
+      <div class="sets">${Array.from({length:e.s},(_,si)=>html`<button class="set" aria-pressed=${!!a[si]} aria-label=${'Set '+(si+1)} onClick=${()=>toggle(ei,si)}>${a[si]?I('check',20):si+1}<small>${e.r}</small></button>`)}</div>
+    </div>`})}
+    ${isToday&&total>0&&html`<button class="btn full" disabled=${done===0} onClick=${finish}>Finish workout</button>`}
+    ${timer&&html`<${RestTimer} t=${timer} close=${()=>setTimer(null)}/>`}
+  </div>`;
+}
+function RestTimer({t,close}){
+  const [left,setLeft]=useState(t.sec);
+  useEffect(()=>{const id=setInterval(()=>setLeft(l=>{if(l<=1){clearInterval(id);return 0}return l-1}),1000);return()=>clearInterval(id)},[]);
+  return html`<div class="scrim" onClick=${close}></div><div class="sheet" role="dialog" aria-label="Rest timer"><div class="grab"></div>
+    <div class="stack" style="justify-items:center;text-align:center">
+      <span class="k brass">Rest · ${t.label}</span>
+      <${Ring} v=${left/t.sec} size=${170} stroke=${12}><b class="num" style="font:900 56px/1 var(--f-d)">${Math.floor(left/60)}:${String(left%60).padStart(2,'0')}</b><span class="k">${left?'breathe':'go again'}</span><//>
+      <div class="row"><button class="btn ghost sm" onClick=${()=>setLeft(l=>l+30)}>+30 s</button><button class="btn sm" onClick=${close}>${left?'Skip rest':'Next set'}</button></div>
+    </div></div>`;
+}
+
+/* ---------------- diet ---------------- */
+function Diet({me,up,say}){
+  const dl=me.dietLog[TODAY]||[];const water=me.water[TODAY]||0;
+  const pDone=me.diet.reduce((a,m,i)=>a+(dl[i]?m.p:0),0),pAll=me.diet.reduce((a,m)=>a+m.p,0);
+  const tog=i=>up(s=>{const m=s.members.find(x=>x.id===me.id);const a=m.dietLog[TODAY]=m.dietLog[TODAY]||[];a[i]=!a[i]});
+  const w=d=>up(s=>{const m=s.members.find(x=>x.id===me.id);m.water[TODAY]=Math.max(0,Math.min(12,(m.water[TODAY]||0)+d))});
+  return html`<div class="stack fade-in">
+    <div class="topbar"><div><div class="sub">Chart by Coach ${TRAINERS[me.trainer].name}</div><h2>Diet</h2></div><span class="pill">${fmtD(TODAY)}</span></div>
+    <div class="photo-hero" style="background-image:url(img/thali.jpg);height:140px"><div><span class="serif" style="font-size:24px">Built on the food you eat at home.</span></div></div>
+    <div class="card hot"><div class="row between">
+      <div><span class="k brass">Protein today</span><div class="row" style="gap:6px;align-items:baseline;margin-top:8px"><span class="big num">${pDone}</span><span class="muted">/ ${pAll} g</span></div><p class="muted" style="margin:6px 0 0;font-size:13px">Tick a meal when you have eaten it.</p></div>
+      <${Ring} v=${pAll?pDone/pAll:0} size=${84}><b class="num" style="font:800 20px/1 var(--f-d)">${Math.round(pAll?pDone/pAll*100:0)}%</b><//>
+    </div></div>
+    <div class="stack" style="gap:10px">${me.diet.map((m,i)=>html`<button class="meal" aria-pressed=${!!dl[i]} onClick=${()=>tog(i)}>
+      <span class="tick">${dl[i]?I('check',16):''}</span>
+      <span style="min-width:0"><span class="k">${m.time} · ${m.t}</span><b style="margin-top:4px">${m.items}</b></span>
+      <span class="pill num">${m.p} g</span></button>`)}</div>
+    <div class="card"><div class="row between"><div><span class="k">Water</span><div class="row" style="gap:6px;align-items:baseline;margin-top:6px"><span class="big num">${water}</span><span class="muted">of 10 glasses</span></div></div>
+      <div class="row" style="gap:8px"><button class="iconbtn" aria-label="Remove a glass" onClick=${()=>w(-1)}>${I('minus',18)}</button><button class="iconbtn" aria-label="Add a glass" style="background:#2f6fd0;border-color:#2f6fd0" onClick=${()=>{w(1);if(water+1===10)say('Water goal done')}}>${I('plus',18)}</button></div></div>
+      <div class="glasses">${Array.from({length:10},(_,i)=>html`<span class=${'glass '+(i<water?'on':'')}><i></i></span>`)}</div></div>
+    <p class="demo-flag">Sample chart · your trainer writes yours around your goal and health</p>
+  </div>`;
+}
+
+/* ---------------- progress / goals ---------------- */
+function Progress({me,up,say}){
+  const [sheet,setSheet]=useState(null);
+  const ws=me.weights;const start=ws[0].w,now=ws[ws.length-1].w,tg=me.goal.target;
+  const prog=start===tg?1:Math.max(0,Math.min(1,(start-now)/(start-tg)));
+  const bmi=now/((me.height/100)**2);const cat=bmi<18.5?'Below healthy':bmi<23?'Healthy':bmi<25?'Overweight':'Obese range';
+  const daysLeft=daysBetween(TODAY,me.goal.by);
+  return html`<div class="stack fade-in">
+    <div class="topbar"><div><div class="sub">Your goal</div><h2>Progress</h2></div><button class="btn sm ghost" onClick=${()=>setSheet('goal')}>${I('edit',14)} Edit goal</button></div>
+    <div class="card hot">
+      <span class="k brass">${GOALS[me.goal.type]} · by ${fmtD(me.goal.by)}</span>
+      <div class="row between" style="align-items:flex-end">
+        <div class="row" style="gap:16px;align-items:flex-end">
+          <div><span class="k">Start</span><div class="num" style="font:800 26px/1 var(--f-d)">${start}</div></div>
+          <div><span class="k">Now</span><div class="big num">${now}</div></div>
+          <div><span class="k">Target</span><div class="num" style="font:800 26px/1 var(--f-d);color:var(--brass)">${tg}</div></div>
+        </div>
+        <span class="pill">${daysLeft>0?daysLeft+' days':'Due'}</span>
+      </div>
+      <div class="bar"><i style=${{width:prog*100+'%'}}></i></div>
+      <span class="muted" style="font-size:13px">${Math.abs(+(now-start).toFixed(1))} kg ${now<=start?'down':'up'} · ${Math.abs(+(tg-now).toFixed(1))} kg to go</span>
+    </div>
+    <div class="card"><div class="row between"><span class="k">Weight · last 10 weeks</span><button class="btn sm" onClick=${()=>setSheet('weigh')}>${I('plus',14)} Log weight</button></div><${WeightChart} pts=${ws} target=${tg}/></div>
+    <div class="grid2">
+      <div class="card"><span class="k">BMI</span><span class="big num">${bmi.toFixed(1)}</span><span class="muted" style="font-size:12px">${cat} · Asian-Indian cut-offs</span></div>
+      <div class="card"><span class="k">This month</span><span class="big num">${me.attendance.filter(d=>d.slice(0,7)===TODAY.slice(0,7)).length}</span><span class="muted" style="font-size:12px">gym visits</span></div>
+    </div>
+    <div class="card"><span class="k">Recent weigh-ins</span><div class="list">${ws.slice(-4).reverse().map((p,i,a)=>{const prev=ws[ws.length-2-i];const d=prev?+(p.w-prev.w).toFixed(1):0;return html`<div class="li"><div class="t"><b class="num">${p.w} kg</b><small>${fmtDL(p.d)}</small></div><span class=${'pill '+(d<0?'ok':d>0?'red':'')}>${d>0?'+':''}${d} kg</span></div>`})}</div></div>
+    ${sheet==='weigh'&&html`<${WeighSheet} me=${me} up=${up} say=${say} close=${()=>setSheet(null)}/>`}
+    ${sheet==='goal'&&html`<${GoalSheet} me=${me} up=${up} say=${say} close=${()=>setSheet(null)}/>`}
+  </div>`;
+}
+function WeighSheet({me,up,say,close}){
+  const [w,setW]=useState(me.weights[me.weights.length-1].w);
+  return html`<div class="scrim" onClick=${close}></div><div class="sheet" role="dialog" aria-label="Log weight"><div class="grab"></div><div class="stack">
+    <h3 class="h3">Log today's weight</h3>
+    <div class="row" style="justify-content:center;gap:18px"><button class="iconbtn" aria-label="Minus 0.1 kg" onClick=${()=>setW(v=>+(v-.1).toFixed(1))}>${I('minus')}</button><span class="num" style="font:900 64px/1 var(--f-d)">${w}<small style="font:500 14px var(--f-m);color:var(--ash)"> kg</small></span><button class="iconbtn" aria-label="Plus 0.1 kg" onClick=${()=>setW(v=>+(v+.1).toFixed(1))}>${I('plus')}</button></div>
+    <label class="field" for="wIn"><span>Or type it</span><div class="input"><input id="wIn" type="number" step="0.1" inputmode="decimal" value=${w} onInput=${e=>setW(+e.target.value)}/><em>kg</em></div></label>
+    <button class="btn full" onClick=${()=>{if(!(w>25&&w<300)){say('Enter a weight between 25 and 300 kg');return}up(s=>{const m=s.members.find(x=>x.id===me.id);const last=m.weights[m.weights.length-1];if(last.d===TODAY)last.w=w;else m.weights.push({d:TODAY,w})});say('Weight saved');close()}}>Save weight</button>
+  </div></div>`;
+}
+function GoalSheet({me,up,say,close}){
+  const [g,setG]=useState({...me.goal});
+  return html`<div class="scrim" onClick=${close}></div><div class="sheet" role="dialog" aria-label="Edit goal"><div class="grab"></div><div class="stack">
+    <h3 class="h3">Set your goal</h3>
+    <div class="seg" role="group" aria-label="Goal type">${Object.entries(GOALS).map(([k,l])=>html`<button aria-pressed=${g.type===k} onClick=${()=>setG({...g,type:k})}>${l}</button>`)}</div>
+    <div class="grid2">
+      <label class="field" for="gT"><span>Target weight</span><div class="input"><input id="gT" type="number" step="0.5" value=${g.target} onInput=${e=>setG({...g,target:+e.target.value})}/><em>kg</em></div></label>
+      <label class="field" for="gD"><span>By date</span><div class="input"><input id="gD" type="date" min=${TODAY} value=${g.by} onInput=${e=>setG({...g,by:e.target.value})}/></div></label>
+    </div>
+    <p class="muted" style="margin:0;font-size:13px">Your coach sees this goal and adjusts your workout and diet chart to match.</p>
+    <button class="btn full" onClick=${()=>{if(!(g.target>25&&g.target<300)||!g.by){say('Add a target weight and a date');return}up(s=>{s.members.find(x=>x.id===me.id).goal=g});say('Goal updated · Coach '+TRAINERS[me.trainer].name+' notified');close()}}>Save goal</button>
+  </div></div>`;
+}
+
+/* ---------------- more ---------------- */
+function More({me,go,up,say}){
+  const items=[['membership','Membership & renewal','card',me.plan.name+' · '+Math.max(0,daysBetween(TODAY,me.plan.end))+' days left'],['book','Book a slot','cal','Morning or evening, either branch'],['attendance','Attendance','flame',streak(me.attendance)+'-day streak'],['gym','Branches & timings','pin','Tagore Town · Civil Lines'],['news','Announcements','bell','From the gym'],['profile','Profile & settings','user',me.phone]];
+  const tr=TRAINERS[me.trainer];
+  return html`<div class="stack fade-in">
+    <div class="topbar"><div><div class="sub">Everything else</div><h2>More</h2></div></div>
+    <div class="card"><div class="row"><div class="avatar" style=${{width:'56px',height:'56px',flex:'0 0 56px',backgroundImage:'url('+tr.img+')'}}></div><div class="t" style="flex:1"><span class="k brass">Your coach</span><div class="h3" style="margin-top:4px">${tr.name}</div><small class="muted">${tr.spec} · ${BRANCHES[tr.branch].name}</small></div>
+      <a class="btn sm ghost" href=${'https://wa.me/918840655898?text='+encodeURIComponent('Hi, message for Coach '+tr.name+' from '+me.name)} target="_blank" rel="noopener">${I('msg',14)} Message</a></div></div>
+    <div class="list">${items.map(([id,t,ic,s])=>html`<button class="li" onClick=${()=>go('more',id)}><span class="iconbtn">${I(ic,18)}</span><span class="t"><b>${t}</b><small>${s}</small></span><span class="muted">›</span></button>`)}</div>
+  </div>`;
+}
+
+function Membership({me,go,up,say}){
+  const [pick,setPick]=useState(null);const [conf,setConf]=useState(false);
+  const left=daysBetween(TODAY,me.plan.end),span=daysBetween(me.plan.start,me.plan.end);
+  const renew=()=>{const P=PLANS.find(p=>p.id===pick);up(s=>{const m=s.members.find(x=>x.id===me.id);const base=m.plan.end>TODAY?m.plan.end:TODAY;m.plan={id:P.id,name:P.name,start:m.plan.start,end:iso(addDays(parse(base),Math.round(P.months*30.4))),price:P.price,frozen:m.plan.frozen};m.payments.unshift({d:TODAY,amt:P.price,what:P.name+' renewal',mode:'Demo'})});say(P.name+' added · demo, no payment taken');setConf(false);setPick(null)};
+  const freeze=()=>{if(me.plan.frozen>=15){say('Freeze limit reached for this plan');return}up(s=>{const m=s.members.find(x=>x.id===me.id);m.plan.frozen+=7;m.plan.end=iso(addDays(parse(m.plan.end),7))});say('Frozen for 7 days · end date moved')};
+  return html`<div class="stack fade-in">
+    <${Back} go=${go} title="Membership" sub="One card · two floors"/>
+    <div class="card hot"><div class="row between">
+      <div><span class="k brass">Current plan</span><div class="big" style="margin-top:8px">${me.plan.name}</div><div class="muted" style="margin-top:6px">${fmtD(me.plan.start)} – ${fmtD(me.plan.end)}</div></div>
+      <${Ring} v=${Math.max(0,left)/span} size=${88}><b class="num" style="font:900 26px/1 var(--f-d)">${Math.max(0,left)}</b><span class="k" style="font-size:8.5px">days left</span><//></div>
+      <div class="row" style="gap:8px;flex-wrap:wrap"><span class="pill ok">Tagore Town</span><span class="pill ok">Civil Lines</span><span class="pill">Free workout chart</span><span class="pill">Free diet plan</span></div></div>
+    <div class="card"><div class="row between"><div><b>Freeze membership</b><div class="muted" style="font-size:13px">Travelling or unwell? Pause 7 days at a time, up to 15. Used ${me.plan.frozen}.</div></div><button class="btn sm ghost" onClick=${freeze}>${I('snow',14)} Freeze</button></div></div>
+    <span class="k">Renew or upgrade</span>
+    <div class="grid2">${PLANS.map(p=>html`<button class="card" style=${{textAlign:'left',borderColor:pick===p.id?'var(--ember)':''}} aria-pressed=${pick===p.id} onClick=${()=>setPick(p.id)}>
+      <span class="k">${p.name}</span><span class="num" style="font:900 30px/1 var(--f-d)">${inr(p.price)}</span><span class="muted" style="font-size:12px">${p.months>1?inr(p.price/p.months)+' a month':'Pay monthly'}</span>${p.id==='m3'&&html`<span class="pill solid" style="justify-self:start">Most picked</span>`}</button>`)}</div>
+    <button class="btn full" disabled=${!pick} onClick=${()=>setConf(true)}>Continue</button>
+    <div class="card"><span class="k">Payments</span><div class="list">${me.payments.map(p=>html`<div class="li"><div class="t"><b>${p.what}</b><small>${fmtDL(p.d)} · ${p.mode}</small></div><b class="num">${inr(p.amt)}</b></div>`)}</div></div>
+    <p class="demo-flag">Sample prices · confirm at the desk</p>
+    ${conf&&html`<div class="scrim" onClick=${()=>setConf(false)}></div><div class="sheet" role="dialog" aria-label="Confirm renewal"><div class="grab"></div><div class="stack">
+      <h3 class="h3">Confirm ${PLANS.find(p=>p.id===pick).name}</h3>
+      <div class="list"><div class="li"><div class="t"><b>Plan</b></div><b>${PLANS.find(p=>p.id===pick).name}</b></div><div class="li"><div class="t"><b>Amount</b></div><b class="num">${inr(PLANS.find(p=>p.id===pick).price)}</b></div><div class="li"><div class="t"><b>Starts</b></div><b>${fmtD(me.plan.end>TODAY?me.plan.end:TODAY)}</b></div></div>
+      <p class="muted" style="margin:0;font-size:13px">In the live app this opens UPI or card payment. This demo only extends the plan.</p>
+      <button class="btn full" onClick=${renew}>Pay with UPI (demo)</button><button class="btn ghost full" onClick=${()=>setConf(false)}>Cancel</button>
+    </div></div>`}
+  </div>`;
+}
+
+function Book({me,go,up,say}){
+  const days=[];{let d=nowIST();for(let i=0;days.length<6;i++){const x=addDays(d,i);if(x.getDay()!==0)days.push(iso(x))}}
+  const [day,setDay]=useState(days[0]);const [br,setBr]=useState(me.branch);const [slot,setSlot]=useState('Evening');const [pass,setPass]=useState(false);
+  const busy=[2,5,7,6,4,3,0,0,0,0,4,6,8,9,7,5];/* 6..21 */
+  const hr=nowIST().getHours();
+  const closed=h=>br==='tt'&&(h>=12&&h<16);
+  const existing=me.bookings.find(b=>b.d===day&&b.branch===br&&b.slot===slot);
+  return html`<div class="stack fade-in">
+    <${Back} go=${go} title="Book a slot" sub="Skip the rush"/>
+    <div class="seg" role="group" aria-label="Branch">${Object.entries(BRANCHES).map(([k,b])=>html`<button aria-pressed=${br===k} onClick=${()=>setBr(k)}>${b.name}</button>`)}</div>
+    <div class="daystrip" style="grid-template-columns:repeat(6,1fr)" role="group" aria-label="Day">${days.map(d=>html`<button aria-pressed=${d===day} onClick=${()=>setDay(d)}>${DOW[parse(d).getDay()]}<b>${parse(d).getDate()}</b></button>`)}</div>
+    <div class="grid2">${['Morning','Evening'].map(s=>html`<button class="card" style=${{textAlign:'left',borderColor:slot===s?'var(--ember)':''}} aria-pressed=${slot===s} onClick=${()=>setSlot(s)}><span class="k">${s}</span><span class="num" style="font:800 24px/1 var(--f-d)">${s==='Morning'?'6:00–12:00':(br==='tt'?'16:00–22:00':'12:00–22:00')}</span></button>`)}</div>
+    <div class="card"><div class="row between"><span class="k">How busy it gets</span><span class="pill">${BRANCHES[br].name}</span></div>
+      <div class="crowd" aria-hidden="true">${busy.map((v,i)=>{const h=6+i;return html`<i class=${(v>=7?'b ':'')+(day===TODAY&&h===hr?'now':'')} style=${{height:(closed(h)?6:Math.max(6,v*10))+'%',opacity:closed(h)?.25:1}}></i>`})}</div>
+      <div class="crowd-lbl"><span>6</span><span>10</span><span>14</span><span>18</span><span>21</span></div>
+      <span class="muted" style="font-size:12px">Peak hours 18:00–20:00. ${br==='tt'?'Tagore Town is closed 12–16.':'Civil Lines runs straight through.'} Sample pattern.</span></div>
+    <button class="btn full" onClick=${()=>{if(existing){setPass(true);return}up(s=>{s.members.find(x=>x.id===me.id).bookings.push({d:day,slot,branch:br})});say('Booked · '+fmtDL(day)+' '+slot);setPass(true)}}>${existing?'Show my pass':'Book '+slot.toLowerCase()+' slot'}</button>
+    ${me.bookings.filter(b=>b.d>=TODAY).length>0&&html`<div class="card"><span class="k">Upcoming</span><div class="list">${me.bookings.filter(b=>b.d>=TODAY).sort((a,b)=>a.d<b.d?-1:1).map(b=>html`<div class="li"><div class="t"><b>${fmtDL(b.d)} · ${b.slot}</b><small>${BRANCHES[b.branch].name}</small></div><button class="x-btn" aria-label="Cancel booking" onClick=${()=>{up(s=>{const m=s.members.find(x=>x.id===me.id);m.bookings=m.bookings.filter(x=>!(x.d===b.d&&x.slot===b.slot&&x.branch===b.branch))});say('Booking cancelled')}}>${I('x',14)}</button></div>`)}</div></div>`}
+    ${pass&&html`<div class="scrim" onClick=${()=>setPass(false)}></div><div class="sheet" role="dialog" aria-label="Check-in pass"><div class="grab"></div><div class="stack" style="justify-items:center;text-align:center">
+      <span class="k brass">Show at the desk</span><div class="qr"><${QR} id=${me.id+day+slot}/></div><div class="h3">${me.name}</div><div class="muted">${fmtDL(day)} · ${slot} · ${BRANCHES[br].name}</div><p class="demo-flag">Demo pass</p><button class="btn full" onClick=${()=>setPass(false)}>Done</button></div></div>`}
+  </div>`;
+}
+
+function Attendance({me,go}){
+  const t=nowIST();const y=t.getFullYear(),mo=t.getMonth();const first=new Date(y,mo,1);const dim=new Date(y,mo+1,0).getDate();
+  const off=(first.getDay()+6)%7;const cells=[];for(let i=0;i<off;i++)cells.push(null);for(let d=1;d<=dim;d++)cells.push(d);
+  const month=me.attendance.filter(d=>d.slice(0,7)===TODAY.slice(0,7)).length;
+  return html`<div class="stack fade-in">
+    <${Back} go=${go} title="Attendance" sub=${t.toLocaleDateString('en-IN',{month:'long',year:'numeric'})}/>
+    <div class="grid2"><div class="card"><span class="k">Streak</span><span class="big num">${streak(me.attendance)}</span></div><div class="card"><span class="k">This month</span><span class="big num">${month}</span></div></div>
+    <div class="card"><div class="cal">${['M','T','W','T','F','S','S'].map(d=>html`<span class="dn">${d}</span>`)}${cells.map(d=>{if(!d)return html`<span style="background:none"></span>`;const s=iso(new Date(y,mo,d));const sun=new Date(y,mo,d).getDay()===0;return html`<span class=${(me.attendance.includes(s)?'h ':'')+(s===TODAY?'t ':'')+(sun?'x':'')}>${d}</span>`})}</div>
+      <div class="row" style="gap:14px"><span class="row" style="gap:6px;font-size:12px"><i style="width:12px;height:12px;border-radius:4px;background:var(--ember);display:inline-block"></i>Trained</span><span class="row muted" style="gap:6px;font-size:12px"><i style="width:12px;height:12px;border-radius:4px;background:var(--iron);border:1px solid var(--line);display:inline-block"></i>Missed</span><span class="muted" style="font-size:12px">Sundays closed</span></div></div>
+  </div>`;
+}
+
+function GymInfo({go,say}){
+  const copy=n=>{try{navigator.clipboard.writeText(n).then(()=>say('Copied '+n),()=>say(n))}catch(e){say(n)}};
+  return html`<div class="stack fade-in">
+    <${Back} go=${go} title="Branches" sub="The Weight Date · Prayagraj"/>
+    ${Object.entries(BRANCHES).map(([k,b])=>{const o=openNow(k);return html`<div class="card">
+      <div class="row between"><div class="h3">${b.name}</div><span class=${'pill '+(o.open?'ok':'')}>${o.txt}</span></div>
+      <p class="muted" style="margin:0;font-size:14px">${b.addr}</p>
+      <div class="list"><div class="li"><div class="t"><b>Timings</b><small>${b.hours} · Sunday closed</small></div></div>
+        <div class="li"><div class="t"><b class="num">+91 88406 55898</b><small>Front desk</small></div><button class="btn sm ghost" onClick=${()=>copy('+918840655898')}>Copy</button></div>
+        <div class="li"><div class="t"><b>Instagram</b><small>${b.ig}</small></div></div></div>
+      <a class="btn full ghost" href=${b.maps} target="_blank" rel="noopener">${I('pin',16)} Directions</a></div>`})}
+    <div class="card"><span class="k">On both floors</span><div class="row" style="flex-wrap:wrap;gap:8px">${['Powerlifting platform','VIVA Tunturi dumbbells','Cardio deck','Functional zone','Air conditioned','Wi-Fi','Water cooler','Changing rooms'].map(f=>html`<span class="pill">${f}</span>`)}</div></div>
+    <div class="card"><span class="k">House rules</span><div class="list">${['Re-rack your weights','Wipe equipment after use','Carry a towel and indoor shoes','Book peak-hour slots when you can'].map(r=>html`<div class="li"><span style="color:var(--ok)">${I('check',16)}</span><div class="t"><b style="font-weight:500">${r}</b></div></div>`)}</div></div>
+  </div>`;
+}
+function News({S,go}){return html`<div class="stack fade-in"><${Back} go=${go} title="Updates" sub="From the gym"/>${S.news.map(n=>html`<div class="card"><span class="k">${fmtDL(n.d)}</span><div class="h3">${n.t}</div><p class="muted" style="margin:0">${n.b}</p></div>`)}</div>`}
+function Profile({me,go,up,say}){
+  return html`<div class="stack fade-in"><${Back} go=${go} title="Profile" sub="Account"/>
+    <div class="card"><div class="row"><div class="avatar" style="width:60px;height:60px;flex:0 0 60px;font-size:24px">${me.name.split(' ').map(x=>x[0]).join('')}</div><div><div class="h3">${me.name}</div><small class="muted">+91 ${me.phone}</small></div></div>
+      <div class="list"><div class="li"><div class="t"><b>Home branch</b><small>${BRANCHES[me.branch].name}</small></div></div><div class="li"><div class="t"><b>Height</b><small>${me.height} cm</small></div></div><div class="li"><div class="t"><b>Coach</b><small>${TRAINERS[me.trainer].name}</small></div></div><div class="li"><div class="t"><b>Member ID</b><small class="num">TWD-${me.id.slice(2).toUpperCase()}-${me.plan.start.replace(/-/g,'').slice(2)}</small></div></div></div></div>
+    <button class="btn ghost full" onClick=${()=>{up(s=>{s.session=null});say('Signed out')}}>${I('out',16)} Sign out</button>
+    <button class="btn ghost full" onClick=${()=>window.__twd&&window.__twd.reset()}>Reset demo data</button>
+  </div>`;
+}
+
+/* ================= TRAINER ================= */
+function Trainer(ctx){
+  const {S,up,say}=ctx;const tr=TRAINERS[S.session.tid];
+  const [tab,setTab]=useState('members');const [mid,setMid]=useState(null);const [q,setQ]=useState('');const [mine,setMine]=useState(false);
+  const scr=useRef();useEffect(()=>{scr.current&&(scr.current.scrollTop=0)},[tab,mid]);
+  const m=mid&&S.members.find(x=>x.id===mid);
+  let view;
+  if(m)view=html`<${MemberEdit} ...${ctx} m=${m} back=${()=>setMid(null)}/>`;
+  else if(tab==='members'){
+    const list=S.members.filter(x=>(!mine||x.trainer===S.session.tid)&&x.name.toLowerCase().includes(q.toLowerCase()));
+    view=html`<div class="stack fade-in">
+      <div class="topbar"><div><div class="sub">Coach · ${BRANCHES[tr.branch].name}</div><h2>${tr.name}</h2></div><div class="avatar" style=${{backgroundImage:'url('+tr.img+')'}}></div></div>
+      <div class="grid2"><div class="card"><span class="k">Members</span><span class="big num">${S.members.length}</span></div><div class="card"><span class="k">Expiring soon</span><span class="big num" style="color:var(--warn)">${S.members.filter(x=>daysBetween(TODAY,x.plan.end)<=7).length}</span></div></div>
+      <div class="input"><input id="srch" placeholder="Search members" aria-label="Search members" value=${q} onInput=${e=>setQ(e.target.value)}/></div>
+      <div class="seg" role="group" aria-label="Filter"><button aria-pressed=${!mine} onClick=${()=>setMine(false)}>All members</button><button aria-pressed=${mine} onClick=${()=>setMine(true)}>My members</button></div>
+      <div class="stack" style="gap:10px">${list.map(x=>{const left=daysBetween(TODAY,x.plan.end);const last=[...x.attendance].sort().pop();return html`<button class="mtile" onClick=${()=>setMid(x.id)}>
+        <div class="avatar">${x.name.split(' ').map(n=>n[0]).join('')}</div>
+        <div style="min-width:0"><b style="display:block">${x.name}</b><small class="muted">${GOALS[x.goal.type]} · ${BRANCHES[x.branch].name} · last in ${last?fmtD(last):'—'}</small></div>
+        <span class=${'pill '+(left<=7?'warn':'')}>${left<=0?'Expired':left<=7?left+'d left':TRAINERS[x.trainer].name}</span></button>`})}
+        ${!list.length&&html`<p class="muted">No members match that search.</p>`}</div>
+    </div>`;
+  } else {
+    const upcoming=S.members.flatMap(x=>x.bookings.filter(b=>b.d>=TODAY).map(b=>({...b,name:x.name})));
+    view=html`<div class="stack fade-in">
+      <div class="topbar"><div><div class="sub">${fmtDL(TODAY)}</div><h2>Floor</h2></div></div>
+      <div class="grid2">${Object.entries(BRANCHES).map(([k,b])=>{const o=openNow(k);return html`<div class="card"><span class="k">${b.name}</span><span class=${'pill '+(o.open?'ok':'')}>${o.txt}</span><span class="muted" style="font-size:12px">${S.members.filter(x=>x.branch===k&&x.attendance.includes(TODAY)).length} checked in today</span></div>`})}</div>
+      <div class="card"><span class="k">Upcoming slot bookings</span><div class="list">${upcoming.length?upcoming.sort((a,b)=>a.d<b.d?-1:1).map(b=>html`<div class="li"><div class="t"><b>${b.name}</b><small>${fmtDL(b.d)} · ${b.slot} · ${BRANCHES[b.branch].name}</small></div></div>`):html`<div class="li"><div class="t"><small>No bookings yet</small></div></div>`}</div></div>
+      <div class="card"><span class="k">Renewals due</span><div class="list">${S.members.filter(x=>daysBetween(TODAY,x.plan.end)<=14).map(x=>html`<div class="li"><div class="t"><b>${x.name}</b><small>${x.plan.name} ends ${fmtD(x.plan.end)}</small></div><a class="btn sm ghost" href=${'https://wa.me/91'+x.phone.replace(/\D/g,'')+'?text='+encodeURIComponent('Hi '+x.name.split(' ')[0]+', your Weight Date membership ends on '+fmtD(x.plan.end)+'. Renew at the desk or in the app.')} target="_blank" rel="noopener">Remind</a></div>`)}</div></div>
+      <button class="btn ghost full" onClick=${()=>{up(s=>{s.session=null});say('Signed out')}}>${I('out',16)} Sign out</button>
+    </div>`;
+  }
+  return html`<div class="screen" ref=${scr}>${view}</div>
+    ${!m&&html`<nav class="tabs" style="grid-template-columns:repeat(2,1fr)" aria-label="Trainer"><button class="tab" aria-current=${tab==='members'?'page':'false'} onClick=${()=>setTab('members')}>${I('users')}<span>Members</span></button><button class="tab" aria-current=${tab==='floor'?'page':'false'} onClick=${()=>setTab('floor')}>${I('pin')}<span>Floor</span></button></nav>`}`;
+}
+
+function MemberEdit({S,up,say,m,back}){
+  const [t,setT]=useState('workout');const [dow,setDow]=useState(DOW[nowIST().getDay()]==='Sun'?'Mon':DOW[nowIST().getDay()]);const [note,setNote]=useState('');
+  const day=m.split[dow];
+  const ed=fn=>up(s=>fn(s.members.find(x=>x.id===m.id)));
+  const done=(m.logs[TODAY]&&Object.values(m.logs[TODAY]).reduce((a,x)=>a+x.filter(Boolean).length,0))||0;
+  return html`<div class="stack fade-in">
+    <div class="topbar"><div class="row"><button class="iconbtn" aria-label="Back to members" onClick=${back}>${I('back',20)}</button><div><div class="sub">${GOALS[m.goal.type]} · target ${m.goal.target} kg</div><h2>${m.name}</h2></div></div></div>
+    <div class="grid2"><div class="card"><span class="k">Weight</span><span class="big num">${m.weights[m.weights.length-1].w}</span></div><div class="card"><span class="k">Sets today</span><span class="big num">${done}</span></div></div>
+    <div class="seg" role="group" aria-label="Section">${[['workout','Workout'],['diet','Diet'],['progress','Progress'],['note','Note']].map(([k,l])=>html`<button aria-pressed=${t===k} onClick=${()=>setT(k)}>${l}</button>`)}</div>
+
+    ${t==='workout'&&html`<div class="stack">
+      <div class="daystrip" role="group" aria-label="Day">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>html`<button aria-pressed=${d===dow} onClick=${()=>setDow(d)}>${d}<b style="font-size:13px">${m.split[d].ex.length}</b></button>`)}</div>
+      <label class="field" for="dayT"><span>Session name</span><div class="input"><input id="dayT" value=${day.t} onInput=${e=>{const v=e.target.value;ed(x=>x.split[dow].t=v)}}/></div></label>
+      <div class="edit-ex"><span class="hd">Exercise</span><span class="hd">Sets</span><span class="hd">Reps</span><span class="hd">kg</span><span></span></div>
+      ${day.ex.map((e,i)=>html`<div class="edit-ex">
+        <input aria-label="Exercise name" value=${e.n} onInput=${ev=>{const v=ev.target.value;ed(x=>x.split[dow].ex[i].n=v)}}/>
+        <input aria-label="Sets" inputmode="numeric" value=${e.s} onInput=${ev=>{const v=Math.max(1,Math.min(10,parseInt(ev.target.value)||1));ed(x=>x.split[dow].ex[i].s=v)}}/>
+        <input aria-label="Reps" value=${e.r} onInput=${ev=>{const v=ev.target.value;ed(x=>x.split[dow].ex[i].r=v)}}/>
+        <input aria-label="Weight in kg" inputmode="decimal" value=${e.kg} onInput=${ev=>{const v=parseFloat(ev.target.value)||0;ed(x=>x.split[dow].ex[i].kg=v)}}/>
+        <button class="x-btn" aria-label=${'Remove '+e.n} onClick=${()=>ed(x=>x.split[dow].ex.splice(i,1))}>${I('x',14)}</button></div>`)}
+      <button class="btn ghost full" onClick=${()=>ed(x=>{x.split[dow].ex.push(E('New exercise',3,'10',0));if(x.split[dow].t==='Rest')x.split[dow].t='Session'})}>${I('plus',16)} Add exercise</button>
+      <button class="btn full" onClick=${()=>say('Plan saved · '+m.name.split(' ')[0]+' sees it now')}>Save plan</button>
+    </div>`}
+
+    ${t==='diet'&&html`<div class="stack">
+      ${m.diet.map((d,i)=>html`<div class="card" style="gap:8px">
+        <div class="row between"><input aria-label="Meal name" class="k" style="background:none;border:0;outline:none;color:var(--brass);flex:1" value=${d.t} onInput=${e=>{const v=e.target.value;ed(x=>x.diet[i].t=v)}}/><button class="x-btn" aria-label="Remove meal" onClick=${()=>ed(x=>x.diet.splice(i,1))}>${I('x',14)}</button></div>
+        <div class="input"><input aria-label="Foods" value=${d.items} onInput=${e=>{const v=e.target.value;ed(x=>x.diet[i].items=v)}}/></div>
+        <div class="grid2"><div class="input"><input aria-label="Time" type="time" value=${d.time} onInput=${e=>{const v=e.target.value;ed(x=>x.diet[i].time=v)}}/></div><div class="input"><input aria-label="Protein grams" inputmode="numeric" value=${d.p} onInput=${e=>{const v=parseInt(e.target.value)||0;ed(x=>x.diet[i].p=v)}}/><em>g protein</em></div></div>
+      </div>`)}
+      <button class="btn ghost full" onClick=${()=>ed(x=>x.diet.push({t:'Snack',time:'16:00',items:'Roasted chana',p:8}))}>${I('plus',16)} Add meal</button>
+      <button class="btn full" onClick=${()=>say('Diet chart saved for '+m.name.split(' ')[0])}>Save diet</button>
+    </div>`}
+
+    ${t==='progress'&&html`<div class="stack"><div class="card"><span class="k">Weight trend</span><${WeightChart} pts=${m.weights} target=${m.goal.target}/></div>
+      <div class="card"><span class="k">Membership</span><b>${m.plan.name} · ends ${fmtD(m.plan.end)}</b><span class="muted" style="font-size:13px">${m.attendance.filter(d=>d.slice(0,7)===TODAY.slice(0,7)).length} visits this month · ${streak(m.attendance)}-day streak</span></div></div>`}
+
+    ${t==='note'&&html`<div class="stack">
+      <label class="field" for="noteTa"><span>Message to ${m.name.split(' ')[0]}</span><textarea id="noteTa" class="ta" placeholder="Great session today. Add 2.5 kg on squats next week." value=${note} onInput=${e=>setNote(e.target.value)}></textarea></label>
+      <button class="btn full" disabled=${!note.trim()} onClick=${()=>{ed(x=>x.notes.unshift({from:S.session.tid,d:TODAY,text:note.trim()}));setNote('');say('Note sent · shows on their home screen')}}>Send note</button>
+      <div class="list">${m.notes.map(n=>html`<div class="li"><div class="t"><b style="white-space:normal;font-weight:500">${n.text}</b><small>Coach ${TRAINERS[n.from].name} · ${fmtD(n.d)}</small></div></div>`)}</div>
+    </div>`}
+  </div>`;
+}
+
+render(html`<${App}/>`,document.getElementById('root'));
+})();
+</script>
+</body>
+</html>
