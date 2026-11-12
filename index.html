@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0d0b0b">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="preload" as="image" href="site/frames/f_001.webp">
 <title>The Weight Date</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -132,7 +133,8 @@ textarea.ta{width:100%;min-height:90px;background:var(--ink);border:1px solid va
 .iconbtn .dot{position:absolute;top:9px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--ember);box-shadow:0 0 0 2px var(--ink)}
 .ring{transform:rotate(-90deg)}
 .ring circle{fill:none;stroke-linecap:round;transition:stroke-dashoffset 1s var(--ease)}
-.view{animation:vin .55s var(--ease) both}
+.view>*{animation:vin .75s var(--ease) both}
+.view>*:nth-child(2){animation-delay:0.06s}.view>*:nth-child(3){animation-delay:0.12s}.view>*:nth-child(4){animation-delay:0.18s}.view>*:nth-child(5){animation-delay:0.24s}.view>*:nth-child(6){animation-delay:0.30s}.view>*:nth-child(7){animation-delay:0.36s}.view>*:nth-child(8){animation-delay:0.42s}
 @keyframes vin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .reveal{animation:vin .8s var(--ease) both}
 .photo{position:relative;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:var(--iron) center/cover;min-height:180px}
@@ -243,7 +245,63 @@ textarea.ta{width:100%;min-height:90px;background:var(--ink);border:1px solid va
 .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:60;background:var(--chalk);color:var(--ink);padding:12px 18px;border-radius:999px;font:600 12px/1 var(--f-m);letter-spacing:.06em;white-space:nowrap;animation:tin .4s var(--ease) both;max-width:90%;overflow:hidden;text-overflow:ellipsis}
 @media (max-width:960px){.toast{bottom:96px}}
 @keyframes tin{from{opacity:0;transform:translate(-50%,10px)}}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+
+/* spotlight */
+.card,.qa,.mtile,.ex{position:relative;isolation:isolate}
+.card::before,.qa::before,.mtile::before,.ex::before{content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;opacity:0;transition:opacity .45s;background:radial-gradient(460px circle at var(--mx,50%) var(--my,50%),rgba(210,49,31,.18),transparent 45%)}
+.card:hover::before,.qa:hover::before,.mtile:hover::before,.ex:hover::before{opacity:1}
+/* scrub hero */
+.hero-wrap{height:200vh;position:relative}
+.hero-wrap .hero{position:sticky;top:20px;height:calc(100vh - 56px);min-height:520px}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-2}
+.hero-progress{position:absolute;left:clamp(22px,4vw,48px);right:clamp(22px,4vw,48px);top:18px;height:2px;background:rgba(239,232,223,.12);border-radius:2px;z-index:1;overflow:hidden}
+.hero-progress i{display:block;height:100%;background:linear-gradient(90deg,var(--brass),var(--ember));transform-origin:left;transform:scaleX(0)}
+.frame-n{position:absolute;left:clamp(22px,4vw,48px);top:30px;z-index:1;font:500 10.5px/1 var(--f-m);letter-spacing:.16em;color:var(--ash)}
+.hero-end{position:absolute;right:clamp(22px,4vw,48px);bottom:clamp(22px,4vw,48px);z-index:1;text-align:right;display:grid;gap:10px;justify-items:end;opacity:0;transform:translateY(24px);pointer-events:none}
+.hero-end b{font:900 clamp(60px,8.4vw,128px)/.82 var(--f-d);text-transform:uppercase}
+.hero-in,.float{will-change:opacity,transform}
+.split .ch{display:inline-block;animation:rise 1s var(--ease) both;animation-delay:calc(var(--i) * 38ms + .1s)}
+@keyframes rise{from{opacity:0;transform:translateY(55%) rotate(5deg)}}
+.scroll-hint{display:inline-flex;align-items:center;gap:10px;font:600 10.5px/1 var(--f-m);letter-spacing:.16em;text-transform:uppercase;color:var(--ash)}
+.scroll-hint i{width:1px;height:28px;background:linear-gradient(var(--ember),transparent);animation:hint 1.8s var(--ease) infinite}
+@keyframes hint{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@media (max-width:960px){.hero-wrap{height:175vh}.hero-wrap .hero{top:70px;height:calc(100svh - 168px);min-height:480px}.frame-n{display:none}}
+/* band */
+.band{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:24px;overflow:hidden;background:var(--line);gap:1px}
+.band>div{background:var(--iron);padding:20px;display:grid;gap:6px;min-width:0}
+.band b{font:900 clamp(40px,4.4vw,64px)/.85 var(--f-d)}
+@media (max-width:760px){.band{grid-template-columns:1fr 1fr}}
+/* command palette */
+.cmdk{position:fixed;z-index:70;left:50%;top:14vh;transform:translateX(-50%);width:min(620px,calc(100% - 32px));background:var(--steel);border:1px solid rgba(239,232,223,.16);border-radius:22px;box-shadow:0 40px 120px rgba(0,0,0,.6),0 0 0 1px rgba(210,49,31,.1);overflow:hidden;animation:cin .32s var(--ease) both}
+@keyframes cin{from{opacity:0;transform:translate(-50%,-12px) scale(.98)}}
+.cmdk input{width:100%;height:62px;background:transparent;border:0;border-bottom:1px solid var(--line);padding:0 20px;font-size:17px;outline:none}
+.cmdk ul{list-style:none;margin:0;padding:8px;max-height:52vh;overflow-y:auto}
+.cmdk li button{width:100%;display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;text-align:left;color:var(--ash)}
+.cmdk li button[aria-selected="true"]{background:rgba(239,232,223,.07);color:var(--chalk)}
+.cmdk li button[aria-selected="true"] svg{color:var(--ember)}
+.cmdk kbd,.searchbtn kbd{margin-left:auto;font:500 10px/1 var(--f-m);color:var(--ash);border:1px solid var(--line);border-radius:6px;padding:4px 6px;white-space:nowrap}
+.searchbtn{display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;border-radius:14px;border:1px solid var(--line);background:var(--ink);color:var(--ash);width:100%;font-size:14px;transition:border-color .3s}
+.searchbtn:hover{border-color:rgba(239,232,223,.22)}
+/* plates */
+.pl{animation:slide .5s var(--ease) both;animation-delay:var(--d)}
+@keyframes slide{from{opacity:0;transform:translateY(-16px)}}
+/* focus mode */
+.focus{position:fixed;inset:0;z-index:65;background:radial-gradient(80% 60% at 50% 0%,rgba(210,49,31,.28),transparent 60%),var(--ink);display:flex;flex-direction:column;padding:calc(18px + env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-right,0px)) calc(22px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));animation:fi .35s both;overflow-y:auto}
+.focus-in{flex:1;display:grid;place-content:center;justify-items:center;text-align:center;gap:20px;max-width:680px;margin:0 auto;width:100%;animation:vin .5s var(--ease) both;padding-block:20px}
+.focus .exname{font:900 clamp(48px,9vw,112px)/.85 var(--f-d);text-transform:uppercase;text-wrap:balance}
+.focus .dots{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.focus .dots i{width:30px;height:6px;border-radius:6px;background:var(--graphite);transition:background .4s}
+.focus .dots i.on{background:var(--ok)}
+.focus .dots i.cur{background:var(--ember)}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:80;width:100%;height:100%}
+/* badges */
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px}
+.badge{display:grid;justify-items:center;gap:6px;text-align:center;padding:16px 10px;border-radius:20px;border:1px solid var(--line);background:var(--ink);transition:transform .4s var(--ease)}
+.badge:hover{transform:translateY(-3px)}
+.badge .md{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;color:var(--ink);background:radial-gradient(circle at 35% 30%,#f2d79a,var(--brass) 55%,#7a5a28);box-shadow:inset 0 -6px 10px rgba(0,0,0,.3),inset 0 3px 6px rgba(255,255,255,.35)}
+.badge.off{opacity:.35}
+.badge.off .md{background:var(--graphite);color:var(--ash);box-shadow:none}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}.hero-wrap{height:auto}.hero-wrap .hero{position:relative;top:0}}
 </style>
 </head>
 <body>
@@ -295,6 +353,11 @@ const PROGRAMS=[
 const REVIEWS=[['Isha Singh','Civil Lines','Training with Sujeet sir has been the highlight. Exceptionally knowledgeable PT.'],['Shraddha Rastogi','Civil Lines','Women-friendly environment, and the trainers are very supportive.'],['Shreya Srivastava','Tagore Town','Free diet charts and a schedule updated every 2–3 months. A big plus.'],['Harsh Mishra','Tagore Town','The hygiene is truly impressive. Floor, washrooms and machines always maintained.'],['Kishfa Queen','Civil Lines','It helped me lose weight. A year in, I have seen a lot of change.'],['Akash Kumar Yadav','Tagore Town','Sakib bhaiya genuinely cares about your progress. Great form corrections.'],['Ayush Singh','Tagore Town','Charlie is very professional and always helps with proper guidance.'],['Vivek Srivastava','Civil Lines','The growth and upgrades over time show their commitment to members.']];
 const GALLERY=[['img/phone.jpg','Only place where you go offline'],['img/chalk.jpg','Built in silence'],['img/medal.jpg','Where champions are made'],['img/team.jpg','Come for the workout, stay for the vibe'],['img/cardio.jpg','The cardio deck'],['img/legpress.jpg','270 kg × 5 deep reps']];
 const GOALS={lose:'Lose weight',build:'Build muscle',strong:'Get strong',fit:'General fitness'};
+/* competition plates: kg, colour, drawn height, drawn width */
+const PLATES=[[25,'#d2311f',124,16],[20,'#2f62b0',124,14],[15,'#d9b43a',108,12],[10,'#3b8a4e',92,10],[5,'#e8e2d6',62,8],[2.5,'#2a2423',50,6],[1.25,'#b9bcc2',42,5]];
+function loadBar(target,collars){const bar=20+(collars?5:0);const out=[];if(target<bar)return{ok:false,plates:[],side:0,actual:bar};let rem=Math.round((target-bar)/2*100)/100;for(const p of PLATES){while(rem>=p[0]-1e-9){out.push(p);rem=Math.round((rem-p[0])*100)/100}}const side=out.reduce((a,p)=>a+p[0],0);return{ok:rem<1e-9,plates:out,side,actual:bar+side*2}}
+const e1rm=(w,r)=>r<=1?w:w*(1+r/30);
+const round25=x=>Math.round(x/2.5)*2.5;
 
 /* ---------- member seed ---------- */
 const E=(n,s,r,kg,note)=>({n,s,r,kg,note:note||''});
@@ -306,6 +369,9 @@ const SPLIT={Mon:{t:'Push',ex:[E('Bench press',4,'8',60,'Pause 1 sec on the ches
   Sat:{t:'Legs + core',ex:[E('Front squat',3,'8',60),E('Hip thrust',4,'10',80),E('Leg curl',3,'12',35),E('Hanging knee raise',3,'12',0),E('Stairmaster',1,'12 min',0)]},
   Sun:{t:'Rest',ex:[]}};
 const DIET=[{t:'Breakfast',time:'08:00',items:'Moong dal chilla ×2 with curd',p:22},{t:'Mid-morning',time:'11:00',items:'Sprouts chaat with lemon, green tea',p:12},{t:'Lunch',time:'14:00',items:'2 rotis, dal, seasonal sabzi, salad',p:18},{t:'Pre-workout',time:'17:30',items:'Banana and black coffee',p:2},{t:'Post-workout',time:'19:30',items:'Glass of milk or whey',p:24},{t:'Dinner',time:'21:00',items:'Paneer tikka 150 g with sautéed veg',p:28}];
+const T_STRENGTH={Mon:{t:'Squat',ex:[E('Back squat',5,'5',90,'Top set at RPE 8'),E('Paused bench',4,'5',55),E('Barbell row',4,'8',50),E('Plank',3,'45s',0)]},Tue:{t:'Rest',ex:[]},Wed:{t:'Bench',ex:[E('Bench press',5,'5',62.5),E('Front squat',3,'6',60),E('Pull-up',4,'6',0),E('Dips',3,'10',0)]},Thu:{t:'Rest',ex:[]},Fri:{t:'Deadlift',ex:[E('Deadlift',5,'3',120,'Reset every rep'),E('Overhead press',4,'6',35),E('Leg press',3,'10',140),E('Face pull',3,'15',20)]},Sat:{t:'Accessories',ex:[E('Hip thrust',4,'10',80),E('Incline DB press',3,'10',20),E('Lat pulldown',3,'12',50)]},Sun:{t:'Rest',ex:[]}};
+const T_BEGIN={Mon:{t:'Full body A',ex:[E('Goblet squat',3,'10',12,'Sit between your heels'),E('Machine chest press',3,'10',25),E('Lat pulldown',3,'10',35),E('Plank',3,'30s',0)]},Tue:{t:'Rest',ex:[]},Wed:{t:'Full body B',ex:[E('Leg press',3,'12',80),E('DB shoulder press',3,'10',8),E('Seated cable row',3,'10',30),E('Glute bridge',3,'12',0)]},Thu:{t:'Rest',ex:[]},Fri:{t:'Full body A',ex:[E('Goblet squat',3,'10',14),E('Machine chest press',3,'10',27.5),E('Lat pulldown',3,'10',37.5),E('Bird dog',3,'10',0)]},Sat:{t:'Cardio',ex:[E('Incline treadmill walk',1,'25 min',0),E('Bike',1,'10 min',0)]},Sun:{t:'Rest',ex:[]}};
+const TEMPLATES={fat:['Fat loss split',SPLIT],strength:['Strength 3-day',T_STRENGTH],begin:['Beginner full body',T_BEGIN]};
 function wSeries(a,b,n){const o=[];for(let i=n;i>=0;i--){o.push({d:iso(addDays(nowIST(),-i*7)),w:+(a+(b-a)*(n-i)/n+Math.sin(i*1.7)*.35).toFixed(1)})}return o}
 function attSeed(rate,s){const o=[];for(let i=1;i<60;i++){const d=addDays(nowIST(),-i);if(d.getDay()===0)continue;s=(s*9301+49297)%233280;if(s/233280<rate)o.push(iso(d))}return o}
 function nextOpen(n){let d=nowIST(),c=0;while(c<n){d=addDays(d,1);if(d.getDay()!==0)c++}return iso(d)}
@@ -319,14 +385,16 @@ function seed(){
     mk('m-neha','Neha Tripathi','99360 45512','tt','sakib','m6',-90,{type:'fit',target:60,by:iso(addDays(t,60))},66,62.5,158,.6,51)];
   m[0].notes=[{from:'charlie',d:iso(addDays(t,-1)),text:'Great week, Aman. Bench goes to 62.5 kg on Monday. Keep dinner light.'}];
   m[0].bookings=[{d:nextOpen(1),slot:'Evening',branch:'tt'}];
-  return {v:4,session:null,members:m,news:[{d:iso(addDays(t,-2)),t:'New VIVA Tunturi dumbbells',b:'Our 40 kg pairs are now commercial-grade TPU at both branches.'},{d:iso(addDays(t,-6)),t:'Sunday closed',b:'Both branches stay closed on Sundays. Recover well.'},{d:iso(addDays(t,-12)),t:'17 medals at districts',b:'Our powerlifting team won the most medals in the district.'}]};
+  m.forEach(x=>{x.history=[...x.attendance].sort().map(d=>{const dd=x.split[DOW[parse(d).getDay()]];const sets=dd.ex.reduce((a,e)=>a+e.s,0);const vol=dd.ex.reduce((a,e)=>a+e.s*(parseInt(e.r)||0)*e.kg,0);return{d,t:dd.t,sets,vol:Math.round(vol*(.82+((parse(d).getDate()*7)%30)/100))}}).filter(hh=>hh.sets);
+    x.prs={};Object.values(x.split).forEach(dd=>dd.ex.forEach(e=>{if(e.kg>0)x.prs[e.n]=Math.max(x.prs[e.n]||0,e.kg)}));x.prLog=[];x.seen=''});
+  return {v:5,session:null,members:m,news:[{d:iso(addDays(t,-2)),t:'New VIVA Tunturi dumbbells',b:'Our 40 kg pairs are now commercial-grade TPU at both branches.'},{d:iso(addDays(t,-6)),t:'Sunday closed',b:'Both branches stay closed on Sundays. Recover well.'},{d:iso(addDays(t,-12)),t:'17 medals at districts',b:'Our powerlifting team won the most medals in the district.'}]};
 }
-const KEY='twd-hub-demo-v4';
-function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.v===4)return s}catch(e){}return seed()}
+const KEY='twd-hub-demo-v5';
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.v===5)return s}catch(e){}return seed()}
 function save(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
 
 /* ---------- icons ---------- */
-const P={home:'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',dumb:'M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12',bowl:'M3 12h18a9 9 0 0 1-18 0zM8 8c0-2 2-2 2-4M12 8c0-2 2-2 2-4',chart:'M4 20V10M10 20V4M16 20v-7M22 20H2',grid:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',bell:'M6 16V11a6 6 0 1 1 12 0v5l2 2H4zM10 21h4',user:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0',check:'M5 12l5 5 9-10',plus:'M12 5v14M5 12h14',minus:'M5 12h14',x:'M6 6l12 12M18 6L6 18',back:'M15 5l-7 7 7 7',card:'M3 6h18v12H3zM3 10h18',cal:'M4 6h16v14H4zM4 10h16M9 3v4M15 3v4',pin:'M12 21s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',qr:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2zM14 18h2M18 14h2',users:'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M17 11a3 3 0 1 0 0-6M22 21a6 6 0 0 0-5-6',flame:'M12 22a7 7 0 0 0 7-7c0-5-7-12-7-12s-1 4-4 7a7 7 0 0 0 4 12z',msg:'M4 5h16v11H8l-4 4z',out:'M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10',edit:'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',snow:'M12 2v20M4 6l16 12M20 6L4 18',lock:'M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4',target:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',star:'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z',img:'M4 5h16v14H4zM4 15l5-5 5 5 3-3 3 3',arrow:'M5 12h14M13 6l6 6-6 6'};
+const P={home:'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',dumb:'M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12',bowl:'M3 12h18a9 9 0 0 1-18 0zM8 8c0-2 2-2 2-4M12 8c0-2 2-2 2-4',chart:'M4 20V10M10 20V4M16 20v-7M22 20H2',grid:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',bell:'M6 16V11a6 6 0 1 1 12 0v5l2 2H4zM10 21h4',user:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0',check:'M5 12l5 5 9-10',plus:'M12 5v14M5 12h14',minus:'M5 12h14',x:'M6 6l12 12M18 6L6 18',back:'M15 5l-7 7 7 7',card:'M3 6h18v12H3zM3 10h18',cal:'M4 6h16v14H4zM4 10h16M9 3v4M15 3v4',pin:'M12 21s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',qr:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2zM14 18h2M18 14h2',users:'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M17 11a3 3 0 1 0 0-6M22 21a6 6 0 0 0-5-6',flame:'M12 22a7 7 0 0 0 7-7c0-5-7-12-7-12s-1 4-4 7a7 7 0 0 0 4 12z',msg:'M4 5h16v11H8l-4 4z',out:'M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10',edit:'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',snow:'M12 2v20M4 6l16 12M20 6L4 18',lock:'M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4',target:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',star:'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z',img:'M4 5h16v14H4zM4 15l5-5 5 5 3-3 3 3',arrow:'M5 12h14M13 6l6 6-6 6',search:'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM21 21l-4.3-4.3',trophy:'M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 21h8M10 17h4',play:'M7 4l13 8-13 8z',bolt:'M13 2L4 14h7l-1 8 9-12h-7z',plate:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z'};
 const I=(n,s=22,c)=>html`<svg width=${s} height=${s} viewBox="0 0 24 24" fill="none" stroke=${c||'currentColor'} stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d=${P[n]}/></svg>`;
 const Logo=({s=30})=>html`<svg width=${s} height=${s} viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18.5" fill="none" stroke="#d2311f" stroke-width="3"/><circle cx="20" cy="20" r="12" fill="#6d140e"/><circle cx="20" cy="20" r="4.2" fill="#0d0b0b" stroke="#c8a66a" stroke-width="1.6"/></svg>`;
 
@@ -335,6 +403,31 @@ function openNow(b){const n=nowIST();if(n.getDay()===0)return{open:false,txt:'Cl
 function streak(att){let s=0,d=nowIST();if(!att.includes(iso(d)))d=addDays(d,-1);for(let k=0;k<120;k++){if(d.getDay()===0){d=addDays(d,-1);continue}if(att.includes(iso(d))){s++;d=addDays(d,-1)}else break}return s}
 const BUSY=[2,5,7,6,4,3,2,2,2,3,4,6,8,9,7,5];/* hours 6..21, sample */
 function busyNow(b){const h=nowIST().getHours();if(!openNow(b).open)return 0;return BUSY[h-6]||0}
+function untilTxt(b){const n=nowIST();if(n.getDay()===0)return'Opens Mon 06:00';const m=n.getHours()*60+n.getMinutes();const sl=BR[b].slots.map(s=>[s[0]*60,s[1]*60]);const cur=sl.find(s=>m>=s[0]&&m<s[1]);const f=x=>{const hh=Math.floor(x/60),mm=x%60;return(hh?hh+'h ':'')+mm+'m'};if(cur)return'Closes in '+f(cur[1]-m);const nx=sl.find(s=>m<s[0]);return nx?'Opens in '+f(nx[0]-m):(n.getDay()===6?'Opens Mon 06:00':'Opens 06:00')}
+function confetti(){if(RM)return;const c=document.createElement('canvas');c.className='confetti';document.body.appendChild(c);const x=c.getContext('2d');const d=Math.min(2,window.devicePixelRatio||1);const W=c.width=innerWidth*d,H=c.height=innerHeight*d;const cols=['#d2311f','#c8a66a','#efe8df','#2f62b0','#d9b43a','#3b8a4e'];
+  const ps=Array.from({length:170},()=>({x:W/2+(Math.random()-.5)*W*.25,y:H*.38,vx:(Math.random()-.5)*24*d,vy:(-Math.random()*22-6)*d,r:(4+Math.random()*6)*d,c:cols[Math.random()*cols.length|0],a:Math.random()*6,va:(Math.random()-.5)*.4}));let t=0;
+  (function f(){t++;x.clearRect(0,0,W,H);ps.forEach(p=>{p.vy+=.55*d;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.a+=p.va;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.globalAlpha=Math.max(0,1-t/170);x.fillStyle=p.c;x.fillRect(-p.r,-p.r/2,p.r*2,p.r);x.restore()});if(t<170)requestAnimationFrame(f);else c.remove()})()}
+const buzz=p=>{try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
+function CountUp({to,dec=0,suffix=''}){const ref=useRef();const [v,setV]=useState(RM?to:0);
+  useEffect(()=>{if(RM)return;let raf;const io=new IntersectionObserver(es=>{if(es[0].isIntersecting){io.disconnect();const t0=performance.now();const step=t=>{const k=Math.min(1,(t-t0)/1700);setV(to*(1-Math.pow(1-k,4)));if(k<1)raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step)}});io.observe(ref.current);return()=>{io.disconnect();cancelAnimationFrame(raf)}},[]);
+  return html`<span ref=${ref} class="num">${dec?v.toFixed(dec):Math.round(v).toLocaleString('en-IN')}${suffix}</span>`}
+function badges(m){const n=m.history.length,st=streak(m.attendance);const ws=m.weights,s0=ws[0].w,c=ws[ws.length-1].w,t=m.goal.target;const pr=s0===t?1:(s0-c)/(s0-t);
+  return[{t:'First session',s:'Log a workout',ic:'dumb',on:n>=1},{t:'10 workouts',s:'Ten logged',ic:'flame',on:n>=10},{t:'25 workouts',s:'Quarter century',ic:'flame',on:n>=25},{t:'3-day streak',s:'Three in a row',ic:'bolt',on:st>=3},{t:'6-day streak',s:'A full week',ic:'bolt',on:st>=6},{t:'New PR',s:'Beat your best',ic:'trophy',on:m.prLog.length>0},{t:'Halfway',s:'50% to goal',ic:'target',on:pr>=.5},{t:'Goal reached',s:'Target hit',ic:'star',on:pr>=1}]}
+function VolChart({hist}){const t=nowIST();const mon=d=>{const x=new Date(d);x.setDate(x.getDate()-(x.getDay()+6)%7);return iso(x)};const weeks=[];for(let i=7;i>=0;i--)weeks.push(mon(addDays(t,-i*7)));
+  const sum=weeks.map(w=>hist.filter(hh=>mon(parse(hh.d))===w).reduce((a,hh)=>a+hh.vol,0));const W=320,H=150,pl=30,pb=22,pt=10;const mx=Math.max(1000,...sum);const step=mx>40000?20000:mx>20000?10000:mx>8000?4000:2000;const top=Math.ceil(mx/step)*step;
+  const y=v=>pt+(top-v)*(H-pt-pb)/top;const bw=(W-pl-6)/weeks.length;const ticks=[];for(let v=0;v<=top;v+=step)ticks.push(v);
+  return html`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Weekly training volume">${ticks.map(v=>html`<g><line x1=${pl} x2=${W-4} y1=${y(v)} y2=${y(v)} stroke="rgba(239,232,223,.07)"/><text x=${pl-6} y=${y(v)+3} fill="#9b918b" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="end">${v?v/1000+'t':0}</text></g>`)}
+    ${sum.map((v,i)=>html`<g><rect x=${pl+i*bw+bw*.18} y=${y(v)} width=${bw*.64} height=${Math.max(0,H-pb-y(v))} rx="4" fill=${i===sum.length-1?'#d2311f':'#6d140e'}/><text x=${pl+i*bw+bw/2} y=${H-6} fill="#9b918b" font-size="8.5" font-family="JetBrains Mono,monospace" text-anchor="middle">${i===sum.length-1?'Now':parse(weeks[i]).getDate()+'/'+(parse(weeks[i]).getMonth()+1)}</text></g>`)}</svg>`}
+function PlateLoader({target,setTarget,compact}){const [col,setCol]=useState(false);const L=loadBar(target,col);const els=[];let xL=226,xR=414;
+  L.plates.forEach((p,i)=>{const [,c,hh,ww]=p;xL-=ww+2;els.push(html`<rect class="pl" style=${{'--d':i*45+'ms'}} x=${xL} y=${80-hh/2} width=${ww} height=${hh} rx="2" fill=${c} stroke="rgba(0,0,0,.4)"/>`);els.push(html`<rect class="pl" style=${{'--d':i*45+'ms'}} x=${xR+2} y=${80-hh/2} width=${ww} height=${hh} rx="2" fill=${c} stroke="rgba(0,0,0,.4)"/>`);xR+=ww+2});
+  const counts={};L.plates.forEach(p=>counts[p[0]]=(counts[p[0]]||0)+1);
+  return html`<div class="card hot stack"><div class="row between wrap"><div><span class="k brass">Plate loader · per side</span><div class="num" style="font:900 clamp(56px,7vw,96px)/.85 var(--f-d)">${target}<small style="font:500 14px var(--f-m);color:var(--ash)"> kg</small></div></div>
+    <div class="row wrap" style="gap:8px"><button class="iconbtn" aria-label="Minus 2.5 kg" onClick=${()=>setTarget(Math.max(20,target-2.5))}>${I('minus',18)}</button><button class="iconbtn" aria-label="Plus 2.5 kg" onClick=${()=>setTarget(Math.min(400,target+2.5))}>${I('plus',18)}</button>${!compact&&[60,100,140,180,220].map(v=>html`<button class="pill" style="cursor:pointer" onClick=${()=>setTarget(v)}>${v} kg</button>`)}</div></div>
+    <div style="overflow-x:auto"><svg viewBox="0 0 640 160" width="100%" style="min-width:420px;display:block" role="img" aria-label=${'Bar loaded to '+L.actual+' kg'}>
+      <rect x="232" y="76" width="176" height="8" rx="3" fill="#b9bcc2"/><rect x="30" y="71" width="196" height="18" rx="5" fill="#cfc6b8"/><rect x="414" y="71" width="196" height="18" rx="5" fill="#cfc6b8"/>
+      <rect x="226" y="64" width="6" height="32" rx="2" fill="#9b918b"/><rect x="408" y="64" width="6" height="32" rx="2" fill="#9b918b"/><g key=${target+'-'+col}>${els}</g></svg></div>
+    <div class="row wrap" style="gap:8px">${PLATES.filter(p=>counts[p[0]]).map(p=>html`<span class="pill" style=${{color:'var(--chalk)'}}><i style=${{width:'10px',height:'10px',borderRadius:'3px',background:p[1],display:'inline-block',border:'1px solid rgba(255,255,255,.2)'}}></i>${counts[p[0]]} × ${p[0]} kg</span>`)}${!L.plates.length&&html`<span class="muted">Empty bar</span>`}</div>
+    <div class="row between wrap"><span class="muted" style="font-size:13px">${L.side} kg each side · 20 kg bar${col?' · 2.5 kg collars':''}${L.ok?'':' · nearest exact load is '+L.actual+' kg'}</span><button class="pill" style="cursor:pointer" aria-pressed=${col} onClick=${()=>setCol(!col)}>${col?'✓ ':''}Competition collars</button></div></div>`}
 const Ring=({v,size=88,stroke=9,color='var(--ember)',children})=>{const r=(size-stroke)/2,c=2*Math.PI*r;return html`<div style=${{position:'relative',width:size+'px',height:size+'px',flex:'0 0 auto'}}><svg class="ring" width=${size} height=${size}><circle cx=${size/2} cy=${size/2} r=${r} stroke="var(--graphite)" stroke-width=${stroke}/><circle cx=${size/2} cy=${size/2} r=${r} stroke=${color} stroke-width=${stroke} stroke-dasharray=${c} stroke-dashoffset=${c*(1-Math.max(0,Math.min(1,v)))}/></svg><div style=${{position:'absolute',inset:0,display:'grid',placeContent:'center',textAlign:'center'}}>${children}</div></div>`};
 function WeightChart({pts,target}){
   const W=320,H=150,pl=30,pr=10,pt=12,pb=22;const ws=pts.map(p=>p.w).concat(target?[target]:[]);
@@ -354,7 +447,7 @@ function QR({id}){let s=0;for(const c of id)s=(s*31+c.charCodeAt(0))>>>0;const N
 const Sheet=({close,label,children})=>html`<div class="scrim" onClick=${close}></div><div class="sheet" role="dialog" aria-label=${label}><div class="grab"></div>${children}</div>`;
 
 /* ---------- routes ---------- */
-const PUBLIC=[['home','Home','home'],['programs','Programs','target'],['plans','Membership','card'],['book','Book a slot','cal'],['coaches','Coaches','users'],['branches','Branches','pin'],['gallery','Gallery','img']];
+const PUBLIC=[['home','Home','home'],['programs','Programs','target'],['plans','Membership','card'],['book','Book a slot','cal'],['tools','Lift tools','plate'],['coaches','Coaches','users'],['branches','Branches','pin'],['gallery','Gallery','img']];
 const MEMBER=[['today','Today','flame'],['train','Training','dumb'],['diet','Diet','bowl'],['goals','Goals','chart'],['myplan','My plan','card']];
 const TRAINER=[['coach','Members','users'],['floor','Floor','pin']];
 const ALL=new Set([...PUBLIC,...MEMBER,...TRAINER].map(r=>r[0]));
@@ -362,24 +455,28 @@ const getRoute=()=>{const h=(location.hash||'').slice(1);return ALL.has(h)?h:'ho
 
 /* ================= APP ================= */
 function App(){
-  const [S,setS]=useState(load);const [route,setRoute]=useState(getRoute());const [toast,setToast]=useState('');const [login,setLogin]=useState(false);
+  const [S,setS]=useState(load);const [route,setRoute]=useState(getRoute());const [toast,setToast]=useState('');const [login,setLogin]=useState(false);const [cmd,setCmd]=useState(false);const [,setTick]=useState(0);
   const tRef=useRef();const mainRef=useRef();
   const up=fn=>setS(prev=>{const n=JSON.parse(JSON.stringify(prev));fn(n);save(n);return n});
   const say=m=>{setToast(m);clearTimeout(tRef.current);tRef.current=setTimeout(()=>setToast(''),2400)};
   useEffect(()=>{const f=()=>setRoute(getRoute());window.addEventListener('hashchange',f);return()=>window.removeEventListener('hashchange',f)},[]);
   useEffect(()=>{if(mainRef.current)mainRef.current.scrollTo({top:0})},[route]);
+  useEffect(()=>{const id=setInterval(()=>setTick(t=>t+1),30000);return()=>clearInterval(id)},[]);
+  useEffect(()=>{const k=e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();setCmd(c=>!c)}else if(e.key==='/'&&!/INPUT|TEXTAREA|SELECT/.test((document.activeElement||{}).tagName||'')){e.preventDefault();setCmd(true)}else if(e.key==='Escape')setCmd(false)};window.addEventListener('keydown',k);return()=>window.removeEventListener('keydown',k)},[]);
+  useEffect(()=>{if(!window.matchMedia('(hover:hover) and (pointer:fine)').matches)return;const mv=e=>{const el=e.target.closest&&e.target.closest('.card,.qa,.mtile,.ex');if(el){const r=el.getBoundingClientRect();el.style.setProperty('--mx',(e.clientX-r.left)+'px');el.style.setProperty('--my',(e.clientY-r.top)+'px')}};document.addEventListener('pointermove',mv,{passive:true});return()=>document.removeEventListener('pointermove',mv)},[]);
   const go=r=>{if(location.hash.slice(1)===r)setRoute(r);else location.hash=r};
   const sess=S.session;const me=sess&&sess.role==='member'?S.members.find(m=>m.id===sess.mid):null;
   const needLogin=MEMBER.some(r=>r[0]===route)&&!me||TRAINER.some(r=>r[0]===route)&&!(sess&&sess.role==='trainer');
-  const ctx={S,up,say,go,me,openLogin:()=>setLogin(true)};
-  const Comp=needLogin?Locked:({home:Home,programs:Programs,plans:Plans,book:Book,coaches:Coaches,branches:Branches,gallery:Gallery,today:Today,train:Train,diet:Diet,goals:Goals,myplan:MyPlan,coach:CoachMembers,floor:Floor})[route];
+  const ctx={S,up,say,go,me,openLogin:()=>setLogin(true),openCmd:()=>setCmd(true)};
+  const Comp=needLogin?Locked:({home:Home,programs:Programs,plans:Plans,book:Book,coaches:Coaches,branches:Branches,gallery:Gallery,tools:Tools,today:Today,train:Train,diet:Diet,goals:Goals,myplan:MyPlan,coach:CoachMembers,floor:Floor})[route];
   const navItem=([id,l,ic],locked)=>html`<a class="nav-a" href=${'#'+id} aria-current=${route===id?'page':'false'}>${I(ic,20)}<span>${l}</span>${locked&&html`<span class="lock">${I('lock',14)}</span>`}</a>`;
   const mtabs=sess&&sess.role==='trainer'?[['home','Gym','home'],['coach','Members','users'],['floor','Floor','pin'],['book','Book','cal'],['plans','Plans','card']]
     :me?[['home','Gym','home'],['today','Today','flame'],['train','Train','dumb'],['diet','Diet','bowl'],['goals','Goals','chart']]
-    :[['home','Home','home'],['programs','Programs','target'],['book','Book','cal'],['plans','Plans','card'],['branches','Branches','pin']];
+    :[['home','Home','home'],['programs','Programs','target'],['book','Book','cal'],['tools','Tools','plate'],['plans','Plans','card']];
   return html`<div class="shell">
     <aside class="side" aria-label="Sidebar">
       <a class="brand" href="#home"><${Logo}/>Weight<i>date</i></a>
+      <button class="searchbtn" onClick=${()=>setCmd(true)}>${I('search',16)}<span style="white-space:nowrap">Search</span><kbd>Ctrl K</kbd></button>
       <nav class="nav-group" aria-label="Explore"><span>Explore</span>${PUBLIC.map(r=>navItem(r))}</nav>
       ${(!sess||sess.role==='member')&&html`<nav class="nav-group" aria-label="My training"><span>My training</span>${MEMBER.map(r=>navItem(r,!me))}</nav>`}
       ${sess&&sess.role==='trainer'&&html`<nav class="nav-group" aria-label="Coach"><span>Coach panel</span>${TRAINER.map(r=>navItem(r))}</nav>`}
@@ -391,11 +488,12 @@ function App(){
     </aside>
     <div class="main" ref=${mainRef}>
       <header class="mtop"><a class="brand" href="#home" style="font-size:19px"><${Logo} s=${26}/>Weight<i style="font-size:19px">date</i></a>
-        ${sess?html`<button class="iconbtn" aria-label="Sign out" onClick=${()=>{up(s=>{s.session=null});go('home');say('Signed out')}}>${I('out',18)}</button>`:html`<button class="btn sm" onClick=${()=>setLogin(true)}>Login</button>`}</header>
+        <div class="row" style="gap:8px"><button class="iconbtn" aria-label="Search" onClick=${()=>setCmd(true)}>${I('search',18)}</button>${sess?html`<button class="iconbtn" aria-label="Sign out" onClick=${()=>{up(s=>{s.session=null});go('home');say('Signed out')}}>${I('out',18)}</button>`:html`<button class="btn sm" onClick=${()=>setLogin(true)}>Login</button>`}</div></header>
       <main class="page" key=${route}><${Comp} ...${ctx}/></main>
     </div>
     <nav class="mtabs" aria-label="Tabs">${mtabs.map(([id,l,ic])=>html`<a class="mtab" href=${'#'+id} aria-current=${route===id?'page':'false'}>${I(ic)}<span>${l}</span></a>`)}</nav>
     ${login&&html`<${Login} ...${ctx} close=${()=>setLogin(false)}/>`}
+    ${cmd&&html`<${Cmdk} ...${ctx} close=${()=>setCmd(false)}/>`}
     ${toast&&html`<div class="toast" role="status">${toast}</div>`}
   </div>`;
 }
@@ -404,6 +502,20 @@ function Locked({openLogin}){return html`<div class="view stack" style="max-widt
   <div class="iconbtn" style="width:72px;height:72px">${I('lock',30,'#c8a66a')}</div><h1 class="h2">Members <span class="it">only.</span></h1>
   <p class="lead">Sign in to see the workout and diet your coach set for you, log your sets, and track your goal.</p>
   <button class="btn" onClick=${openLogin}>Member login</button><span class="demo-flag">Demo code 1234</span></div>`}
+
+/* ---------- command palette ---------- */
+function Cmdk({S,me,go,close,openLogin,say,up}){const [q,setQ]=useState('');const [i,setI]=useState(0);const inp=useRef();useEffect(()=>{inp.current&&inp.current.focus()},[]);
+  const sess=S.session;const copyDesk=()=>{try{navigator.clipboard.writeText('+918840655898').then(()=>say('Copied +91 88406 55898'),()=>say('+91 88406 55898'))}catch(e){say('+91 88406 55898')}};
+  const items=[...PUBLIC.map(([id,l,ic])=>({l,ic,g:'Page',run:()=>go(id)})),
+    ...(me?MEMBER.map(([id,l,ic])=>({l,ic,g:'My training',run:()=>go(id)})):[]),
+    ...(sess&&sess.role==='trainer'?TRAINER.map(([id,l,ic])=>({l,ic,g:'Coach',run:()=>go(id)})):[]),
+    ...(me?[{l:'Start workout in focus mode',ic:'play',g:'Action',run:()=>{window.__pending='focus';go('train')}},{l:"Log today's weight",ic:'chart',g:'Action',run:()=>{window.__pending='weigh';go('goals')}},{l:'Check in at '+BR[me.branch].name,ic:'qr',g:'Action',run:()=>{if(nowIST().getDay()===0){say('Closed on Sunday');return}up(s=>{const m=s.members.find(x=>x.id===me.id);if(!m.attendance.includes(TODAY))m.attendance.push(TODAY)});say('Checked in at '+BR[me.branch].name)}}]:[]),
+    {l:'Plate loader and 1RM calculator',ic:'plate',g:'Tool',run:()=>go('tools')},{l:'Find my program (BMI)',ic:'target',g:'Tool',run:()=>go('programs')},{l:'Copy front desk number',ic:'msg',g:'Action',run:copyDesk},
+    sess?{l:'Sign out',ic:'out',g:'Account',run:()=>{up(s=>{s.session=null});go('home');say('Signed out')}}:{l:'Member or trainer login',ic:'user',g:'Account',run:openLogin}];
+  const f=items.filter(x=>(x.l+' '+x.g).toLowerCase().includes(q.trim().toLowerCase()));const sel=Math.min(i,Math.max(0,f.length-1));const run=x=>{close();setTimeout(()=>x.run(),0)};
+  return html`<div class="scrim" style="z-index:69" onClick=${close}></div><div class="cmdk" role="dialog" aria-label="Search">
+    <input ref=${inp} id="cmdq" placeholder="Search pages and actions…" aria-label="Search pages and actions" autocomplete="off" value=${q} onInput=${e=>{setQ(e.target.value);setI(0)}} onKeyDown=${e=>{if(e.key==='ArrowDown'){e.preventDefault();setI(Math.min(f.length-1,sel+1))}else if(e.key==='ArrowUp'){e.preventDefault();setI(Math.max(0,sel-1))}else if(e.key==='Enter'&&f[sel])run(f[sel])}}/>
+    <ul role="listbox" aria-label="Results">${f.map((x,k)=>html`<li><button role="option" aria-selected=${k===sel} onMouseEnter=${()=>setI(k)} onClick=${()=>run(x)}>${I(x.ic,18)}<span>${x.l}</span><kbd>${x.g}</kbd></button></li>`)}${!f.length&&html`<li class="muted" style="padding:14px">No matches for “${q}”</li>`}</ul></div>`}
 
 /* ---------- login sheet ---------- */
 function Login({up,say,go,close}){
@@ -422,27 +534,46 @@ function Login({up,say,go,close}){
 }
 
 /* ================= PUBLIC VIEWS ================= */
+function HeroScrub({me,openLogin}){
+  const wrap=useRef(),cv=useRef(),inR=useRef(),endR=useRef(),barR=useRef(),numR=useRef(),f1=useRef(),f2=useRef();
+  useEffect(()=>{if(RM)return;const N=192,c=cv.current,ctx=c.getContext('2d'),imgs=[],ok=[];let cur=-1,want=0,dead=false;const sc=document.querySelector('.main');
+    const draw=()=>{let k=-1;for(let d=0;d<N&&k<0;d++){if(want-d>=0&&ok[want-d])k=want-d;else if(want+d<N&&ok[want+d])k=want+d}if(k<0||k===cur)return;cur=k;const im=imgs[k];const s=Math.max(c.width/im.naturalWidth,c.height/im.naturalHeight);const dw=im.naturalWidth*s,dh=im.naturalHeight*s;const fx=c.width<1100?.66:.6;ctx.drawImage(im,Math.min(0,Math.max(c.width-dw,c.width/2-dw*fx)),(c.height-dh)/2,dw,dh)};
+    const size=()=>{const r=c.getBoundingClientRect();const d=Math.min(window.devicePixelRatio||1,2);c.width=Math.round(r.width*d);c.height=Math.round(r.height*d);cur=-1;draw()};
+    const load=i=>new Promise(r=>{const im=new Image();im.decoding='async';im.onload=()=>{if(!dead){imgs[i]=im;ok[i]=true;draw()}r()};im.onerror=r;im.src='site/frames/f_'+String(i+1).padStart(3,'0')+'.webp'});
+    const order=[0];for(let st=16;st>=1;st>>=1)for(let i=0;i<N;i+=st)if(!order.includes(i))order.push(i);let p=0;const next=()=>{if(dead||p>=order.length)return;load(order[p++]).then(next)};
+    const onScroll=()=>{const w=wrap.current;if(!w||!sc)return;const hero=w.firstElementChild;const wr=w.getBoundingClientRect(),mr=sc.getBoundingClientRect();const top=parseFloat(getComputedStyle(hero).top)||0;const pr=Math.max(0,Math.min(1,(mr.top+top-wr.top)/Math.max(1,wr.height-hero.offsetHeight)));
+      want=Math.round(pr*(N-1));draw();if(inR.current){inR.current.style.opacity=Math.max(0,1-pr*2.4);inR.current.style.transform='translateY('+(-pr*90)+'px)'}
+      [f1.current,f2.current].forEach(f=>{if(f)f.style.opacity=Math.max(0,1-pr*3)});if(endR.current){const e=Math.max(0,Math.min(1,(pr-.58)/.25));endR.current.style.opacity=e;endR.current.style.transform='translateY('+(1-e)*24+'px)'}
+      if(barR.current)barR.current.style.transform='scaleX('+pr+')';if(numR.current)numR.current.textContent=String(want+1).padStart(3,'0')+' / '+N};
+    load(0).then(()=>{size();for(let k=0;k<5;k++)next()});sc&&sc.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',size);onScroll();
+    return()=>{dead=true;sc&&sc.removeEventListener('scroll',onScroll);window.removeEventListener('resize',size)}},[]);
+  const ch=(str,o)=>{let n=o;return str.split(' ').map((w,wi)=>html`${wi?' ':''}<span style="white-space:nowrap" aria-hidden="true">${w.split('').map(x=>html`<span class="ch" style=${{'--i':n++}}>${x}</span>`)}</span>`)};
+  return html`<div class="hero-wrap" ref=${wrap}><section class="hero" aria-label="The Weight Date">
+    <img class="poster" src="img/plate.jpg" alt=""/>${!RM&&html`<canvas ref=${cv} aria-hidden="true"></canvas>`}
+    ${!RM&&html`<div class="hero-progress" aria-hidden="true"><i ref=${barR}></i></div><span class="frame-n num" ref=${numR} aria-hidden="true">001 / 192</span>`}
+    <div class="float" ref=${f1} style="right:24px;top:40px"><span class="k brass">Google rating</span><b class="num">5.0 <span style="font-size:14px;color:var(--brass)">★★★★★</span></b><span class="muted" style="font-size:12px">837 reviews · Civil Lines</span></div>
+    <div class="float" ref=${f2} style="right:24px;bottom:28px;animation-delay:-3s"><span class="k brass">District powerlifting</span><b class="num">17 medals</b><span class="muted" style="font-size:12px">most in the district</span></div>
+    <div class="hero-in" ref=${inR}>
+      <span class="k brass">Prayagraj · Tagore Town & Civil Lines</span>
+      <h1 class="split" aria-label="Keep the date.">${ch('Keep the',0)}<br/><span class="it">${ch('date.',9)}</span></h1>
+      <p class="lead" style="color:var(--chalk);opacity:.85">Two branches, one membership. Free workout chart and diet plan from certified trainers, and an app to follow both.</p>
+      <div class="row wrap"><a class="btn" href="#book">Book a session ${I('arrow',16)}</a>${me?html`<a class="btn ghost" href="#today">Open my training</a>`:html`<button class="btn ghost" onClick=${openLogin}>Member login</button>`}</div>
+      <div class="row wrap" style="gap:8px">${Object.keys(BR).map(k=>{const o=openNow(k);return html`<span class=${'pill '+(o.open?'ok':'')}>${BR[k].name} · ${untilTxt(k)}</span>`})}</div>
+      ${!RM&&html`<span class="scroll-hint"><i></i>Scroll to load the bar</span>`}
+    </div>
+    <div class="hero-end" ref=${endR} aria-hidden="true"><span class="k brass">Competition colour code</span><b>Red <span class="it">is</span><br/>25 kg.</b><a class="btn" href="#tools" style="pointer-events:auto">Load your bar ${I('arrow',16)}</a></div>
+  </section></div>`;
+}
+
 function Home({S,go,me,openLogin}){
-  const vref=useRef();
-  useEffect(()=>{const v=vref.current;if(v&&!RM){v.play&&v.play().catch(()=>{})}},[]);
   return html`<div class="stack view" style="gap:22px">
-    <section class="hero" aria-label="The Weight Date">
-      <img class="poster" src="img/plate.jpg" alt=""/>
-      ${!RM&&html`<video ref=${vref} src="img/hero.mp4" poster="img/plate.jpg" autoplay muted loop playsinline aria-hidden="true"></video>`}
-      <div class="float" style="right:24px;top:24px"><span class="k brass">Google rating</span><b class="num">5.0 <span style="font-size:14px;color:var(--brass)">★★★★★</span></b><span class="muted" style="font-size:12px">837 reviews · Civil Lines</span></div>
-      <div class="float" style="right:24px;bottom:28px;animation-delay:-3s"><span class="k brass">District powerlifting</span><b class="num">17 medals</b><span class="muted" style="font-size:12px">most in the district</span></div>
-      <div class="hero-in">
-        <span class="k brass">Prayagraj · Tagore Town & Civil Lines</span>
-        <h1>Keep the<br/><span class="it">date.</span></h1>
-        <p class="lead" style="color:var(--chalk);opacity:.85">Two branches, one membership. Free workout chart and diet plan from certified trainers, and an app to follow both.</p>
-        <div class="row wrap"><a class="btn" href="#book">Book a session ${I('arrow',16)}</a>${me?html`<a class="btn ghost" href="#today">Open my training</a>`:html`<button class="btn ghost" onClick=${openLogin}>Member login</button>`}</div>
-        <div class="row wrap" style="gap:8px">${Object.keys(BR).map(k=>{const o=openNow(k);return html`<span class=${'pill '+(o.open?'ok':'')}>${BR[k].name} · ${o.txt}</span>`})}</div>
-      </div>
-    </section>
+    <${HeroScrub} me=${me} openLogin=${openLogin}/>
 
     <div class="g4">
-      ${[['programs','target','Find your program','BMI + goal → a starting plan'],['book','cal','Book a slot','Morning or evening, either branch'],['plans','card','Plans from ₹1,500','One card for both floors'],['coaches','users','Meet the coaches','Named in our reviews']].map(([r,ic,t,s],i)=>html`<a class="qa reveal" style=${{animationDelay:i*.06+'s'}} href=${'#'+r}><span class="ic">${I(ic)}</span><b>${t}</b><small>${s}</small></a>`)}
+      ${[['programs','target','Find your program','BMI + goal → a starting plan'],['book','cal','Book a slot','Morning or evening, either branch'],['plans','card','Plans from ₹1,500','One card for both floors'],['tools','plate','Plate loader','Load the bar in competition colours']].map(([r,ic,t,s],i)=>html`<a class="qa reveal" style=${{animationDelay:i*.06+'s'}} href=${'#'+r}><span class="ic">${I(ic)}</span><b>${t}</b><small>${s}</small></a>`)}
     </div>
+
+    <div class="band">${[[17,0,'','District medals','Most of any gym in the district'],[1015,0,'+','Google reviews','Across both branches'],[5,1,'','Google rating','Civil Lines · 837 reviews'],[2,0,'','Branches','One membership opens both']].map(([n,d,sf,k,sub])=>html`<div><span class="k">${k}</span><b><${CountUp} to=${n} dec=${d} suffix=${sf}/></b><span class="muted" style="font-size:13px">${sub}</span></div>`)}</div>
 
     <div class="sec-head"><div class="stack" style="gap:8px"><span class="k">Live at the gym</span><h2 class="h2">Right <span class="it">now.</span></h2></div><a class="btn sm ghost" href="#branches">All branch details</a></div>
     <div class="g2 st">${Object.entries(BR).map(([k,b])=>{const o=openNow(k);const bz=busyNow(k);return html`<a class="card" href="#branches" style="grid-template-columns:120px 1fr;gap:16px;align-items:center">
@@ -601,8 +732,23 @@ function Gallery(){return html`<div class="stack view" style="gap:20px">
   <div class="g3">${[...GALLERY,['img/squat.jpg','Strong, not small'],['img/bench.jpg','Spotted, every heavy set'],['img/functional.jpg','The open floor']].map(([s,c],i)=>html`<div class="photo reveal" style=${{minHeight:i%4===0?'420px':'300px',animationDelay:(i%3)*.08+'s'}}><img src=${s} alt=${c} loading="lazy"/><div class="cap"><b class="h3" style="font-size:20px">${c}</b></div></div>`)}</div>
   <span class="demo-flag">Images generated for this concept</span></div>`}
 
+function Tools(){const [t,setT]=useState(100);const [w,setW]=useState(80),[r,setR]=useState(5);const one=e1rm(w,r);
+  return html`<div class="stack view" style="gap:20px">
+    <div class="stack" style="gap:10px"><span class="k brass">Lift tools</span><h1 class="h1">Load the bar <span class="it">right.</span></h1><p class="lead">A plate loader in competition colours and a one-rep max estimator. Tap any percentage to load it on the bar.</p></div>
+    <${PlateLoader} target=${t} setTarget=${setT}/>
+    <div class="g2 st" style="align-items:start">
+      <div class="card stack"><span class="k">One-rep max</span>
+        <div class="g2"><label class="field" for="rmW"><span>Weight lifted</span><div class="input"><input id="rmW" type="number" inputmode="decimal" value=${w} onInput=${e=>setW(+e.target.value)}/><em>kg</em></div></label><label class="field" for="rmR"><span>Reps</span><div class="input"><input id="rmR" type="number" inputmode="numeric" min="1" max="12" value=${r} onInput=${e=>setR(Math.max(1,Math.min(12,+e.target.value||1)))}/></div></label></div>
+        <div><span class="k">Estimated 1RM</span><div class="num" style="font:900 clamp(64px,7vw,96px)/.85 var(--f-d)">${w>0?round25(one):'–'}<small style="font:500 14px var(--f-m);color:var(--ash)"> kg</small></div></div>
+        <span class="demo-flag">Epley formula · most accurate under 10 reps</span></div>
+      <div class="card"><span class="k">Training percentages</span><div class="list">${[[95,'1–2'],[90,'3–4'],[85,'5–6'],[80,'7–8'],[75,'9–10'],[70,'11–12'],[65,'13–15'],[60,'16–20']].map(([p,reps])=>{const kg=round25(one*p/100);return html`<button class="li" onClick=${()=>{setT(Math.max(20,kg));const m=document.querySelector('.main');m&&m.scrollTo({top:0,behavior:RM?'auto':'smooth'})}}><span class="pill" style="min-width:58px;justify-content:center">${p}%</span><span class="t"><b class="num">${kg} kg</b><small>${reps} reps</small></span><span class="k brass">Load ›</span></button>`})}</div></div>
+    </div>
+  </div>`}
+
 /* ================= MEMBER VIEWS ================= */
 function Today({S,me,up,say}){
+  const [ns,setNs]=useState(false);
+  const feed=[...me.notes.map(n=>({d:n.d,t:'Coach '+TR[n.from].name,b:n.text,ic:'msg'})),...S.news.map(n=>({d:n.d,t:n.t,b:n.b,ic:'bell'}))].sort((a,b)=>a.d<b.d?1:-1);const unread=feed.filter(f=>f.d>(me.seen||'')).length;
   const dow=DOW[nowIST().getDay()];const day=me.split[dow];const log=me.logs[TODAY]||{};
   const total=day.ex.reduce((a,e)=>a+e.s,0),done=Object.values(log).reduce((a,arr)=>a+arr.filter(Boolean).length,0);
   const left=daysBetween(TODAY,me.plan.end),span=daysBetween(me.plan.start,me.plan.end);const tr=TR[me.trainer];const note=me.notes[0];
@@ -610,13 +756,13 @@ function Today({S,me,up,say}){
   const hr=nowIST().getHours();const checked=me.attendance.includes(TODAY);const nb=me.bookings.filter(b=>b.d>=TODAY).sort((a,b)=>a.d<b.d?-1:1)[0];
   return html`<div class="stack view" style="gap:16px">
     <div class="row between wrap"><div><span class="k">${hr<12?'Good morning':hr<17?'Good afternoon':'Good evening'}</span><h1 class="h1" style="font-size:clamp(40px,5vw,64px)">${me.name.split(' ')[0]}</h1></div>
-      <div class="row wrap" style="gap:8px"><span class=${'pill '+(openNow(me.branch).open?'ok':'')}>${BR[me.branch].name} · ${openNow(me.branch).txt}</span><button class="btn sm" disabled=${checked||nowIST().getDay()===0} onClick=${()=>{up(s=>{s.members.find(x=>x.id===me.id).attendance.push(TODAY)});say('Checked in at '+BR[me.branch].name)}}>${I('qr',16)} ${checked?'Checked in':'Check in'}</button></div></div>
+      <div class="row wrap" style="gap:8px"><button class="iconbtn" aria-label=${'Notifications'+(unread?', '+unread+' new':'')} onClick=${()=>{setNs(true);up(s=>{s.members.find(x=>x.id===me.id).seen=TODAY})}}>${I('bell',18)}${unread>0&&html`<span class="dot"></span>`}</button><span class=${'pill '+(openNow(me.branch).open?'ok':'')}>${BR[me.branch].name} · ${untilTxt(me.branch)}</span><button class="btn sm" disabled=${checked||nowIST().getDay()===0} onClick=${()=>{up(s=>{s.members.find(x=>x.id===me.id).attendance.push(TODAY)});say('Checked in at '+BR[me.branch].name)}}>${I('qr',16)} ${checked?'Checked in':'Check in'}</button></div></div>
     <div class="tgrid">
       <div class="card hot tmain" style="align-content:space-between">
         <span class="k brass">Today · ${dow} · Coach ${tr.name}</span>
         ${day.ex.length?html`<div class="row between" style="align-items:flex-end"><div><div class="big" style="font-size:clamp(52px,5vw,76px)">${day.t}</div><div class="muted" style="margin-top:8px">${day.ex.length} exercises · ${total} sets</div></div><${Ring} v=${total?done/total:0} size=${92}><b class="num" style="font:800 22px/1 var(--f-d)">${done}/${total}</b><span class="k" style="font-size:8.5px">sets</span><//></div>
           <div class="list">${day.ex.slice(0,3).map(e=>html`<div class="li"><div class="t"><b>${e.n}</b><small>${e.s} × ${e.r}${e.kg?' · '+e.kg+' kg':''}</small></div></div>`)}</div>
-          <a class="btn light full" href="#train">${done?'Continue workout':'Start workout'} ${I('arrow',16)}</a>`
+          <div class="row"><button class="btn light" style="flex:1" onClick=${()=>{window.__pending='focus';location.hash='train'}}>${I('play',16)} ${done?'Resume in focus mode':'Start in focus mode'}</button><a class="btn ghost" href="#train">Plan</a></div>`
         :html`<div class="big">Rest day</div><p class="muted" style="margin:0">Both branches are closed on Sunday. Walk, stretch, sleep well.</p>`}
       </div>
       <a class="card" href="#goals"><span class="k">Streak</span><div class="row" style="gap:8px">${I('flame',26,'#d2311f')}<span class="big num">${streak(me.attendance)}</span></div><span class="muted" style="font-size:13px">gym days in a row</span></a>
@@ -629,27 +775,71 @@ function Today({S,me,up,say}){
         <div class="row between" style="margin-top:6px"><span class="k">Membership</span><span class=${'pill '+(left<=7?'warn':'')}>${left<=0?'Expired':left+' days left'}</span></div><div class="bar"><i style=${{width:Math.max(0,Math.min(100,(1-left/span)*100))+'%'}}></i></div></div>
     </div>
     <div class="card"><span class="k">From the gym</span><div class="list">${S.news.map(n=>html`<div class="li"><div class="t"><b>${n.t}</b><small>${n.b}</small></div><span class="k">${fmtD(n.d)}</span></div>`)}</div></div>
+    ${ns&&html`<${Sheet} close=${()=>setNs(false)} label="Notifications"><div class="stack"><div class="row between"><h3 class="h3">Notifications</h3><button class="x-btn" aria-label="Close" onClick=${()=>setNs(false)}>${I('x',14)}</button></div><div class="list">${feed.map(f=>html`<div class="li" style="align-items:flex-start"><span class="iconbtn" style="width:36px;height:36px">${I(f.ic,16)}</span><div class="t"><b>${f.t}</b><small style="display:block">${f.b}</small></div><span class="k">${fmtD(f.d)}</span></div>`)}</div></div><//>`}
   </div>`;
 }
 
 function Train({me,up,say}){
-  const td=DOW[nowIST().getDay()];const [dow,setDow]=useState(td);const day=me.split[dow];const isT=dow===td;const log=(isT&&me.logs[TODAY])||{};const [timer,setTimer]=useState(null);
+  const td=DOW[nowIST().getDay()];const [dow,setDow]=useState(td);const day=me.split[dow];const isT=dow===td;const log=(isT&&me.logs[TODAY])||{};
+  const [timer,setTimer]=useState(null);const [focus,setFocus]=useState(false);const [pl,setPl]=useState(null);const [done,setDone]=useState(null);
+  useEffect(()=>{if(window.__pending==='focus'){window.__pending=null;if(me.split[td].ex.length)setFocus(true);else say('Rest day today')}},[]);
   const wd={};{const t=nowIST();for(let i=0;i<7;i++){const d=addDays(t,i-t.getDay());wd[DOW[d.getDay()]]=iso(d)}}
-  const tog=(ei,si)=>{if(!isT){say('You can log sets for today only');return}let on=false;up(s=>{const m=s.members.find(x=>x.id===me.id);const L=m.logs[TODAY]=m.logs[TODAY]||{};const a=L[ei]=L[ei]||Array(day.ex[ei].s).fill(false);a[si]=!a[si];on=a[si]});setTimeout(()=>{if(on)setTimer({sec:90,label:day.ex[ei].n})},0)};
+  const tog=(ei,si)=>{if(!isT){say('You can log sets for today only');return}const was=!!(((me.logs[TODAY]||{})[ei])||[])[si];up(s=>{const m=s.members.find(x=>x.id===me.id);const L=m.logs[TODAY]=m.logs[TODAY]||{};const a=L[ei]=L[ei]||Array(day.ex[ei].s).fill(false);a[si]=!was});if(!was){buzz(15);setTimer({sec:(parseInt(day.ex[ei].r)||10)<=6?150:90,label:day.ex[ei].n})}};
   const kg=(ei,d)=>up(s=>{const e=s.members.find(x=>x.id===me.id).split[dow].ex[ei];e.kg=Math.max(0,+(e.kg+d).toFixed(1))});
-  const total=day.ex.reduce((a,e)=>a+e.s,0),done=Object.values(log).reduce((a,arr)=>a+arr.filter(Boolean).length,0);
+  const total=day.ex.reduce((a,e)=>a+e.s,0),cnt=Object.values(log).reduce((a,arr)=>a+arr.filter(Boolean).length,0);
+  const finish=()=>{const L=me.logs[TODAY]||{};const d=me.split[td];let sets=0,vol=0;const prs=[],np={};
+    d.ex.forEach((e,ei)=>{const c=(L[ei]||[]).filter(Boolean).length;sets+=c;vol+=c*(parseInt(e.r)||0)*e.kg;if(c===e.s&&e.kg>0&&e.kg>(me.prs[e.n]||0)){prs.push({n:e.n,kg:e.kg,old:me.prs[e.n]||0});np[e.n]=e.kg}});
+    if(!sets){say('Tick at least one set first');return}
+    up(s=>{const m=s.members.find(x=>x.id===me.id);if(!m.attendance.includes(TODAY))m.attendance.push(TODAY);Object.assign(m.prs,np);prs.forEach(p=>m.prLog.unshift({d:TODAY,n:p.n,kg:p.kg}));m.history=m.history.filter(hh=>hh.d!==TODAY);m.history.push({d:TODAY,t:d.t,sets,vol:Math.round(vol)})});
+    confetti();buzz([30,40,30]);setDone({prs,sets,vol:Math.round(vol)})};
   return html`<div class="stack view" style="gap:16px">
-    <div class="row between wrap"><div><span class="k">Plan by Coach ${TR[me.trainer].name}</span><h1 class="h1" style="font-size:clamp(40px,5vw,64px)">${day.t}</h1></div>${isT&&total?html`<${Ring} v=${done/total} size=${72} stroke=${7}><b class="num" style="font:800 18px/1 var(--f-d)">${Math.round(done/total*100)}%</b><//>`:''}</div>
+    <div class="row between wrap"><div><span class="k">Plan by Coach ${TR[me.trainer].name}</span><h1 class="h1" style="font-size:clamp(40px,5vw,64px)">${day.t}</h1></div>
+      <div class="row" style="gap:12px">${isT&&total?html`<button class="btn" onClick=${()=>setFocus(true)}>${I('play',16)} Focus mode</button><${Ring} v=${cnt/total} size=${64} stroke=${7}><b class="num" style="font:800 16px/1 var(--f-d)">${Math.round(cnt/total*100)}%</b><//>`:''}</div></div>
     <div class="daystrip" role="group" aria-label="Day">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>html`<button aria-pressed=${d===dow} class=${me.attendance.includes(wd[d])?'done':''} onClick=${()=>setDow(d)}>${d}<b>${parse(wd[d]).getDate()}</b></button>`)}</div>
-    ${!day.ex.length&&html`<div class="card"><b class="h3">Rest & recover</b><p class="muted" style="margin:0">Both branches are closed on Sunday. A 30-minute walk and some mobility keep you fresh for Monday.</p></div>`}
-    <div class="g2 st">${day.ex.map((e,ei)=>{const a=log[ei]||[];const c=a.filter(Boolean).length;return html`<div class=${'ex '+(c===e.s?'complete':'')}>
-      <div class="row between" style="align-items:flex-start"><div style="min-width:0"><span class="k">${String(ei+1).padStart(2,'0')} · ${e.s} × ${e.r}</span><h4 style="margin-top:6px">${e.n}</h4></div>
-        ${e.kg>0?html`<div class="kg"><button aria-label="Less weight" onClick=${()=>kg(ei,-2.5)}>−</button><b class="num">${e.kg}<small style="font:500 10px var(--f-m);color:var(--ash)"> kg</small></b><button aria-label="More weight" onClick=${()=>kg(ei,2.5)}>+</button></div>`:html`<span class="pill">Bodyweight</span>`}</div>
+    ${!day.ex.length&&html`<div class="card"><b class="h3">Rest & recover</b><p class="muted" style="margin:0">A 30-minute walk and some mobility keep you fresh for the next session.</p></div>`}
+    <div class="g2 st">${day.ex.map((e,ei)=>{const a=log[ei]||[];const c=a.filter(Boolean).length;const best=me.prs[e.n];return html`<div class=${'ex '+(c===e.s?'complete':'')}>
+      <div class="row between" style="align-items:flex-start"><div style="min-width:0"><span class="k">${String(ei+1).padStart(2,'0')} · ${e.s} × ${e.r}${best?' · best '+best+' kg':''}</span><h4 style="margin-top:6px">${e.n}</h4></div>
+        ${e.kg>0?html`<div class="kg"><button aria-label="Less weight" onClick=${()=>kg(ei,-2.5)}>−</button><b class="num" style=${{color:best&&e.kg>best?'var(--brass)':''}}>${e.kg}<small style="font:500 10px var(--f-m);color:var(--ash)"> kg</small></b><button aria-label="More weight" onClick=${()=>kg(ei,2.5)}>+</button></div>`:html`<span class="pill">Bodyweight</span>`}</div>
+      ${best&&e.kg>best&&html`<span class="pill" style="justify-self:start;color:var(--brass);border-color:rgba(200,166,106,.5)">${I('trophy',12)} PR attempt · finish all sets</span>`}
       ${e.note&&html`<p class="muted" style="margin:0;font-size:13px">Coach: ${e.note}</p>`}
-      <div class="sets">${Array.from({length:e.s},(_,si)=>html`<button class="set" aria-pressed=${!!a[si]} aria-label=${'Set '+(si+1)} onClick=${()=>tog(ei,si)}>${a[si]?I('check',20):si+1}<small>${e.r}</small></button>`)}</div></div>`})}</div>
-    ${isT&&total>0&&html`<button class="btn full" disabled=${!done} onClick=${()=>{up(s=>{const m=s.members.find(x=>x.id===me.id);if(!m.attendance.includes(TODAY))m.attendance.push(TODAY)});say('Workout logged. See you next session')}}>Finish workout</button>`}
+      <div class="row between wrap" style="gap:8px"><div class="sets">${Array.from({length:e.s},(_,si)=>html`<button class="set" aria-pressed=${!!a[si]} aria-label=${'Set '+(si+1)} onClick=${()=>tog(ei,si)}>${a[si]?I('check',20):si+1}<small>${e.r}</small></button>`)}</div>
+        ${e.kg>=20&&html`<button class="btn sm ghost" onClick=${()=>setPl(e.kg)}>${I('plate',14)} Plates</button>`}</div></div>`})}</div>
+    ${isT&&total>0&&html`<button class="btn full" disabled=${!cnt} onClick=${finish}>${I('trophy',16)} Finish workout</button>`}
     ${timer&&html`<${Rest} t=${timer} close=${()=>setTimer(null)}/>`}
+    ${pl!==null&&html`<${Sheet} close=${()=>setPl(null)} label="Plates"><div class="stack"><div class="row between"><h3 class="h3">Load the bar</h3><button class="x-btn" aria-label="Close" onClick=${()=>setPl(null)}>${I('x',14)}</button></div><${PlateLoader} target=${pl} setTarget=${setPl} compact=${true}/></div><//>`}
+    ${focus&&html`<${Focus} me=${me} dow=${td} up=${up} close=${()=>setFocus(false)} onFinish=${()=>{setFocus(false);finish()}}/>`}
+    ${done&&html`<${Sheet} close=${()=>setDone(null)} label="Workout complete"><div class="stack" style="justify-items:center;text-align:center">
+      <span class="k brass">Workout logged</span><b class="big">${me.split[td].t}</b>
+      <div class="g2" style="width:100%"><div class="card"><span class="k">Sets</span><b class="big num">${done.sets}</b></div><div class="card"><span class="k">Volume</span><b class="big num">${done.vol.toLocaleString('en-IN')}</b><span class="muted" style="font-size:12px">kg lifted</span></div></div>
+      ${done.prs.length?html`<div class="card hot" style="width:100%;text-align:left"><span class="k brass">New personal records</span>${done.prs.map(p=>html`<div class="row between"><b>${p.n}</b><span class="num">${p.old?p.old+' → ':''}<b style="color:var(--brass)">${p.kg} kg</b></span></div>`)}</div>`:html`<p class="muted" style="margin:0">Add 2.5 kg and finish every set to set a new PR.</p>`}
+      <button class="btn full" onClick=${()=>setDone(null)}>Done</button></div><//>`}
   </div>`;
+}
+function Focus({me,dow,up,close,onFinish}){
+  const day=me.split[dow];const L=me.logs[TODAY]||{};let ei=-1,si=-1;
+  for(let a=0;a<day.ex.length&&ei<0;a++){const arr=L[a]||[];for(let b=0;b<day.ex[a].s;b++){if(!arr[b]){ei=a;si=b;break}}}
+  const [rest,setRest]=useState(0);const [restMax,setRestMax]=useState(90);
+  useEffect(()=>{if(!rest)return;const id=setTimeout(()=>setRest(r=>{if(r<=1){buzz([60,40,60]);return 0}return r-1}),1000);return()=>clearTimeout(id)},[rest]);
+  const total=day.ex.reduce((a,e)=>a+e.s,0),cnt=Object.values(L).reduce((a,arr)=>a+arr.filter(Boolean).length,0);const e=ei>=0?day.ex[ei]:null;
+  const doneSet=()=>{up(s=>{const m=s.members.find(x=>x.id===me.id);const LL=m.logs[TODAY]=m.logs[TODAY]||{};const a=LL[ei]=LL[ei]||Array(e.s).fill(false);a[si]=true});buzz(20);if(cnt+1>=total)return;const r=(parseInt(e.r)||10)<=6?150:90;setRestMax(r);setRest(r)};
+  const kg=d=>up(s=>{const x=s.members.find(y=>y.id===me.id).split[dow].ex[ei];x.kg=Math.max(0,+(x.kg+d).toFixed(1))});
+  const upNext=e&&si+1>=e.s?day.ex[ei+1]:null;
+  return html`<div class="focus" role="dialog" aria-label="Focus mode">
+    <div class="row between"><span class="k brass">${day.t} · ${cnt}/${total} sets</span><button class="iconbtn" aria-label="Close focus mode" onClick=${close}>${I('x',18)}</button></div>
+    <div class="bar" style="margin-top:12px"><i style=${{width:(total?cnt/total*100:0)+'%'}}></i></div>
+    <div class="focus-in" key=${rest?'rest':ei+'-'+si}>
+      ${rest?html`<span class="k">Rest</span><${Ring} v=${rest/restMax} size=${220} stroke=${14}><b class="num" style="font:900 72px/1 var(--f-d)">${Math.floor(rest/60)}:${String(rest%60).padStart(2,'0')}</b><span class="k">breathe</span><//>
+        ${e&&html`<span class="muted">Next: <b style="color:var(--chalk)">${e.n}</b> · set ${si+1} of ${e.s}${e.kg?' · '+e.kg+' kg':''}</span>`}
+        <div class="row"><button class="btn ghost" onClick=${()=>{setRest(r=>r+30);setRestMax(m=>m+30)}}>+30 s</button><button class="btn" onClick=${()=>setRest(0)}>Skip rest</button></div>`
+      :e?html`<span class="k">Exercise ${ei+1} of ${day.ex.length}</span><div class="exname">${e.n}</div>
+        <div class="dots" aria-hidden="true">${Array.from({length:e.s},(_,k)=>html`<i class=${(L[ei]||[])[k]?'on':k===si?'cur':''}></i>`)}</div>
+        <div class="row wrap" style="gap:28px;justify-content:center;align-items:flex-end"><div><span class="k">Set</span><div class="big num" style="font-size:64px">${si+1}<span class="muted" style="font-size:28px">/${e.s}</span></div></div><div><span class="k">Reps</span><div class="big num" style="font-size:64px">${e.r}</div></div>
+          ${e.kg>0&&html`<div><span class="k">Load · kg</span><div class="kg" style="justify-content:center"><button aria-label="Less weight" onClick=${()=>kg(-2.5)}>−</button><b class="num" style="font-size:44px;min-width:96px">${e.kg}</b><button aria-label="More weight" onClick=${()=>kg(2.5)}>+</button></div></div>`}</div>
+        ${e.note&&html`<p class="coach-note" style="text-align:left">${e.note}</p>`}
+        <button class="btn light" style="height:64px;padding:0 44px;font-size:13px" onClick=${doneSet}>${I('check',18)} Set done</button>
+        ${upNext&&html`<span class="muted" style="font-size:13px">Up next: ${upNext.n}</span>`}`
+      :html`<span class="k brass">All sets done</span><div class="exname">Strong <span class="it">work.</span></div><button class="btn" style="height:60px;padding:0 36px" onClick=${onFinish}>${I('trophy',18)} Finish & save</button>`}
+    </div></div>`;
 }
 function Rest({t,close}){const [left,setLeft]=useState(t.sec);useEffect(()=>{const id=setInterval(()=>setLeft(l=>l<=1?(clearInterval(id),0):l-1),1000);return()=>clearInterval(id)},[]);
   return html`<${Sheet} close=${close} label="Rest timer"><div class="stack" style="justify-items:center;text-align:center"><span class="k brass">Rest · ${t.label}</span>
@@ -677,7 +867,8 @@ function Diet({me,up,say}){
 }
 
 function Goals({me,up,say}){
-  const [sheet,setSheet]=useState(null);const ws=me.weights;const st=ws[0].w,now=ws[ws.length-1].w,tg=me.goal.target;
+  const [sheet,setSheet]=useState(null);
+  useEffect(()=>{if(window.__pending==='weigh'){window.__pending=null;setSheet('w')}},[]);const ws=me.weights;const st=ws[0].w,now=ws[ws.length-1].w,tg=me.goal.target;
   const prog=st===tg?1:Math.max(0,Math.min(1,(st-now)/(st-tg)));const bmi=now/((me.height/100)**2);
   const t=nowIST();const y=t.getFullYear(),mo=t.getMonth();const dim=new Date(y,mo+1,0).getDate();const off=(new Date(y,mo,1).getDay()+6)%7;const cells=[];for(let i=0;i<off;i++)cells.push(null);for(let d=1;d<=dim;d++)cells.push(d);
   return html`<div class="stack view" style="gap:16px">
@@ -695,6 +886,11 @@ function Goals({me,up,say}){
           <div class="cal">${['M','T','W','T','F','S','S'].map(d=>html`<span class="dn">${d}</span>`)}${cells.map(d=>{if(!d)return html`<span style="background:none"></span>`;const s=iso(new Date(y,mo,d));return html`<span class=${(me.attendance.includes(s)?'h ':'')+(s===TODAY?'t ':'')+(new Date(y,mo,d).getDay()===0?'x':'')}>${d}</span>`})}</div></div>
       </div>
     </div>
+    <div class="g2 st" style="align-items:start">
+      <div class="card"><div class="row between"><span class="k">Weekly volume · kg lifted</span><span class="pill">${me.history.length} workouts</span></div><${VolChart} hist=${me.history}/></div>
+      <div class="card"><span class="k">Personal records</span><div class="list">${Object.entries(me.prs).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([n,kg])=>{const rec=me.prLog.find(p=>p.n===n);return html`<div class="li"><span style=${{color:rec?'var(--brass)':'var(--ash)'}}>${I('trophy',18)}</span><div class="t"><b>${n}</b><small>${rec?'New PR · '+fmtD(rec.d):'Current best'}</small></div><b class="num">${kg} kg</b></div>`})}</div></div>
+    </div>
+    <div class="card"><div class="row between"><span class="k">Badges</span><span class="pill">${badges(me).filter(b=>b.on).length} of ${badges(me).length}</span></div><div class="badges">${badges(me).map(b=>html`<div class=${'badge '+(b.on?'':'off')}><span class="md">${I(b.ic,22)}</span><b style="font-size:13px">${b.t}</b><small class="muted" style="font-size:11px">${b.s}</small></div>`)}</div></div>
     ${sheet==='w'&&html`<${WeighSheet} me=${me} up=${up} say=${say} close=${()=>setSheet(null)}/>`}
     ${sheet==='goal'&&html`<${GoalSheet} me=${me} up=${up} say=${say} close=${()=>setSheet(null)}/>`}
   </div>`;
@@ -744,13 +940,14 @@ function CoachMembers({S,up,say}){
   </div>`;
 }
 function MemberEdit({S,up,say,m,back}){
-  const [t,setT]=useState('workout');const [dow,setDow]=useState(DOW[nowIST().getDay()]==='Sun'?'Mon':DOW[nowIST().getDay()]);const [note,setNote]=useState('');
+  const [tpl,setTpl]=useState(null);const [t,setT]=useState('workout');const [dow,setDow]=useState(DOW[nowIST().getDay()]==='Sun'?'Mon':DOW[nowIST().getDay()]);const [note,setNote]=useState('');
   const day=m.split[dow];const ed=fn=>up(s=>fn(s.members.find(x=>x.id===m.id)));
   return html`<div class="stack view" style="gap:16px">
     <div class="row wrap"><button class="iconbtn" aria-label="Back to members" onClick=${back}>${I('back',20)}</button><div><span class="k">${GOALS[m.goal.type]} · target ${m.goal.target} kg · ${m.plan.name} till ${fmtD(m.plan.end)}</span><h1 class="h1" style="font-size:clamp(36px,4.4vw,56px)">${m.name}</h1></div></div>
     <div class="seg" role="group" aria-label="Section" style="align-self:start">${[['workout','Workout plan'],['diet','Diet chart'],['progress','Progress'],['note','Send note']].map(([k,l])=>html`<button aria-pressed=${t===k} onClick=${()=>setT(k)}>${l}</button>`)}</div>
     ${t==='workout'&&html`<div class="card stack">
       <div class="daystrip" role="group" aria-label="Day">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>html`<button aria-pressed=${d===dow} onClick=${()=>setDow(d)}>${d}<b style="font-size:13px">${m.split[d].ex.length}</b></button>`)}</div>
+      <div class="row wrap" style="gap:8px"><span class="k">Apply a template</span>${Object.entries(TEMPLATES).map(([k,[l]])=>html`<button class="pill" style="cursor:pointer" onClick=${()=>setTpl(k)}>${l}</button>`)}</div>
       <label class="field" for="dayT"><span>Session name</span><div class="input"><input id="dayT" value=${day.t} onInput=${e=>{const v=e.target.value;ed(x=>x.split[dow].t=v)}}/></div></label>
       <div class="edit-ex"><span class="hd">Exercise</span><span class="hd">Sets</span><span class="hd">Reps</span><span class="hd">kg</span><span></span></div>
       ${day.ex.map((e,i)=>html`<div class="edit-ex"><input aria-label="Exercise name" value=${e.n} onInput=${ev=>{const v=ev.target.value;ed(x=>x.split[dow].ex[i].n=v)}}/><input aria-label="Sets" inputmode="numeric" value=${e.s} onInput=${ev=>{const v=Math.max(1,Math.min(10,parseInt(ev.target.value)||1));ed(x=>x.split[dow].ex[i].s=v)}}/><input aria-label="Reps" value=${e.r} onInput=${ev=>{const v=ev.target.value;ed(x=>x.split[dow].ex[i].r=v)}}/><input aria-label="Weight in kg" inputmode="decimal" value=${e.kg} onInput=${ev=>{const v=parseFloat(ev.target.value)||0;ed(x=>x.split[dow].ex[i].kg=v)}}/><button class="x-btn" aria-label=${'Remove '+e.n} onClick=${()=>ed(x=>x.split[dow].ex.splice(i,1))}>${I('x',14)}</button></div>`)}
@@ -764,6 +961,7 @@ function MemberEdit({S,up,say,m,back}){
     ${t==='note'&&html`<div class="g2 st" style="align-items:start"><div class="card stack"><label class="field" for="noteTa"><span>Message to ${m.name.split(' ')[0]}</span><textarea id="noteTa" class="ta" placeholder="Great session today. Add 2.5 kg on squats next week." value=${note} onInput=${e=>setNote(e.target.value)}></textarea></label>
       <button class="btn full" disabled=${!note.trim()} onClick=${()=>{ed(x=>x.notes.unshift({from:S.session.tid,d:TODAY,text:note.trim()}));setNote('');say('Note sent · shows on their Today screen')}}>Send note</button></div>
       <div class="card"><span class="k">Sent notes</span><div class="list">${m.notes.map(n=>html`<div class="li"><div class="t"><b style="font-weight:500">${n.text}</b><small>Coach ${TR[n.from].name} · ${fmtD(n.d)}</small></div></div>`)}</div></div></div>`}
+    ${tpl&&html`<${Sheet} close=${()=>setTpl(null)} label="Apply template"><div class="stack"><h3 class="h3">Apply ${TEMPLATES[tpl][0]}?</h3><p class="muted" style="margin:0">This replaces ${m.name.split(' ')[0]}'s whole week. Workouts already logged stay in their history.</p><button class="btn full" onClick=${()=>{const name=TEMPLATES[tpl][0],tp=TEMPLATES[tpl][1];ed(x=>{x.split=JSON.parse(JSON.stringify(tp));delete x.logs[TODAY]});setTpl(null);say(name+' applied · '+m.name.split(' ')[0]+' sees it now')}}>Replace the week</button><button class="btn ghost full" onClick=${()=>setTpl(null)}>Cancel</button></div><//>`}
   </div>`;
 }
 function Floor({S}){
