@@ -248,6 +248,40 @@ textarea.ta{width:100%;min-height:90px;background:var(--ink);border:1px solid va
 
 
 
+
+/* coaches */
+.coach-fit{gap:14px}
+.fit-res{gap:12px;padding:12px;border-radius:18px;border:1px solid rgba(210,49,31,.35);background:rgba(210,49,31,.08);animation:qin .5s var(--ease) both}
+.roster{display:flex;gap:10px;height:clamp(440px,64vh,580px)}
+.rp{position:relative;flex:1;min-width:0;border-radius:24px;overflow:hidden;border:1px solid var(--line);text-align:left;transition:flex .8s var(--ease),border-color .4s;isolation:isolate;background:var(--iron)}
+.rp.on{flex:3.4;border-color:rgba(210,49,31,.55)}
+.rp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;filter:grayscale(.7) brightness(.55);transition:filter .8s var(--ease),transform 1.4s var(--ease)}
+.rp.on img,.rp:hover img{filter:none}
+.rp.on img{transform:scale(1.04)}
+.rp::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(13,11,11,.1) 30%,rgba(13,11,11,.92))}
+.rp-num{position:absolute;top:16px;left:18px;font:600 11px/1 var(--f-m);letter-spacing:.16em;color:var(--brass)}
+.rp-v{position:absolute;left:50%;bottom:26px;transform:translateX(-50%) rotate(180deg);writing-mode:vertical-rl;font:900 34px/1 var(--f-d);text-transform:uppercase;letter-spacing:.06em;transition:opacity .4s;white-space:nowrap}
+.rp.on .rp-v{opacity:0}
+@media (hover:hover) and (pointer:fine){.roster:hover .rp.on:not(:hover){flex:1}.roster:hover .rp.on:not(:hover) .rp-in{opacity:0}.roster:hover .rp.on:not(:hover) .rp-v{opacity:1}.roster .rp:hover{flex:3.4}.rp:hover .rp-in{opacity:1;transform:none}.rp:hover .rp-v{opacity:0}}
+.rp-in{position:absolute;left:clamp(18px,3vw,32px);right:clamp(18px,3vw,32px);bottom:clamp(18px,3vw,32px);display:grid;gap:10px;justify-items:start;opacity:0;transform:translateY(18px);transition:opacity .5s .15s,transform .7s .15s var(--ease);pointer-events:none}
+.rp.on .rp-in{opacity:1;transform:none}
+.rp-name{font:italic 400 clamp(60px,7vw,108px)/.85 var(--f-s);color:var(--chalk)}
+.rp-spec{font:800 22px/1 var(--f-d);text-transform:uppercase}
+.rp-line{color:var(--ash);font-size:15px;max-width:40ch}
+@media (max-width:760px){.roster{flex-direction:column;height:auto}.rp{flex:none;height:88px;transition:height .7s var(--ease),border-color .4s}.rp.on{flex:none;height:420px}.rp-v{writing-mode:horizontal-tb;transform:translateY(-50%);left:20px;top:50%;bottom:auto;font-size:28px}.rp-num{top:auto;bottom:16px;left:auto;right:18px}.rp-name{font-size:64px}}
+.cprof{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.2fr);gap:clamp(18px,3vw,40px);align-items:start;padding:clamp(16px,3vw,32px);border-radius:30px;border:1px solid var(--line);background:linear-gradient(180deg,var(--steel),var(--iron));scroll-margin-top:90px;animation:qin .6s var(--ease) both}
+.cprof-img{min-height:540px;position:sticky;top:20px}
+@media (max-width:900px){.cprof{grid-template-columns:1fr}.cprof-img{min-height:320px;position:relative;top:0}}
+.cprof-name{margin:8px 0 10px;font:italic 400 clamp(76px,9vw,132px)/.8 var(--f-s);color:var(--chalk)}
+.quote{margin:0;padding:16px 18px;border-radius:18px;border:1px solid var(--line);background:var(--ink);display:grid;gap:8px}
+.quote blockquote{margin:0;font:italic 400 21px/1.3 var(--f-s)}
+.quote figcaption{font:600 10.5px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--ash)}
+.cprof-meta{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.cprof-meta>div{background:var(--ink);padding:14px;display:grid;gap:6px;align-content:start;min-width:0}
+.cdot{width:40px;height:40px;border-radius:50%;padding:2px;border:1.5px solid var(--line);transition:border-color .3s,transform .3s var(--ease)}
+.cdot span{display:block;width:100%;height:100%;border-radius:50%;background:center/cover;filter:grayscale(.7)}
+.cdot.on{border-color:var(--ember);transform:scale(1.08)}
+.cdot.on span{filter:none}
 /* membership */
 .mem-hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center;padding:clamp(22px,4vw,48px);border-radius:30px;border:1px solid var(--line);background:radial-gradient(70% 90% at 85% 40%,rgba(210,49,31,.28),transparent 60%),linear-gradient(180deg,var(--steel),var(--iron));overflow:hidden}
 @media (max-width:900px){.mem-hero{grid-template-columns:1fr}}
@@ -718,7 +752,7 @@ function Home({S,go,me,openLogin}){
     <div class="hscroll">${PROGRAMS.map(p=>html`<a class="photo" href="#programs" onClick=${()=>{window.__openProg=p.id}} style="min-height:300px;text-decoration:none"><img src=${p.img} alt="" loading="lazy"/><div class="cap"><span class="k brass">${p.s}</span><b class="h3" style="font-size:26px">${p.n}</b></div></a>`)}</div>
 
     <div class="sec-head"><div class="stack" style="gap:8px"><span class="k">Coaches</span><h2 class="h2">The team <span class="it">in black.</span></h2></div><a class="btn sm ghost" href="#coaches">All coaches</a></div>
-    <div class="g4">${Object.values(TR).map(t=>html`<a class="photo" href="#coaches" style="min-height:clamp(220px,26vw,320px);text-decoration:none"><img src=${t.img} alt="" loading="lazy"/><div class="cap"><span class="k brass">${BR[t.branch].name}</span><b style="font:italic 400 34px/1 var(--f-s)">${t.name}</b><span class="muted" style="font-size:13px">${t.spec}</span></div></a>`)}</div>
+    <div class="g4">${Object.entries(TR).map(([cid,t])=>html`<a class="photo" href="#coaches" onClick=${()=>{try{localStorage.setItem('twd-coach',cid)}catch(e){}}} style="min-height:clamp(220px,26vw,320px);text-decoration:none"><img src=${t.img} alt="" loading="lazy"/><div class="cap"><span class="k brass">${BR[t.branch].name}</span><b style="font:italic 400 34px/1 var(--f-s)">${t.name}</b><span class="muted" style="font-size:13px">${t.spec}</span></div></a>`)}</div>
 
     <div class="sec-head"><div class="stack" style="gap:8px"><span class="k">Reviews</span><h2 class="h2">Rated <span class="it">5.0</span> on Google</h2></div><div class="row" style="gap:20px"><div><b class="big num" style="color:var(--brass)">5.0</b><div class="k">Civil Lines · 837</div></div><div><b class="big num" style="color:var(--brass)">4.9</b><div class="k">Tagore Town · 178</div></div></div></div>
     <div class="marq"><div class="marq-t">${[...REVIEWS,...REVIEWS].map(([n,b,t],i)=>html`<figure class="card rev" aria-hidden=${i>=REVIEWS.length?'true':'false'}><span class="stars">★★★★★</span><blockquote>${t}</blockquote><figcaption><b>${n}</b><div class="k">${b} · Google review</div></figcaption></figure>`)}</div></div>
@@ -963,16 +997,17 @@ function Plans({go,me,say,up}){
 
 function Book({me,up,say}){
   const days=[];{const d=nowIST();for(let i=0;days.length<6;i++){const x=addDays(d,i);if(x.getDay()!==0)days.push(iso(x))}}
-  const [day,setDay]=useState(days[0]);const [br,setBr]=useState(me?me.branch:'tt');const [slot,setSlot]=useState('Evening');
-  const [name,setName]=useState(me?me.name:'');const [phone,setPhone]=useState(me?me.phone:'');const [goal,setGoal]=useState(()=>{const g=window.__prefill&&window.__prefill.goal;window.__prefill=null;return g||'Lose weight'});const [done,setDone]=useState(null);const [err,setErr]=useState('');
+  const [pre]=useState(()=>{const x=window.__prefill||{};window.__prefill=null;return x});
+  const [day,setDay]=useState(days[0]);const [br,setBr]=useState(pre.branch||(me?me.branch:'tt'));const [slot,setSlot]=useState('Evening');
+  const [name,setName]=useState(me?me.name:'');const [phone,setPhone]=useState(me?me.phone:'');const [goal,setGoal]=useState(pre.goal||'Lose weight');const [done,setDone]=useState(null);const [err,setErr]=useState('');
   const hr=nowIST().getHours();const closed=hh=>br==='tt'&&hh>=12&&hh<16;
   const submit=()=>{setErr('');
     if(!me){if(!name.trim()){setErr('Add your name so the desk knows who is coming.');return}if(phone.replace(/\D/g,'').length<10){setErr('Enter a 10-digit phone number.');return}}
-    const msg='Hi The Weight Date! I would like to book a session.\nName: '+(name||'')+'\nPhone: '+phone+'\nBranch: '+BR[br].name+'\nDay: '+fmtDL(day)+'\nSlot: '+slot+'\nGoal: '+goal;
+    const msg='Hi The Weight Date! I would like to book a session.\nName: '+(name||'')+'\nPhone: '+phone+'\nBranch: '+BR[br].name+'\nDay: '+fmtDL(day)+'\nSlot: '+slot+'\nGoal: '+goal+(pre.coach?'\nCoach: '+pre.coach:'');
     if(me)up(s=>{s.members.find(x=>x.id===me.id).bookings.push({d:day,slot,branch:br})});
     setDone({msg});say(me?'Booked · pass ready':'Booking message ready')};
   return html`<div class="stack view" style="gap:20px">
-    <div class="stack" style="gap:10px"><span class="k brass">Book a slot</span><h1 class="h1">Set the <span class="it">date.</span></h1><p class="lead">${me?'Book a slot and show your pass at the desk.':'New here? Pick a slot and we will have your first chart ready when you walk in.'}</p></div>
+    <div class="stack" style="gap:10px"><span class="k brass">Book a slot</span><h1 class="h1">Set the <span class="it">date.</span></h1><p class="lead">${me?'Book a slot and show your pass at the desk.':'New here? Pick a slot and we will have your first chart ready when you walk in.'}</p>${pre.coach&&html`<span class="pill" style="justify-self:start;color:var(--chalk);border-color:rgba(200,166,106,.5)">${I('user',12)} With Coach ${pre.coach}</span>`}</div>
     <div class="g2 st" style="align-items:start">
       <div class="card stack">
         <span class="k">Branch</span><div class="seg" role="group" aria-label="Branch">${Object.entries(BR).map(([k,b])=>html`<button aria-pressed=${br===k} onClick=${()=>setBr(k)}>${b.name}</button>`)}</div>
@@ -998,15 +1033,54 @@ function Book({me,up,say}){
   </div>`;
 }
 
-function Coaches(){return html`<div class="stack view" style="gap:20px">
-  <div class="stack" style="gap:10px"><span class="k brass">Coaches</span><h1 class="h1">The team <span class="it">in black.</span></h1><p class="lead">Certified trainers across both branches, named again and again in our Google reviews.</p></div>
-  <div class="g2 st">${Object.values(TR).map(t=>html`<div class="card" style="grid-template-columns:minmax(0,.9fr) minmax(0,1fr);gap:18px;align-items:stretch">
-    <div class="photo" style="min-height:260px"><img src=${t.img} alt=${'Coach '+t.name} loading="lazy"/></div>
-    <div class="stack" style="align-content:space-between"><div class="stack" style="gap:8px"><span class="k brass">${BR[t.branch].name}</span><b style="font:italic 400 48px/1 var(--f-s)">${t.name}</b><b class="h3" style="font-size:18px">${t.spec}</b></div>
-      <div class="stack" style="gap:8px"><span class="k">What members say</span>${t.say.map(s=>html`<span class="row" style="gap:10px;font-size:14px;align-items:flex-start"><span style="color:var(--brass);flex:0 0 auto">${I('star',14)}</span>${s}</span>`)}</div>
-      <a class="btn sm ghost" href=${wa('Hi, I would like to train with Coach '+t.name)} target="_blank" rel="noopener">Train with ${t.name}</a></div></div>`)}</div>
-  <span class="demo-flag">Coach photos are illustrative · names and praise from Google reviews</span></div>`}
+const COACHX={
+  sujeet:{line:'Your PT, beside you for every set.',best:['Personal training','Strength','Muscle gain','Motivation'],goals:['pt','build'],quotes:[['an exceptionally knowledgeable PT who truly understands how to build your strength','Isha Singh']]},
+  tarun:{line:'The dedicated one, and members notice.',best:["Women's strength",'Strength basics','Supportive coaching','Consistency'],goals:['women'],quotes:[['all the trainers are very supportive especially Tarun sir','Shraddha Rastogi']]},
+  sakib:{line:'Fixes your form, rep by rep.',best:['Technique','Powerlifting','Beginners','Progress tracking'],goals:['strong','new'],quotes:[['Highly knowledgeable trainer who genuinely care about your progress','Akash Kumar Yadav']]},
+  charlie:{line:'Gets you lean for the day that matters.',best:['Fat loss','Diet charts','Wedding prep','Rush-hour alternatives'],goals:['lose'],quotes:[['Charlie is very professional and always helps members with proper guidance and motivation.','Ayush Singh'],['Charlie trained my friend before his wedding to shred some weight and look toned in wedding within a month.','Sheshmani Sharma']]}
+};
+const GOAL_BOOK={lose:'Lose weight',strong:'Get strong (powerlifting)',build:'Build muscle',pt:'Personal training',women:"Women's strength",new:'General fitness'};
 
+function Coaches({go}){
+  const ids=Object.keys(TR);const fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  const [sel,setSel]=useState(()=>{try{const v=localStorage.getItem('twd-coach');return TR[v]?v:'sujeet'}catch(e){return'sujeet'}});
+  const [fit,setFit]=useState(null);const profRef=useRef();
+  const choose=(id,scroll)=>{setSel(id);try{localStorage.setItem('twd-coach',id)}catch(e){}if(scroll&&profRef.current)profRef.current.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})};
+  const book=id=>{window.__prefill={goal:GOAL_BOOK[COACHX[id].goals[0]],branch:TR[id].branch,coach:TR[id].name};go('book')};
+  const FITS=[['lose','Lose fat'],['strong','Get stronger'],['build','Build muscle'],['pt','Personal training'],['women',"Women's strength"],['new',"I'm a beginner"]];
+  const pickFit=k=>{setFit(k);choose(ids.find(i=>COACHX[i].goals.includes(k)),false)};
+  const rk=e=>{const i=ids.indexOf(sel);let j=null;if(e.key==='ArrowRight'||e.key==='ArrowDown')j=(i+1)%ids.length;if(e.key==='ArrowLeft'||e.key==='ArrowUp')j=(i+ids.length-1)%ids.length;if(j!==null){e.preventDefault();const el=e.currentTarget;choose(ids[j],false);setTimeout(()=>el&&el.children[j]&&el.children[j].focus(),0)}};
+  const t=TR[sel],x=COACHX[sel];const progs=PROGRAMS.filter(p=>p.coach===sel);const o=openNow(t.branch);
+  return html`<div class="stack view" style="gap:22px">
+    <div class="stack" style="gap:10px"><span class="k brass">Coaches</span><h1 class="h1">The team <span class="it">in black.</span></h1><p class="lead">Four certified coaches across two branches, named again and again in our Google reviews. ${fine?'Hover to preview, click to open their profile.':'Tap a coach to meet them.'}</p></div>
+
+    <div class="card coach-fit"><div class="row wrap" style="gap:12px"><span class="k">Which coach fits you?</span><div class="chips" role="group" aria-label="Your goal">${FITS.map(([k,l])=>html`<button aria-pressed=${fit===k} onClick=${()=>pickFit(k)}>${l}</button>`)}</div></div>
+      ${fit&&html`<div class="row wrap fit-res" key=${fit+sel}><div class="avatar" style=${{backgroundImage:'url('+t.img+')'}}></div><div style="flex:1 1 180px;min-width:0"><b>Coach ${t.name} fits best</b><div class="muted" style="font-size:13px">${t.spec} · ${BR[t.branch].name}</div></div><button class="btn sm" onClick=${()=>profRef.current&&profRef.current.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})}>Meet ${t.name}</button><button class="btn sm ghost" onClick=${()=>book(sel)}>Book with ${t.name}</button></div>`}
+    </div>
+
+    <div class="roster" role="tablist" aria-label="Coaches" onKeyDown=${rk}>${ids.map((id,i)=>{const c=TR[id],cx=COACHX[id],on=id===sel;return html`<button class=${'rp'+(on?' on':'')} role="tab" aria-selected=${on} aria-controls="coach-profile" tabIndex=${on?0:-1} onClick=${()=>choose(id,fine||on)}>
+      <img src=${c.img} alt="" loading="lazy"/><span class="rp-num num">0${i+1}</span><span class="rp-v" aria-hidden="true">${c.name}</span>
+      <span class="rp-in"><span class=${'pill '+(openNow(c.branch).open?'ok':'')}>${BR[c.branch].name}</span><b class="rp-name">${c.name}</b><span class="rp-spec">${c.spec}</span><span class="rp-line">${cx.line}</span></span></button>`})}</div>
+
+    <section id="coach-profile" class="cprof" ref=${profRef} role="tabpanel" aria-label=${'Coach '+t.name} key=${sel}>
+      <div class="photo cprof-img"><img src=${t.img} alt=${'Coach '+t.name}/><div class="cap"><span class="k brass">${BR[t.branch].name}</span><b class="h3" style="font-size:18px">${t.spec}</b></div></div>
+      <div class="stack" style="gap:18px">
+        <div><span class="k brass">Coach ${String(ids.indexOf(sel)+1).padStart(2,'0')} of ${String(ids.length).padStart(2,'0')}</span><h2 class="cprof-name">${t.name}</h2><p class="lead" style="color:var(--chalk);margin:0">${x.line}</p></div>
+        <div class="stack" style="gap:8px"><span class="k">Best for</span><div class="row wrap" style="gap:8px">${x.best.map(b=>html`<span class="pill" style="color:var(--chalk)">${b}</span>`)}</div></div>
+        <div class="stack" style="gap:10px"><span class="k">What members say</span>${x.quotes.map(([q,n])=>html`<figure class="quote"><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><blockquote>“${q}”</blockquote><figcaption>${n} · Google review</figcaption></figure>`)}</div>
+        <div class="cprof-meta"><div><span class="k">On the floor at</span><b>${BR[t.branch].name}</b><small class="muted">${BR[t.branch].hours}</small></div><div><span class="k">Right now</span><span class=${'pill '+(o.open?'ok':'')} style="justify-self:start">${untilTxt(t.branch)}</span><small class="muted">Sunday closed</small></div></div>
+        ${progs.length>0&&html`<div class="stack" style="gap:8px"><span class="k">Programs ${t.name} usually coaches</span><div class="row wrap" style="gap:8px">${progs.map(p=>html`<button class="pill" style="cursor:pointer;color:var(--chalk)" onClick=${()=>{window.__openProg=p.id;go('programs')}}>${p.n} ›</button>`)}</div></div>`}
+        <div class="row wrap"><button class="btn" onClick=${()=>book(sel)}>Book a session with ${t.name} ${I('arrow',16)}</button><a class="btn ghost" href=${wa('Hi, I would like to train with Coach '+t.name+' at '+BR[t.branch].name)} target="_blank" rel="noopener">${I('msg',16)} Message</a></div>
+        <div class="row" style="gap:8px">${ids.map(id=>html`<button class=${'cdot'+(id===sel?' on':'')} aria-label=${'Show Coach '+TR[id].name} onClick=${()=>choose(id,false)}><span style=${{backgroundImage:'url('+TR[id].img+')'}}></span></button>`)}<span class="muted" style="font-size:12px;margin-left:6px">Next coach</span><button class="x-btn" aria-label="Next coach" onClick=${()=>choose(ids[(ids.indexOf(sel)+1)%ids.length],false)}>${I('arrow',14)}</button></div>
+      </div>
+    </section>
+
+    <div class="sec-head"><div class="stack" style="gap:8px"><span class="k">By branch</span><h2 class="h2">Who's on <span class="it">your floor.</span></h2></div></div>
+    <div class="g2 st">${Object.entries(BR).map(([k,b])=>html`<div class="card"><div class="row between wrap"><b class="h3">${b.name}</b><span class=${'pill '+(openNow(k).open?'ok':'')}>${untilTxt(k)}</span></div>
+      <div class="list">${ids.filter(id=>TR[id].branch===k).map(id=>html`<button class="li" onClick=${()=>choose(id,true)}><div class="avatar" style=${{backgroundImage:'url('+TR[id].img+')'}}></div><div class="t"><b>${TR[id].name}</b><small>${TR[id].spec}</small></div><span class="k brass">Profile ›</span></button>`)}</div><span class="muted" style="font-size:12px">${b.hours}</span></div>`)}</div>
+    <span class="demo-flag">Coach photos are illustrative · names and quotes from Google reviews</span>
+  </div>`;
+}
 function Branches({say}){
   const copy=n=>{try{navigator.clipboard.writeText(n).then(()=>say('Copied '+n),()=>say(n))}catch(e){say(n)}};
   return html`<div class="stack view" style="gap:20px">
