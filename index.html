@@ -250,6 +250,64 @@ textarea.ta{width:100%;min-height:90px;background:var(--ink);border:1px solid va
 
 
 
+
+/* gallery */
+.gal-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(20px,4vw,48px);align-items:center;padding:clamp(20px,4vw,44px);border-radius:30px;border:1px solid var(--line);background:linear-gradient(180deg,var(--steel),var(--iron))}
+@media (max-width:960px){.gal-hero{grid-template-columns:1fr}}
+.gal-stats{display:flex;gap:28px;flex-wrap:wrap;padding-top:6px}
+.gal-stats div{display:grid;gap:4px}
+.gal-stats b{font:900 40px/1 var(--f-d)}
+.gal-stats span{font:500 10px/1 var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--ash)}
+.gal-reel{position:relative;border-radius:24px;overflow:hidden;border:1px solid var(--line);aspect-ratio:16/10;background:var(--ink);max-width:100%}
+.gal-reel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gal-reel::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(13,11,11,.75));pointer-events:none}
+.gal-reel-cap{position:absolute;left:16px;right:16px;bottom:14px;z-index:1;display:flex;justify-content:space-between;align-items:center}
+.live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ember);margin-right:6px;animation:ld 1.4s ease-in-out infinite}
+@keyframes ld{50%{opacity:.25}}
+.gal-bar{min-width:0;max-width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:5;padding:10px 0;background:linear-gradient(180deg,var(--ink) 70%,transparent)}
+@media (max-width:860px){.gal-bar{top:62px}}
+.chip-s{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;border:1px solid var(--line);font:600 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--ash);transition:all .3s}
+.chip-s.on{color:var(--ember);border-color:var(--ember);background:rgba(210,49,31,.1)}
+.masonry{columns:3 300px;column-gap:14px}
+.mtile{display:block;position:relative;break-inside:avoid;margin:0 0 14px;padding:0;border-radius:20px;overflow:hidden;border:1px solid var(--line);background:var(--iron);animation:qin .6s var(--ease) both}
+.mt-open{display:block;width:100%;max-width:none;min-width:100%;padding:0;border:0;cursor:zoom-in}
+.mt-open img{display:block;width:100%;height:auto;object-fit:cover;transition:transform 1.1s var(--ease),filter .6s}
+.mtile:hover .mt-open img{transform:scale(1.06);filter:brightness(.8)}
+.mtile figcaption{position:absolute;left:14px;right:56px;bottom:12px;display:grid;gap:4px;pointer-events:none;z-index:1}
+.mtile figcaption b{font:800 19px/1.05 var(--f-d);text-transform:uppercase;color:var(--chalk)}
+.mtile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(13,11,11,.88));pointer-events:none}
+.mt-heart{position:absolute;right:10px;bottom:10px;z-index:2;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:var(--chalk);background:rgba(13,11,11,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(239,232,223,.15);transition:transform .3s var(--ease),color .3s}
+.mt-heart:hover{transform:scale(1.1)}
+.mt-heart.on{color:var(--ember);animation:pop .4s var(--ease)}
+@keyframes pop{40%{transform:scale(1.3)}}
+@media (max-width:640px){.masonry{columns:2;column-gap:10px}.mtile{margin-bottom:10px;border-radius:16px}.mtile figcaption{left:10px;right:42px;bottom:10px}.mtile figcaption b{font-size:14px}.mtile figcaption .k{display:none}.mt-heart{width:32px;height:32px;right:6px;bottom:6px}.gal-bar{flex-wrap:nowrap}.gal-bar .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;min-width:0;flex:1}.gal-bar .chips button{flex:0 0 auto}.chip-s{flex:0 0 auto;padding:10px 12px}}
+.gal-cta{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;padding:clamp(22px,4vw,44px);border-radius:30px;border:1px solid var(--line);background:radial-gradient(90% 120% at 100% 100%,rgba(210,49,31,.3),transparent 60%),var(--steel)}
+.lb{position:fixed;inset:0;z-index:80;background:#080707;display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;gap:12px;padding:calc(14px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));animation:fi .3s both;color:var(--chalk)}
+.lb-top{display:grid;gap:12px}
+.lb-prog{display:flex;gap:4px}
+.lb-prog i{flex:1;height:3px;border-radius:3px;background:rgba(239,232,223,.18);overflow:hidden}
+.lb-prog b{display:block;height:100%;width:0;background:var(--chalk)}
+.lb-prog b.done,.lb-prog b.cur{width:100%}
+.lb-prog b.cur{background:var(--ember)}
+.lb-prog b.run{animation:prog 4.5s linear forwards;background:var(--ember)}
+@keyframes prog{to{width:100%}}
+.lb-ic{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(239,232,223,.18);background:rgba(239,232,223,.06);color:var(--chalk);transition:background .3s,color .3s}
+.lb-ic:hover{background:rgba(239,232,223,.14)}
+.lb-ic.saved{color:var(--ember);border-color:var(--ember)}
+.lb-stage{position:relative;min-height:0;overflow:hidden}
+.lb-fig{margin:0;padding:0;position:absolute;inset:0;display:grid;place-items:center;min-height:0;animation:lbz .5s var(--ease) both}
+.lb-fig img{max-width:100%;max-height:100%;object-fit:contain;border-radius:16px}
+@keyframes lbz{from{opacity:0;transform:scale(.97)}}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:var(--chalk);background:rgba(13,11,11,.55);border:1px solid rgba(239,232,223,.18);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.lb-nav.l{left:4px}.lb-nav.r{right:4px}
+@media (max-width:640px){.lb-nav{display:none}}
+.lb-foot{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;animation:qin .45s var(--ease) both}
+.lb-cap{font:900 clamp(24px,3vw,36px)/1 var(--f-d);text-transform:uppercase}
+.lb-thumbs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.lb-thumbs::-webkit-scrollbar{display:none}
+.lb-thumbs button{flex:0 0 64px;height:48px;border-radius:10px;overflow:hidden;padding:0;border:2px solid transparent;opacity:.45;transition:opacity .3s,border-color .3s}
+.lb-thumbs button.on{opacity:1;border-color:var(--ember)}
+.lb-thumbs img{width:100%;height:100%;object-fit:cover;display:block}
 /* branches */
 .br-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(20px,4vw,48px);align-items:center;padding:clamp(20px,4vw,44px);border-radius:30px;border:1px solid var(--line);background:linear-gradient(180deg,var(--steel),var(--iron))}
 @media (max-width:960px){.br-hero{grid-template-columns:1fr}}
@@ -1235,10 +1293,98 @@ function Branches({say,go}){
     </div>
   </div>`;
 }
-function Gallery(){return html`<div class="stack view" style="gap:20px">
-  <div class="stack" style="gap:10px"><span class="k brass">Gallery</span><h1 class="h1">Life on <span class="it">the floor.</span></h1></div>
-  <div class="g3">${[...GALLERY,['img/squat.jpg','Strong, not small'],['img/bench.jpg','Spotted, every heavy set'],['img/functional.jpg','The open floor']].map(([s,c],i)=>html`<div class="photo reveal" style=${{minHeight:i%4===0?'420px':'300px',animationDelay:(i%3)*.08+'s'}}><img src=${s} alt=${c} loading="lazy"/><div class="cap"><b class="h3" style="font-size:20px">${c}</b></div></div>`)}</div>
-  <span class="demo-flag">Images generated for this concept</span></div>`}
+const GAL=[
+ {src:'img/deadlift.jpg',t:'Floor',c:'Pull from the floor',d:'The powerlifting platform, bumper plates and a barbell that has seen a lot of chalk.'},
+ {src:'img/coach-arms.jpg',t:'Coaches',c:'Your coach, on the floor',d:'Every program starts with a coach who watches your first sets.'},
+ {src:'img/phone.jpg',t:'Moments',c:'Only place where you go offline',d:'Phones down, earphones in, one hour that is only yours.'},
+ {src:'img/dumbbells.jpg',t:'Floor',c:'VIVA Tunturi dumbbells',d:'A full rack, light to heavy, so progress never waits for a free pair.'},
+ {src:'img/chalk.jpg',t:'Moments',c:'Built in silence',d:'Chalk, breath, and the quiet before a heavy single.'},
+ {src:'img/coach-adjust.jpg',t:'Coaches',c:'Form first, then load',d:'Coaches fix the small things: bar path, depth, bracing.'},
+ {src:'img/legpress.jpg',t:'Floor',c:'270 kg × 5 deep reps',d:'The leg press zone, loaded the way members actually use it.'},
+ {src:'img/medal.jpg',t:'Moments',c:'Where champions are made',d:'Meets, medals, and members who started as beginners.'},
+ {src:'img/bench.jpg',t:'Floor',c:'Spotted, every heavy set',d:'Nobody benches alone here. Ask, and someone spots you.'},
+ {src:'img/coach-clipboard.jpg',t:'Coaches',c:'Every session written down',d:'Your plan, your numbers, tracked week to week.'},
+ {src:'img/team.jpg',t:'Moments',c:'Come for the workout, stay for the vibe',d:'The people you see at 7 pm become the reason you show up.'},
+ {src:'img/squat.jpg',t:'Floor',c:'Strong, not small',d:'Squat racks with safeties, set to your height.'},
+ {src:'img/cardio.jpg',t:'Floor',c:'The cardio deck',d:'Treadmills, bikes and cross-trainers for warm-ups and conditioning.'},
+ {src:'img/coach-walk.jpg',t:'Coaches',c:'Walking the floor',d:'Coaches move between stations, so help is never far away.'},
+ {src:'img/functional.jpg',t:'Floor',c:'The open floor',d:'Turf, kettlebells and space for functional work.'},
+ {src:'img/thali.jpg',t:'Moments',c:'Fuel like you train',d:'Diet plans built around a real Indian plate, not a bland one.'},
+ {src:'img/plate.jpg',t:'Floor',c:'Calibrated plates',d:'Every plate is marked, so the number on the bar is the number you lifted.'}
+];
+const GAL_TAGS=['All','Floor','Coaches','Moments'];
+function loadSaved(){try{return JSON.parse(localStorage.getItem('twd-gal-saved')||'[]')}catch(e){return[]}}
+function Lightbox({items,at,setAt,close,saved,toggle,go}){
+  const [play,setPlay]=useState(false);const [k,setK]=useState(0);const tx=useRef(null);const N=items.length;const it=items[at];
+  const nav=d=>{setAt((at+d+N)%N);setK(x=>x+1)};
+  useEffect(()=>{const f=e=>{if(e.key==='ArrowRight')nav(1);else if(e.key==='ArrowLeft')nav(-1);else if(e.key==='Escape')close();else if(e.key===' '){e.preventDefault();setPlay(p=>!p)}};addEventListener('keydown',f);return()=>removeEventListener('keydown',f)},[at,N]);
+  useEffect(()=>{if(!play)return;const t=setTimeout(()=>nav(1),4500);return()=>clearTimeout(t)},[play,at]);
+  useEffect(()=>{const o=document.body.style.overflow;document.body.style.overflow='hidden';return()=>{document.body.style.overflow=o}},[]);
+  useEffect(()=>{const el=document.querySelector('.lb-thumbs .on');el&&el.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'})},[at]);
+  const isS=saved.includes(it.src);
+  return html`<div class="lb" role="dialog" aria-modal="true" aria-label=${'Photo '+(at+1)+' of '+N+': '+it.c}
+    onTouchStart=${e=>{tx.current=e.touches[0].clientX}} onTouchEnd=${e=>{if(tx.current==null)return;const dx=e.changedTouches[0].clientX-tx.current;if(Math.abs(dx)>50)nav(dx<0?1:-1);tx.current=null}}>
+    <div class="lb-top">
+      <div class="lb-prog" aria-hidden="true">${items.map((_,i)=>html`<i><b key=${i===at?'p'+k+play:'s'+i} class=${i<at?'done':i===at?(play?'run':'cur'):''}></b></i>`)}</div>
+      <div class="row between" style="gap:10px"><span class="k">${String(at+1).padStart(2,'0')} / ${String(N).padStart(2,'0')} · ${it.t}</span>
+        <div class="row" style="gap:8px">
+          <button class="lb-ic" aria-pressed=${play} aria-label=${play?'Pause slideshow':'Play slideshow'} onClick=${()=>setPlay(p=>!p)}>${play?html`<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>`:I('play',18)}</button>
+          <button class=${'lb-ic'+(isS?' saved':'')} aria-pressed=${isS} aria-label=${isS?'Remove from saved':'Save photo'} onClick=${()=>{toggle(it.src);buzz(12)}}><svg width="18" height="18" viewBox="0 0 24 24" fill=${isS?'currentColor':'none'} stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></button>
+          <button class="lb-ic" aria-label="Close" onClick=${close}>${I('x',18)}</button></div></div></div>
+    <div class="lb-stage">
+      <button class="lb-nav l" aria-label="Previous photo" onClick=${()=>nav(-1)}>${I('back',22)}</button>
+      <figure key=${at} class="lb-fig"><img src=${it.src} alt=${it.c}/></figure>
+      <button class="lb-nav r" aria-label="Next photo" onClick=${()=>nav(1)}><span style="display:inline-flex;transform:scaleX(-1)">${I('back',22)}</span></button>
+    </div>
+    <div class="lb-foot">
+      <div class="stack" style="gap:6px;min-width:0" key=${'c'+at}><b class="lb-cap">${it.c}</b><span class="muted" style="max-width:56ch">${it.d}</span></div>
+      <button class="btn sm" onClick=${()=>{close();go('book')}}>Train here ${I('arrow',14)}</button>
+    </div>
+    <div class="lb-thumbs" role="tablist" aria-label="All photos">${items.map((x,i)=>html`<button role="tab" aria-selected=${i===at} class=${i===at?'on':''} onClick=${()=>{setAt(i);setK(z=>z+1)}} aria-label=${x.c}><img src=${x.src} alt="" loading="lazy"/></button>`)}</div>
+  </div>`;
+}
+function Gallery({go}){
+  const [tag,setTag]=useState('All');const [open,setOpen]=useState(null);const [saved,setSaved]=useState(loadSaved);const [onlyS,setOnlyS]=useState(false);
+  const [vplay,setVplay]=useState(true);const vref=useRef(null);
+  const toggle=src=>setSaved(a=>{const n=a.includes(src)?a.filter(x=>x!==src):[...a,src];try{localStorage.setItem('twd-gal-saved',JSON.stringify(n))}catch(e){}return n});
+  const list=GAL.filter(g=>(tag==='All'||g.t===tag)&&(!onlyS||saved.includes(g.src)));
+  const count=t=>t==='All'?GAL.length:GAL.filter(g=>g.t===t).length;
+  const tv=()=>{const v=vref.current;if(!v)return;if(v.paused){v.play().catch(()=>{});setVplay(true)}else{v.pause();setVplay(false)}};
+  return html`<div class="stack view" style="gap:22px">
+    <header class="gal-hero">
+      <div class="stack" style="gap:16px;min-width:0"><span class="k brass">Gallery</span><h1 class="h1">Life on <span class="it">the floor.</span></h1>
+        <p class="lead" style="color:var(--chalk);opacity:.85">The platforms, the coaches and the people. Tap any photo to open it full screen, or press play for a slideshow.</p>
+        <div class="row wrap" style="gap:10px"><button class="btn" onClick=${()=>{setOnlyS(false);setTag('All');setOpen(0)}}>${I('play',16)} Play slideshow</button><a class="btn ghost" href=${BR.tt.ig} target="_blank" rel="noopener">More on Instagram</a></div>
+        <div class="gal-stats">${[[GAL.length,'photos'],[GAL_TAGS.length-1,'collections'],[saved.length,'saved by you']].map(([n,l])=>html`<div><b class="num">${n}</b><span>${l}</span></div>`)}</div>
+      </div>
+      <div class="gal-reel">
+        <video ref=${vref} src="img/hero.mp4" muted autoplay loop playsinline preload="metadata" aria-label="Short film of a training session at The Weight Date"></video>
+        <div class="gal-reel-cap"><span class="pill" style="color:var(--chalk)"><i class="live-dot"></i> On the floor</span>
+          <button class="lb-ic" aria-label=${vplay?'Pause film':'Play film'} onClick=${tv}>${vplay?html`<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>`:I('play',18)}</button></div>
+      </div>
+    </header>
+
+    <div class="gal-bar">
+      <div class="chips" role="group" aria-label="Filter photos">${GAL_TAGS.map(t=>html`<button aria-pressed=${tag===t} onClick=${()=>setTag(t)}>${t} <span style="opacity:.55">${count(t)}</span></button>`)}</div>
+      <button class=${'chip-s'+(onlyS?' on':'')} aria-pressed=${onlyS} onClick=${()=>setOnlyS(v=>!v)}><svg width="15" height="15" viewBox="0 0 24 24" fill=${onlyS?'currentColor':'none'} stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg> Saved ${saved.length}</button>
+    </div>
+
+    ${list.length?html`<div class="masonry" key=${tag+onlyS}>${list.map((g,i)=>{const isS=saved.includes(g.src);return html`<figure class="mtile" style=${{animationDelay:Math.min(i,8)*.05+'s'}}>
+      <button class="mt-open" onClick=${()=>setOpen(i)} aria-label=${'Open '+g.c}><img src=${g.src} alt=${g.c} loading="lazy" style=${{aspectRatio:['4/5','1/1','3/4','4/3'][i%4]}}/></button>
+      <figcaption><span class="k" style="color:var(--brass)">${g.t}</span><b>${g.c}</b></figcaption>
+      <button class=${'mt-heart'+(isS?' on':'')} aria-pressed=${isS} aria-label=${isS?'Remove '+g.c+' from saved':'Save '+g.c} onClick=${()=>{toggle(g.src);buzz(10)}}><svg width="17" height="17" viewBox="0 0 24 24" fill=${isS?'currentColor':'none'} stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></button>
+    </figure>`})}</div>`
+    :html`<div class="card" style="text-align:center;padding:48px 20px;justify-items:center"><b class="h3">No saved photos yet</b><span class="muted">Tap the heart on any photo to keep it here.</span><button class="btn sm ghost" onClick=${()=>setOnlyS(false)}>Show all photos</button></div>`}
+
+    <section class="gal-cta">
+      <div class="stack" style="gap:12px;min-width:0"><span class="k brass">See it in person</span><h2 class="h2">The floor looks better <span class="it">from the inside.</span></h2>
+        <p class="muted" style="max-width:52ch">Book a slot at either branch and train with a coach on your first visit.</p></div>
+      <div class="row wrap"><button class="btn" onClick=${()=>go('book')}>Book a slot ${I('arrow',16)}</button><a class="btn ghost" href=${BR.cl.ig} target="_blank" rel="noopener">${BR.cl.igh}</a><a class="btn ghost" href=${BR.tt.ig} target="_blank" rel="noopener">${BR.tt.igh}</a></div>
+    </section>
+    <span class="demo-flag">Images and film generated for this concept</span>
+    ${open!=null&&list[open]&&html`<${Lightbox} items=${list} at=${open} setAt=${setOpen} close=${()=>setOpen(null)} saved=${saved} toggle=${toggle} go=${go}/>`}
+  </div>`;
+}
 
 function Tools(){const [t,setT]=useState(100);const [w,setW]=useState(80),[r,setR]=useState(5);const one=e1rm(w,r);
   return html`<div class="stack view" style="gap:20px">
