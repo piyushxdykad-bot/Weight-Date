@@ -249,6 +249,54 @@ textarea.ta{width:100%;min-height:90px;background:var(--ink);border:1px solid va
 
 
 
+
+/* branches */
+.br-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(20px,4vw,48px);align-items:center;padding:clamp(20px,4vw,44px);border-radius:30px;border:1px solid var(--line);background:linear-gradient(180deg,var(--steel),var(--iron))}
+@media (max-width:960px){.br-hero{grid-template-columns:1fr}}
+.bmap{width:100%;height:auto;display:block;border-radius:24px;border:1px solid var(--line)}
+.route{animation:dash 1.4s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-28}}
+.pin{cursor:pointer;outline:none}
+.pin .dot{fill:#c8a66a;transition:fill .4s}
+.pin.on .dot{fill:#d2311f}
+.pin .pulse{fill:rgba(200,166,106,.18);transform-box:fill-box;transform-origin:center;animation:pp 2.2s ease-out infinite}
+.pin.on .pulse{fill:rgba(210,49,31,.3)}
+@keyframes pp{from{transform:scale(.45);opacity:1}to{transform:scale(1.7);opacity:0}}
+.pin .lbl{fill:rgba(13,11,11,.88);stroke:rgba(239,232,223,.16);transition:stroke .3s}
+.pin.on .lbl{stroke:#d2311f;stroke-width:1.5}
+.pin:focus-visible .lbl{stroke:#c8a66a;stroke-width:2}
+.btabs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btabs button{display:grid;gap:8px;text-align:left;padding:18px 20px;border-radius:22px;border:1px solid var(--line);background:var(--iron);transition:border-color .3s,background .3s,transform .4s var(--ease);min-width:0}
+.btabs button:hover{transform:translateY(-2px)}
+.btabs button[aria-selected="true"]{border-color:var(--ember);background:radial-gradient(120% 100% at 100% 0%,rgba(210,49,31,.28),transparent 60%),var(--steel)}
+.btabs b{font:900 clamp(26px,3vw,38px)/.9 var(--f-d);text-transform:uppercase}
+@media (max-width:560px){.btabs{grid-template-columns:1fr}}
+.bdetail{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.2fr);gap:16px;align-items:start;animation:qin .55s var(--ease) both}
+.bd-img{min-height:600px;position:sticky;top:20px}
+@media (max-width:980px){.bdetail{grid-template-columns:1fr}.bd-img{min-height:380px;position:relative;top:0}}
+.daybar{display:grid;gap:8px;padding:6px 0 2px}
+.db-track{position:relative;height:18px;border-radius:999px;background:var(--ink);border:1px solid var(--line)}
+.db-track i{position:absolute;top:2px;bottom:2px;border-radius:999px;background:linear-gradient(90deg,rgba(91,208,138,.55),rgba(91,208,138,.85))}
+.db-now{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--chalk);transform:translateX(-1px)}
+.db-now span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font:600 9px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--chalk);background:var(--ember);padding:3px 6px;border-radius:999px;margin-bottom:3px;white-space:nowrap}
+.db-lbl{position:relative;height:12px;font:500 10px/1 var(--f-m);color:var(--ash)}
+.db-lbl span{position:absolute;transform:translateX(-50%)}
+.wk{display:grid;gap:4px}
+.wk>div{display:flex;justify-content:space-between;gap:10px;padding:9px 10px;border-radius:10px;font-size:14px}
+.wk>div span{color:var(--ash)}
+.wk>div.on{background:rgba(210,49,31,.14);box-shadow:inset 3px 0 0 var(--ember)}
+.wk>div.on span{color:var(--chalk);font-weight:600}
+.wk>div.off b{color:var(--ash)}
+.ccard{display:flex;align-items:center;gap:12px;padding:12px;border-radius:18px;border:1px solid var(--line);background:var(--ink);text-decoration:none;transition:border-color .3s,transform .4s var(--ease);min-width:0}
+.ccard:hover{border-color:rgba(210,49,31,.5);transform:translateY(-2px)}
+.bdetail .g2.st>.card{display:flex;flex-direction:column}
+.bdetail .crowd{flex:1;min-height:150px}
+.btable{min-width:460px}
+.btable th[scope="row"]{text-align:left;font-weight:500;color:var(--ash)}
+.ctable.btable td,.ctable.btable th{text-align:left}
+.btable thead th{text-align:left}
+.btable td.cur{color:var(--chalk);font-weight:600;background:rgba(210,49,31,.08)}
+.btable tr.diff th[scope="row"]::after{content:" ●";color:var(--ember);font-size:10px}
 /* coaches */
 .coach-fit{gap:14px}
 .fit-res{gap:12px;padding:12px;border-radius:18px;border:1px solid rgba(210,49,31,.35);background:rgba(210,49,31,.08);animation:qin .5s var(--ease) both}
@@ -486,6 +534,7 @@ textarea.ta{width:100%;min-height:90px;background:var(--ink);border:1px solid va
 </style>
 </head>
 <body>
+
 <div id="root"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/preact@10.19.3/dist/preact.umd.js"></script>
@@ -575,7 +624,7 @@ function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&
 function save(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
 
 /* ---------- icons ---------- */
-const P={home:'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',dumb:'M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12',bowl:'M3 12h18a9 9 0 0 1-18 0zM8 8c0-2 2-2 2-4M12 8c0-2 2-2 2-4',chart:'M4 20V10M10 20V4M16 20v-7M22 20H2',grid:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',bell:'M6 16V11a6 6 0 1 1 12 0v5l2 2H4zM10 21h4',user:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0',check:'M5 12l5 5 9-10',plus:'M12 5v14M5 12h14',minus:'M5 12h14',x:'M6 6l12 12M18 6L6 18',back:'M15 5l-7 7 7 7',card:'M3 6h18v12H3zM3 10h18',cal:'M4 6h16v14H4zM4 10h16M9 3v4M15 3v4',pin:'M12 21s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',qr:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2zM14 18h2M18 14h2',users:'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M17 11a3 3 0 1 0 0-6M22 21a6 6 0 0 0-5-6',flame:'M12 22a7 7 0 0 0 7-7c0-5-7-12-7-12s-1 4-4 7a7 7 0 0 0 4 12z',msg:'M4 5h16v11H8l-4 4z',out:'M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10',edit:'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',snow:'M12 2v20M4 6l16 12M20 6L4 18',lock:'M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4',target:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',star:'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z',img:'M4 5h16v14H4zM4 15l5-5 5 5 3-3 3 3',arrow:'M5 12h14M13 6l6 6-6 6',search:'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM21 21l-4.3-4.3',trophy:'M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 21h8M10 17h4',play:'M7 4l13 8-13 8z',bolt:'M13 2L4 14h7l-1 8 9-12h-7z',plate:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z'};
+const P={home:'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',dumb:'M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12',bowl:'M3 12h18a9 9 0 0 1-18 0zM8 8c0-2 2-2 2-4M12 8c0-2 2-2 2-4',chart:'M4 20V10M10 20V4M16 20v-7M22 20H2',grid:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',bell:'M6 16V11a6 6 0 1 1 12 0v5l2 2H4zM10 21h4',user:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0',check:'M5 12l5 5 9-10',plus:'M12 5v14M5 12h14',minus:'M5 12h14',x:'M6 6l12 12M18 6L6 18',back:'M15 5l-7 7 7 7',card:'M3 6h18v12H3zM3 10h18',cal:'M4 6h16v14H4zM4 10h16M9 3v4M15 3v4',pin:'M12 21s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',qr:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2zM14 18h2M18 14h2',users:'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M17 11a3 3 0 1 0 0-6M22 21a6 6 0 0 0-5-6',flame:'M12 22a7 7 0 0 0 7-7c0-5-7-12-7-12s-1 4-4 7a7 7 0 0 0 4 12z',msg:'M4 5h16v11H8l-4 4z',out:'M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10',edit:'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',snow:'M12 2v20M4 6l16 12M20 6L4 18',lock:'M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4',target:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',star:'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z',img:'M4 5h16v14H4zM4 15l5-5 5 5 3-3 3 3',arrow:'M5 12h14M13 6l6 6-6 6',timer:'M12 8v5l3 2M12 21a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM9 2h6',info:'M12 8h.01M11 12h1v5h1M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z',search:'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM21 21l-4.3-4.3',trophy:'M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 21h8M10 17h4',play:'M7 4l13 8-13 8z',bolt:'M13 2L4 14h7l-1 8 9-12h-7z',plate:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z'};
 const I=(n,s=22,c)=>html`<svg width=${s} height=${s} viewBox="0 0 24 24" fill="none" stroke=${c||'currentColor'} stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d=${P[n]}/></svg>`;
 const Logo=({s=30})=>html`<svg width=${s} height=${s} viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18.5" fill="none" stroke="#d2311f" stroke-width="3"/><circle cx="20" cy="20" r="12" fill="#6d140e"/><circle cx="20" cy="20" r="4.2" fill="#0d0b0b" stroke="#c8a66a" stroke-width="1.6"/></svg>`;
 
@@ -1107,19 +1156,83 @@ function BranchCoaches({b,idx,sel,choose,book,go,fine}){
     </div>
   </section>`;
 }
-function Branches({say}){
+const GEO={tt:[25.4521931,81.8642901],cl:[25.4597909,81.8385096]};
+const LANDMARK={tt:'Near IICS College, Bansi Bhawan Chauraha',cl:'Near Dhobi Ghat petrol pump, Thornhill Road'};
+const DAYHRS={tt:'06–12 · 16–22',cl:'06:00 – 22:00'};
+function km(a,b){const R=6371,r=x=>x*Math.PI/180;const dl=r(b[0]-a[0]),dn=r(b[1]-a[1]);const hv=Math.sin(dl/2)**2+Math.cos(r(a[0]))*Math.cos(r(b[0]))*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(hv))}
+const DIST=km(GEO.tt,GEO.cl).toFixed(1);
+function BranchMap({sel,setSel}){
+  const P=k=>{const [la,ln]=GEO[k];return[(ln-81.825)/0.05*600,(25.468-la)/0.023*360]};const [cx,cy]=P('cl'),[tx,ty]=P('tt');
+  const streets=[[0,60,600,92],[0,205,600,172],[0,305,600,322],[92,0,120,360],[262,0,232,360],[402,0,432,360],[548,0,522,360],[0,140,600,252],[300,0,600,138]];
+  return html`<svg class="bmap" viewBox="0 0 600 360" role="group" aria-label=${'Map sketch: Civil Lines and Tagore Town, '+DIST+' km apart'}>
+    <defs><radialGradient id="bmg" cx="50%" cy="45%" r="75%"><stop offset="0" stop-color="#211b1a"/><stop offset="1" stop-color="#0d0b0b"/></radialGradient><pattern id="bmgrid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="rgba(239,232,223,.045)"/></pattern></defs>
+    <rect width="600" height="360" fill="url(#bmg)"/><rect width="600" height="360" fill="url(#bmgrid)"/>
+    ${streets.map(([a,b,c,d])=>html`<line x1=${a} y1=${b} x2=${c} y2=${d} stroke="rgba(239,232,223,.07)" stroke-width="7" stroke-linecap="round"/>`)}
+    <text x="18" y="342" fill="#9b918b" font-family="JetBrains Mono,monospace" font-size="10" letter-spacing="2">PRAYAGRAJ · SKETCH, NOT TO SCALE</text>
+    <path class="route" d=${`M${cx} ${cy} C ${cx+120} ${cy-10}, ${tx-130} ${ty+20}, ${tx} ${ty}`} fill="none" stroke="#c8a66a" stroke-width="2.5" stroke-dasharray="6 8"/>
+    <g transform=${`translate(${(cx+tx)/2-40},${(cy+ty)/2-34})`}><rect width="80" height="26" rx="13" fill="rgba(13,11,11,.85)" stroke="rgba(200,166,106,.5)"/><text x="40" y="17" text-anchor="middle" fill="#c8a66a" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing="1">${DIST} KM</text></g>
+    ${[['cl',cx,cy,-74],['tt',tx,ty,28]].map(([k,x,y,dy])=>{const o=openNow(k);return html`<g class=${'pin'+(sel===k?' on':'')} tabindex="0" role="button" aria-pressed=${sel===k} aria-label=${'Show '+BR[k].name} onClick=${()=>setSel(k)} onKeyDown=${e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setSel(k)}}}>
+      <circle cx=${x} cy=${y} r="26" class="pulse"/><circle cx=${x} cy=${y} r="11" class="dot"/><circle cx=${x} cy=${y} r="4" fill="#0d0b0b"/>
+      <g transform=${`translate(${x-74},${y+dy})`}><rect width="148" height="42" rx="11" class="lbl"/><text x="74" y="18" text-anchor="middle" font-family="Big Shoulders Display,Impact,sans-serif" font-weight="800" font-size="16" fill="#efe8df" letter-spacing=".5">${BR[k].name.toUpperCase()}</text><text x="74" y="33" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" letter-spacing="1" fill=${o.open?'#5bd08a':'#9b918b'}>${o.open?'OPEN NOW':'CLOSED NOW'}</text></g></g>`})}
+  </svg>`}
+function DayBar({b}){const n=nowIST();const sun=n.getDay()===0;const m=n.getHours()+n.getMinutes()/60;const x=hh=>(hh-5)/18*100;
+  return html`<div class="daybar"><div class="db-track" role="img" aria-label=${sun?'Closed today':'Open '+DAYHRS[b]+' today'}>${!sun&&BR[b].slots.map(([a,z])=>html`<i style=${{left:x(a)+'%',width:(x(z)-x(a))+'%'}}></i>`)}${!sun&&m>=5&&m<=23&&html`<b class="db-now" style=${{left:x(m)+'%'}}><span>Now</span></b>`}</div>
+    <div class="db-lbl" aria-hidden="true">${[6,9,12,15,18,21].map(hh=>html`<span style=${{left:x(hh)+'%'}}>${String(hh).padStart(2,'0')}</span>`)}</div>${sun&&html`<span class="muted" style="font-size:13px">Closed today · opens Monday 06:00</span>`}</div>`}
+
+function Branches({say,go}){
+  const [sel,setSel]=useState('cl');const [tod,setTod]=useState(null);
   const copy=n=>{try{navigator.clipboard.writeText(n).then(()=>say('Copied '+n),()=>say(n))}catch(e){say(n)}};
-  return html`<div class="stack view" style="gap:20px">
-    <div class="stack" style="gap:10px"><span class="k brass">Branches</span><h1 class="h1">Two <span class="it">addresses.</span></h1></div>
-    <div class="g2 st">${Object.entries(BR).map(([k,b])=>{const o=openNow(k);return html`<div class="card" style="padding:0;overflow:hidden;gap:0">
-      <div class="photo" style="border-radius:0;border:0;min-height:200px"><img src=${b.img} alt="" loading="lazy"/><div class="cap"><span class=${'pill '+(o.open?'ok':'')} style="justify-self:start">${o.txt}</span><b class="h2">${b.name}</b></div></div>
-      <div class="stack" style="padding:20px"><p class="muted" style="margin:0">${b.addr}</p>
-        <div class="list"><div class="li"><div class="t"><b>Timings</b><small>${b.hours} · Sunday closed</small></div></div>
-          <div class="li"><div class="t"><b class="num">+91 88406 55898</b><small>Front desk</small></div><button class="btn sm ghost" onClick=${()=>copy('+918840655898')}>Copy</button></div>
-          <div class="li"><div class="t"><b class="num">+91 88875 38186</b><small>Alternate</small></div><button class="btn sm ghost" onClick=${()=>copy('+918887538186')}>Copy</button></div>
-          <div class="li"><div class="t"><b>Google rating</b><small>★ ${b.rating} from ${b.reviews} reviews</small></div></div></div>
-        <div class="row wrap"><a class="btn" href=${b.maps} target="_blank" rel="noopener">${I('pin',16)} Directions</a><a class="btn ghost" href=${b.ig} target="_blank" rel="noopener">${b.igh}</a></div></div></div>`})}</div>
-    <div class="card"><span class="k">On both floors</span><div class="row wrap" style="gap:8px">${['Powerlifting platform','VIVA Tunturi dumbbells','Cardio deck','Functional zone','Air conditioned','Wi-Fi','Water cooler','Changing rooms','Annual fire-safety drill'].map(f=>html`<span class="pill">${f}</span>`)}</div></div>
+  const B=BR[sel];const o=openNow(sel);const bz=busyNow(sel);const hr=nowIST().getHours();const today=nowIST().getDay();
+  const ids=Object.keys(TR).filter(id=>TR[id].branch===sel);
+  const TOD=[['morning','Morning','06–12'],['afternoon','Afternoon','12–16'],['evening','Evening','16–22'],['sunday','Sunday','']];
+  const TODR={morning:['Both branches are open 06:00–12:00.',null],afternoon:['Only Civil Lines is open 12:00–16:00. Tagore Town reopens at 16:00.','cl'],evening:['Both are open 16:00–22:00. Peak is 18:00–20:00, so book a slot.',null],sunday:['Both branches are closed on Sunday. Rest day.',null]};
+  const pickTod=k=>{setTod(k);if(TODR[k][1])setSel(TODR[k][1])};
+  const order=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const closed=hh=>sel==='tt'&&hh>=12&&hh<16;
+  return html`<div class="stack view" style="gap:22px">
+    <header class="br-hero">
+      <div class="stack" style="gap:16px"><span class="k brass">Branches</span><h1 class="h1">Two addresses. <span class="it">One card.</span></h1>
+        <p class="lead" style="color:var(--chalk);opacity:.85">Your membership opens both floors. Train near home in the morning and near work in the evening.</p>
+        <div class="row wrap" style="gap:8px"><span class="pill" style="color:var(--chalk)">${DIST} km apart</span><span class="pill">★ 5.0 & 4.9 on Google</span><span class="pill">Mon–Sat · Sun closed</span></div>
+        <div class="stack" style="gap:10px"><span class="k">When do you train?</span><div class="chips" role="group" aria-label="When do you train">${TOD.map(([k,l,t])=>html`<button aria-pressed=${tod===k} onClick=${()=>pickTod(k)}>${l}${t?' · '+t:''}</button>`)}</div>
+          ${tod&&html`<div class="fit-res row" key=${tod}><span style="color:var(--brass)">${I('info',18)}</span><span style="flex:1">${TODR[tod][0]}</span></div>`}</div>
+      </div>
+      <${BranchMap} sel=${sel} setSel=${setSel}/>
+    </header>
+
+    <div class="btabs" role="tablist" aria-label="Branch">${['cl','tt'].map((k,i)=>{const ok=openNow(k);return html`<button role="tab" aria-selected=${sel===k} onClick=${()=>setSel(k)}><span class="k brass">Branch 0${i+1}</span><b>${BR[k].name}</b><span class="row wrap" style="gap:8px"><span class=${'pill '+(ok.open?'ok':'')}>${untilTxt(k)}</span><small class="muted">${DAYHRS[k]}</small></span></button>`})}</div>
+
+    <section class="bdetail" key=${sel} role="tabpanel" aria-label=${B.name}>
+      <div class="photo bd-img"><img src=${B.img} alt=${B.name+' training floor'}/><div class="cap" style="gap:10px"><span class=${'pill '+(o.open?'ok':'')} style="justify-self:start">${o.txt}</span><b class="bhead-t" style="font-size:clamp(48px,6vw,92px)">${B.name}</b><span style="color:var(--chalk);opacity:.8">${LANDMARK[sel]}</span>
+        <div class="row wrap"><a class="btn" href=${B.maps} target="_blank" rel="noopener">${I('pin',16)} Directions</a><button class="btn ghost" onClick=${()=>{window.__prefill={branch:sel};go('book')}}>Book a slot here</button></div></div></div>
+      <div class="stack">
+        <div class="card"><div class="row between"><span class="k">Today · ${DOW[today]}</span><span class=${'pill '+(o.open?'ok':'')}>${untilTxt(sel)}</span></div><${DayBar} b=${sel}/>
+          <div class="row" style="gap:10px"><span class="k" style="flex:0 0 auto">Busy now</span><div class="bar" style="flex:1"><i style=${{width:bz*10+'%'}}></i></div><b style="font:800 16px/1 var(--f-d);text-transform:uppercase;min-width:70px;text-align:right">${o.open?(bz>=7?'Peak':bz>=4?'Moderate':'Quiet'):'Closed'}</b></div></div>
+        <div class="g2 st">
+          <div class="card"><span class="k">This week</span><div class="wk">${order.map(d=>{const isT=DOW[today]===d;const sun=d==='Sun';return html`<div class=${(isT?'on ':'')+(sun?'off':'')}><span>${d}${isT?' · today':''}</span><b class="num">${sun?'Closed':DAYHRS[sel]}</b></div>`})}</div></div>
+          <div class="card"><span class="k">How busy it gets</span><div class="crowd" aria-hidden="true">${BUSY.map((v,i)=>{const hh=6+i;return html`<i class=${(v>=7?'b ':'')+(hh===hr&&today!==0?'now':'')} style=${{height:(closed(hh)?6:Math.max(6,v*10))+'%',opacity:closed(hh)?.25:1}}></i>`})}</div><div class="crowd-lbl"><span>6</span><span>10</span><span>14</span><span>18</span><span>21</span></div><span class="muted" style="font-size:12px">Peak 18:00–20:00${sel==='tt'?' · closed 12–16':''} · sample pattern</span></div>
+        </div>
+        <div class="card"><span class="k">Get in touch</span><div class="list">
+          <div class="li"><span style="color:var(--ember)">${I('pin',18)}</span><div class="t"><b>${B.addr}</b><small>${LANDMARK[sel]}</small></div><button class="btn sm ghost" onClick=${()=>copy(B.addr)}>Copy</button></div>
+          <div class="li"><span style="color:var(--ember)">${I('msg',18)}</span><div class="t"><b class="num">+91 88406 55898</b><small>Front desk · WhatsApp</small></div><button class="btn sm ghost" onClick=${()=>copy('+918840655898')}>Copy</button></div>
+          <div class="li"><span style="color:var(--ember)">${I('msg',18)}</span><div class="t"><b class="num">+91 88875 38186</b><small>Alternate</small></div><button class="btn sm ghost" onClick=${()=>copy('+918887538186')}>Copy</button></div>
+          <div class="li"><span style="color:var(--brass)">${I('star',18)}</span><div class="t"><b>★ ${B.rating} on Google</b><small>${B.reviews} reviews</small></div></div></div>
+          <div class="row wrap"><a class="btn sm" href=${wa('Hi, I have a question about the '+B.name+' branch')} target="_blank" rel="noopener">${I('msg',14)} WhatsApp the desk</a><a class="btn sm ghost" href=${B.ig} target="_blank" rel="noopener">${B.igh}</a></div></div>
+        <div class="card"><div class="row between"><span class="k">Coaches on this floor</span><a class="k brass" href="#coaches" style="text-decoration:none">All coaches ›</a></div>
+          <div class="g2">${ids.map(id=>html`<a class="ccard" href="#coaches" onClick=${()=>{window.__openCoach=id}}><div class="avatar" style=${{width:'52px',height:'52px',flex:'0 0 52px',backgroundImage:'url('+TR[id].img+')'}}></div><div style="min-width:0"><b style="display:block;font:italic 400 24px/1 var(--f-s)">${TR[id].name}</b><small class="muted">${TR[id].spec}</small></div></a>`)}</div></div>
+      </div>
+    </section>
+
+    <div class="card"><div class="row between wrap"><span class="k">Side by side</span><span class="muted" style="font-size:13px">One card opens both</span></div>
+      <div style="overflow-x:auto"><table class="ctable btable"><thead><tr><th scope="col"></th><th scope="col">Civil Lines</th><th scope="col">Tagore Town</th></tr></thead><tbody>
+        ${[['Hours (Mon–Sat)',DAYHRS.cl,DAYHRS.tt],['Open 12:00–16:00','Yes','No'],['Sunday','Closed','Closed'],['Google rating','★ '+BR.cl.rating+' · '+BR.cl.reviews,'★ '+BR.tt.rating+' · '+BR.tt.reviews],['Coaches','Sujeet · Tarun','Sakib · Charlie'],['Landmark','Dhobi Ghat petrol pump','IICS College'],['Instagram',BR.cl.igh,BR.tt.igh]].map(([k,a,b2])=>html`<tr class=${a!==b2?'diff':''}><th scope="row">${k}</th><td class=${sel==='cl'?'cur':''}>${a}</td><td class=${sel==='tt'?'cur':''}>${b2}</td></tr>`)}
+      </tbody></table></div></div>
+
+    <div class="g2 st" style="align-items:start">
+      <div class="card"><span class="k">Plan your visit</span><div class="list">${[['timer','Peak hours are 18:00–20:00. Come earlier or book a slot.'],['check','Carry a towel and indoor shoes.'],['dumb','Re-rack your weights and wipe equipment after use.'],['card','Your membership works at both branches. Switch any day.'],['pin','Members mention easy parking at Tagore Town.']].map(([ic,t])=>html`<div class="li"><span style="color:var(--ember)">${I(ic,18)}</span><div class="t"><b style="font-weight:500">${t}</b></div></div>`)}</div></div>
+      <div class="card"><span class="k">On both floors</span><div class="row wrap" style="gap:8px">${['Powerlifting platform','VIVA Tunturi dumbbells','Cardio deck','Functional zone','Air conditioned','Wi-Fi','Water cooler','Changing rooms','Annual fire-safety drill'].map(f=>html`<span class="pill" style="color:var(--chalk)">${f}</span>`)}</div>
+        <div class="row wrap" style="margin-top:6px"><button class="btn" onClick=${()=>{window.__prefill={branch:sel};go('book')}}>Book at ${B.name} ${I('arrow',16)}</button></div></div>
+    </div>
   </div>`;
 }
 function Gallery(){return html`<div class="stack view" style="gap:20px">
