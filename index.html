@@ -246,6 +246,81 @@ textarea.ta{width:100%;min-height:90px;background:var(--ink);border:1px solid va
 @media (max-width:960px){.toast{bottom:96px}}
 @keyframes tin{from{opacity:0;transform:translate(-50%,10px)}}
 
+
+/* programs */
+.prog-hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px;align-items:end;padding:clamp(22px,4vw,44px);border-radius:30px;border:1px solid var(--line);background:linear-gradient(90deg,rgba(13,11,11,.96) 20%,rgba(13,11,11,.55)),url("img/functional.jpg") 60% 50%/cover}
+.ph-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border-radius:18px;overflow:hidden;border:1px solid var(--line)}
+.ph-stats div{background:rgba(13,11,11,.78);padding:16px;display:grid;gap:6px;min-width:0}
+.ph-stats b{font:900 34px/.9 var(--f-d)}
+@media (max-width:860px){.prog-hero{grid-template-columns:1fr}}
+.quiz{border-radius:30px;border:1px solid rgba(210,49,31,.35);background:radial-gradient(90% 120% at 100% 0%,rgba(210,49,31,.22),transparent 55%),linear-gradient(180deg,var(--steel),var(--iron));padding:clamp(20px,4vw,44px);display:grid;gap:22px;scroll-margin-top:90px}
+.qprog{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:14px}
+.qprog i{height:4px;border-radius:4px;background:var(--graphite);transition:background .5s}
+.qprog i.on{background:var(--brass)}.qprog i.cur{background:var(--ember)}
+.qbody{display:grid;gap:14px;animation:qin .5s var(--ease) both}
+@keyframes qin{from{opacity:0;transform:translateX(24px)}}
+.opts{display:grid;gap:12px;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:6px}
+.opts.n5{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media (max-width:1180px){.opts.n5{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:640px){.opts,.opts.n5{grid-template-columns:1fr 1fr}}
+@media (max-width:380px){.opts,.opts.n5{grid-template-columns:1fr}}
+.opt{position:relative;display:grid;gap:8px;align-content:start;text-align:left;padding:18px;border-radius:20px;border:1px solid var(--line);background:var(--ink);transition:transform .35s var(--ease),border-color .3s,background .3s;min-height:156px;min-width:0}
+.opt:hover{transform:translateY(-3px);border-color:rgba(239,232,223,.25)}
+.opt .oic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:rgba(210,49,31,.14);color:var(--ember);margin-bottom:4px}
+.opt b{font:800 21px/1 var(--f-d);text-transform:uppercase}
+.opt small{color:var(--ash);font-size:13px}
+.opt .ock{position:absolute;top:14px;right:14px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--line);color:transparent;transition:all .3s}
+.opt[aria-pressed="true"]{border-color:var(--ember);background:rgba(210,49,31,.12)}
+.opt[aria-pressed="true"] .ock{background:var(--ember);border-color:var(--ember);color:var(--chalk)}
+@media (max-width:640px){.opt{min-height:0;padding:14px}.opt b{font-size:18px}}
+.match{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(18px,3vw,36px);align-items:stretch;animation:qin .6s var(--ease) both}
+.match-img{min-height:400px}
+.match-ring{position:absolute;top:16px;right:16px;z-index:2;background:rgba(13,11,11,.75);border-radius:50%;padding:6px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+@media (max-width:860px){.match{grid-template-columns:1fr}.match-img{min-height:240px}}
+.alt{display:grid;grid-template-columns:84px minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px;border-radius:20px;border:1px solid var(--line);background:var(--ink);text-align:left;width:100%;transition:border-color .3s,transform .4s var(--ease)}
+.alt:hover{border-color:rgba(239,232,223,.25);transform:translateY(-2px)}
+.alt img{width:84px;height:84px;object-fit:cover;border-radius:14px}
+.alt>div{display:grid;gap:4px;min-width:0}
+.pstats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.pstats>div{background:var(--ink);padding:12px;display:grid;gap:8px;min-width:0;align-content:start}
+.pstats b{font:900 26px/.9 var(--f-d)}.pstats b small{font:500 11px var(--f-m);color:var(--ash)}
+@media (max-width:520px){.pstats{grid-template-columns:1fr 1fr}}
+.meter{display:flex;gap:3px;align-items:flex-end;height:22px}
+.meter i{width:7px;border-radius:2px;background:var(--graphite)}
+.meter i:nth-child(1){height:30%}.meter i:nth-child(2){height:46%}.meter i:nth-child(3){height:62%}.meter i:nth-child(4){height:80%}.meter i:nth-child(5){height:100%}
+.meter i.on{background:linear-gradient(180deg,var(--ember),var(--oxblood))}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips button{padding:10px 14px;border-radius:999px;border:1px solid var(--line);font:600 11px/1 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--ash);transition:all .3s var(--ease)}
+.chips button:hover{color:var(--chalk)}
+.chips button[aria-pressed="true"]{background:var(--chalk);border-color:var(--chalk);color:var(--ink)}
+.pgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:1100px){.pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:680px){.pgrid{grid-template-columns:1fr}}
+.pcard{display:flex;flex-direction:column;border-radius:24px;border:1px solid var(--line);background:var(--iron);overflow:hidden;animation:vin .6s var(--ease) both;transition:transform .5s var(--ease),border-color .3s;min-width:0}
+.pcard:hover{transform:translateY(-4px);border-color:rgba(239,232,223,.2)}
+.pc-img{position:relative;display:block;width:100%;aspect-ratio:16/10;overflow:hidden}
+.pc-img img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.pcard:hover .pc-img img{transform:scale(1.06)}
+.pc-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(22,19,19,.9))}
+.pc-lv{position:absolute;left:14px;top:14px;z-index:1}
+.pc-pct{position:absolute;right:14px;top:14px;z-index:1;display:grid;justify-items:center;padding:8px 12px;border-radius:14px;background:rgba(13,11,11,.8);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font:900 24px/1 var(--f-d)}
+.pc-pct small{font:600 9px/1 var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--brass);margin-top:3px}
+.pc-body{display:flex;flex-direction:column;gap:12px;padding:18px;flex:1}
+.pcard .pstats{grid-template-columns:1fr 1fr}
+.pstats b{overflow-wrap:anywhere}
+.sheet.wide{width:min(840px,calc(100% - 32px));padding:0}
+.sheet.wide .grab{position:absolute;left:50%;top:8px;transform:translateX(-50%);z-index:3;margin:0}
+.pd-head{position:relative;height:clamp(200px,32vh,300px);overflow:hidden}
+.pd-head img{width:100%;height:100%;object-fit:cover}
+.pd-head::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,11,11,.1),var(--steel))}
+.pd-cap{position:absolute;left:24px;right:24px;bottom:14px;z-index:1;display:grid;gap:8px}
+.pd-x{position:absolute;top:14px;right:14px;z-index:2;background:rgba(13,11,11,.7)}
+.pd-body{padding:6px 24px 26px}
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.week>div{border-radius:14px;border:1px solid rgba(210,49,31,.35);background:rgba(210,49,31,.1);padding:10px 8px;display:grid;gap:6px;min-width:0;align-content:start}
+.week>div b{font:800 14px/1.05 var(--f-d);text-transform:uppercase;overflow-wrap:anywhere}
+.week>div.off{border-color:var(--line);background:var(--ink)}.week>div.off b{color:var(--ash)}
+@media (max-width:640px){.week{grid-template-columns:repeat(4,minmax(0,1fr))}.pd-body{padding:6px 16px 22px}.pd-cap{left:16px;right:16px}}
 /* spotlight */
 .card,.qa,.mtile,.ex{position:relative;isolation:isolate}
 .card::before,.qa::before,.mtile::before,.ex::before{content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;opacity:0;transition:opacity .45s;background:radial-gradient(460px circle at var(--mx,50%) var(--my,50%),rgba(210,49,31,.18),transparent 45%)}
@@ -343,12 +418,12 @@ const TR={
 };
 const PLANS=[{id:'m1',name:'Monthly',months:1,price:1500},{id:'m3',name:'Quarterly',months:3,price:4000,tag:'Most picked'},{id:'m6',name:'6 Months',months:6,price:7200},{id:'m12',name:'Yearly',months:12,price:12000,tag:'Best value'}];
 const PROGRAMS=[
-  {id:'power',n:'Powerlifting',s:'Squat · Bench · Deadlift',img:'img/deadlift.jpg',d:'Blocks built around the three competition lifts, coached by the team that won 17 district medals.',who:'Lifters chasing a total'},
-  {id:'muscle',n:'Muscle gain',s:'Strength · Hypertrophy',img:'img/bench.jpg',d:'Split routines with progressive overload and a diet chart that feeds the work.',who:'Building size and shape'},
-  {id:'fat',n:'Fat loss',s:'Conditioning · Diet',img:'img/legpress.jpg',d:'Weights to keep muscle, conditioning to raise output, and a home-food diet chart.',who:'Losing weight for good'},
-  {id:'begin',n:'Beginner start',s:'First 8 weeks',img:'img/functional.jpg',d:'Learn the machines and basic lifts with good form, then repeat a simple chart with confidence.',who:'First-timers and comebacks'},
-  {id:'women',n:"Women's strength",s:'Strong, not small',img:'img/squat.jpg',d:'Strength-first training for posture, toning and confidence on a women-friendly floor.',who:'Women starting or levelling up'},
-  {id:'pt',n:'Personal training',s:'One coach · one plan',img:'img/coach-arms.jpg',d:'A trainer beside you for every set, with form checks and weekly check-ins.',who:'Fastest, safest progress'}
+  {id:'power',n:'Powerlifting',s:'Squat · Bench · Deadlift',img:'img/deadlift.jpg',d:'Blocks built around the three competition lifts, coached by the team that won 17 district medals.',who:'Lifters chasing a total',g:'strong',lv:['some','pro'],level:'Intermediate',days:4,mins:75,int:5,coach:'sakib',tags:['Meet prep','Technique','Strength blocks'],week:['Squat','Bench','Rest','Deadlift','Accessories','Technique'],sample:[['Back squat','5 × 5'],['Paused bench press','4 × 5'],['Barbell row','4 × 8'],['Plank','3 × 45 s']],expect:['Heavier squat, bench and deadlift every block','Coached technique on all three lifts','A path to district meets, if you want it'],book:'Get strong (powerlifting)',f:['strong']},
+  {id:'muscle',n:'Muscle gain',s:'Strength · Hypertrophy',img:'img/bench.jpg',d:'Split routines with progressive overload and a diet chart that feeds the work.',who:'Building size and shape',g:'build',lv:['some','pro'],level:'All levels',days:5,mins:70,int:4,coach:'sujeet',tags:['Hypertrophy','Progressive overload','Diet chart'],week:['Push','Pull','Legs','Upper','Lower','Rest'],sample:[['Bench press','4 × 8'],['Incline dumbbell press','3 × 10'],['Cable fly','3 × 12'],['Lateral raise','3 × 15']],expect:['Size and shape from steady overload','A diet chart that feeds the training','Form checks on the floor'],book:'Build muscle',f:['build']},
+  {id:'fat',n:'Fat loss',s:'Conditioning · Diet',img:'img/legpress.jpg',d:'Weights to keep muscle, conditioning to raise output, and a home-food diet chart.',who:'Losing weight for good',g:'lose',lv:['new','some','pro'],level:'All levels',days:5,mins:60,int:4,coach:'charlie',tags:['Strength + cardio','Home-food diet','Weekly weigh-ins'],week:['Push','Pull','Legs','Conditioning','Upper','Legs + core'],sample:[['Assault bike intervals','6 × 30 s'],['Kettlebell swing','4 × 15'],['Leg press','3 × 12'],['Plank','3 × 45 s']],expect:['Steady fat loss while you keep your muscle','A diet chart built on food you eat at home','Weekly weigh-ins tracked in the app'],book:'Lose weight',f:['lose']},
+  {id:'begin',n:'Beginner start',s:'First 8 weeks',img:'img/functional.jpg',d:'Learn the machines and basic lifts with good form, then repeat a simple chart with confidence.',who:'First-timers and comebacks',g:'fit',lv:['new'],level:'Beginner',days:3,mins:45,int:2,coach:'sakib',tags:['Machines first','Good form','Habit building'],week:['Full body A','Rest','Full body B','Rest','Full body A','Walk'],sample:[['Goblet squat','3 × 10'],['Machine chest press','3 × 10'],['Lat pulldown','3 × 10'],['Plank','3 × 30 s']],expect:['Confidence on every machine in 8 weeks','The basic lifts with safe form','A routine you can actually keep'],book:'General fitness',f:['new','fit']},
+  {id:'women',n:"Women's strength",s:'Strong, not small',img:'img/squat.jpg',d:'Strength-first training for posture, toning and confidence on a women-friendly floor.',who:'Women starting or levelling up',g:'women',lv:['new','some','pro'],level:'All levels',days:4,mins:60,int:3,coach:'tarun',tags:['Glutes & back','Posture','Women-friendly floor'],week:['Lower','Upper','Rest','Glutes','Full body','Rest'],sample:[['Hip thrust','4 × 10'],['Romanian deadlift','3 × 10'],['Lat pulldown','3 × 12'],['Cable kickback','3 × 15']],expect:['A stronger lower body and back','Better posture and more confidence','Coaching on a women-friendly floor'],book:"Women's strength",f:['women']},
+  {id:'pt',n:'Personal training',s:'One coach · one plan',img:'img/coach-arms.jpg',d:'A trainer beside you for every set, with form checks, spotting and weekly check-ins.',who:'Fastest, safest progress',g:'pt',lv:['new','some','pro'],level:'All levels',days:4,mins:60,int:4,coach:'sujeet',tags:['One-on-one','Spotting','Weekly check-ins'],week:['Session','Rest','Session','Rest','Session','Check-in'],sample:[['Assessment and goal setting','Day 1'],['Plan written around you','Week 1'],['Every set coached and spotted','Each session'],['Progress check-in','Weekly']],expect:['The fastest, safest progress','Every set coached and spotted','Plan and diet adjusted every week'],book:'Personal training',f:['one']}
 ];
 const REVIEWS=[['Isha Singh','Civil Lines','Training with Sujeet sir has been the highlight. Exceptionally knowledgeable PT.'],['Shraddha Rastogi','Civil Lines','Women-friendly environment, and the trainers are very supportive.'],['Shreya Srivastava','Tagore Town','Free diet charts and a schedule updated every 2–3 months. A big plus.'],['Harsh Mishra','Tagore Town','The hygiene is truly impressive. Floor, washrooms and machines always maintained.'],['Kishfa Queen','Civil Lines','It helped me lose weight. A year in, I have seen a lot of change.'],['Akash Kumar Yadav','Tagore Town','Sakib bhaiya genuinely cares about your progress. Great form corrections.'],['Ayush Singh','Tagore Town','Charlie is very professional and always helps with proper guidance.'],['Vivek Srivastava','Civil Lines','The growth and upgrades over time show their commitment to members.']];
 const GALLERY=[['img/phone.jpg','Only place where you go offline'],['img/chalk.jpg','Built in silence'],['img/medal.jpg','Where champions are made'],['img/team.jpg','Come for the workout, stay for the vibe'],['img/cardio.jpg','The cardio deck'],['img/legpress.jpg','270 kg × 5 deep reps']];
@@ -444,7 +519,7 @@ function WeightChart({pts,target}){
 function QR({id}){let s=0;for(const c of id)s=(s*31+c.charCodeAt(0))>>>0;const N=21,cells=[];const rnd=()=>{s=(s*1103515245+12345)>>>0;return s/4294967296};
   const f=(x,y)=>x<7&&y<7||x>=N-7&&y<7||x<7&&y>=N-7;for(let y=0;y<N;y++)for(let x=0;x<N;x++){let on;if(f(x,y)){const fx=x>=N-7?x-(N-7):x,fy=y>=N-7?y-(N-7):y;on=fx===0||fy===0||fx===6||fy===6||(fx>=2&&fx<=4&&fy>=2&&fy<=4)}else on=rnd()>.52;if(on)cells.push(html`<rect x=${x} y=${y} width="1" height="1"/>`)}
   return html`<svg viewBox="-1 -1 23 23" width="168" height="168" fill="#0d0b0b" aria-label="Check-in pass">${cells}</svg>`}
-const Sheet=({close,label,children})=>html`<div class="scrim" onClick=${close}></div><div class="sheet" role="dialog" aria-label=${label}><div class="grab"></div>${children}</div>`;
+const Sheet=({close,label,children,wide})=>html`<div class="scrim" onClick=${close}></div><div class=${'sheet'+(wide?' wide':'')} role="dialog" aria-label=${label}><div class="grab"></div>${children}</div>`;
 
 /* ---------- routes ---------- */
 const PUBLIC=[['home','Home','home'],['programs','Programs','target'],['plans','Membership','card'],['book','Book a slot','cal'],['tools','Lift tools','plate'],['coaches','Coaches','users'],['branches','Branches','pin'],['gallery','Gallery','img']];
@@ -582,7 +657,7 @@ function Home({S,go,me,openLogin}){
         <div class="row" style="gap:8px"><span class="k" style="flex:0 0 auto">Busy</span><div class="bar" style="flex:1"><i style=${{width:bz*10+'%'}}></i></div><span class="k">${o.open?(bz>=7?'Peak':bz>=4?'Moderate':'Quiet'):'Closed'}</span></div></div></a>`})}</div>
 
     <div class="sec-head"><div class="stack" style="gap:8px"><span class="k">Programs</span><h2 class="h2">Pick your <span class="it">goal.</span></h2></div><a class="btn sm ghost" href="#programs">Find mine</a></div>
-    <div class="hscroll">${PROGRAMS.map(p=>html`<a class="photo" href="#programs" style="min-height:300px;text-decoration:none"><img src=${p.img} alt="" loading="lazy"/><div class="cap"><span class="k brass">${p.s}</span><b class="h3" style="font-size:26px">${p.n}</b></div></a>`)}</div>
+    <div class="hscroll">${PROGRAMS.map(p=>html`<a class="photo" href="#programs" onClick=${()=>{window.__openProg=p.id}} style="min-height:300px;text-decoration:none"><img src=${p.img} alt="" loading="lazy"/><div class="cap"><span class="k brass">${p.s}</span><b class="h3" style="font-size:26px">${p.n}</b></div></a>`)}</div>
 
     <div class="sec-head"><div class="stack" style="gap:8px"><span class="k">Coaches</span><h2 class="h2">The team <span class="it">in black.</span></h2></div><a class="btn sm ghost" href="#coaches">All coaches</a></div>
     <div class="g4">${Object.values(TR).map(t=>html`<a class="photo" href="#coaches" style="min-height:clamp(220px,26vw,320px);text-decoration:none"><img src=${t.img} alt="" loading="lazy"/><div class="cap"><span class="k brass">${BR[t.branch].name}</span><b style="font:italic 400 34px/1 var(--f-s)">${t.name}</b><span class="muted" style="font-size:13px">${t.spec}</span></div></a>`)}</div>
@@ -614,27 +689,108 @@ function Home({S,go,me,openLogin}){
   </div>`;
 }
 
+const PQ=[
+  {k:'goal',q:'What do you want most?',sub:'Pick the one that matters right now.',o:[['lose','Lose fat','flame','Drop weight and keep it off'],['build','Build muscle','dumb','Size, shape and strength'],['strong','Get stronger','trophy','Lift more on the big three'],['fit','Get fit & healthy','target','Feel better, move better'],['women','Tone & strength','star','A women-focused strength plan']]},
+  {k:'exp',q:'How long have you trained?',sub:'Be honest. Your coach starts you at the right level.',o:[['new','New to the gym','user','Never trained, or a long break'],['some','Under a year','bolt','I know the basic machines'],['pro','More than a year','trophy','I already train with a plan']]},
+  {k:'days',q:'How many days a week can you come?',sub:'Showing up beats going hard. Pick what you can keep.',o:[[3,'2–3 days','cal','Busy weeks'],[4,'4 days','cal','A steady routine'],[5,'5–6 days','cal','All in']]},
+  {k:'guide',q:'How much coaching do you want?',sub:'Every plan already includes a free workout chart and diet plan.',o:[['self','My own plan','card','A chart I follow myself'],['guided','Floor coaching','users','Coaches check my form'],['one','A personal trainer','user','A coach beside me every set']]}
+];
+const GMAP={lose:'fat',build:'muscle',strong:'power',fit:'begin',women:'women'};
+const NEAR={fit:'fat',lose:'women',build:'power',strong:'muscle',women:'fat'};
+const bmiCat=b=>b<18.5?'Below healthy range':b<23?'Healthy range':b<25?'Overweight range':'Obese range';
+function matchScores(A,bmi){return PROGRAMS.map(p=>{let sc=0;const why=[];const gl=PQ[0].o.find(o=>o[0]===A.goal);
+  if(p.id==='pt'){if(A.guide==='one'){sc+=62;why.push('A coach beside you on every set')}else sc+=8}
+  else{if(GMAP[A.goal]===p.id){sc+=45;why.push('Built for your goal: '+(gl?gl[1].toLowerCase():''))}else if(NEAR[A.goal]===p.id)sc+=22;if(A.guide!=='one')sc+=15}
+  if(p.lv.includes(A.exp)){sc+=20;why.push(A.exp==='new'?'Starts at a beginner pace':'Matches your training experience')}else sc+=4;
+  const dd=Math.abs(p.days-(A.days||4));sc+=Math.max(0,15-dd*6);if(dd===0)why.push(p.days+' days a week, as you planned');
+  if(bmi){if(A.goal==='lose'&&bmi<18.5&&p.id==='muscle'){sc+=30;why.push('Your BMI suggests building muscle first')}if(A.goal==='fit'&&bmi>=25&&p.id==='fat'){sc+=28;why.push('Your BMI suggests starting with fat loss')}}
+  if(!why.length)why.push('A balanced plan for where you are now');
+  return{p,pct:Math.max(12,Math.min(98,Math.round(sc))),why}}).sort((a,b)=>b.pct-a.pct)}
+const PStats=({p})=>html`<div class="pstats"><div><span class="k">Days / week</span><b class="num">${p.id==='pt'?'3–6':p.days}</b></div><div><span class="k">Session</span><b class="num">${p.mins}<small> min</small></b></div><div><span class="k">Intensity</span><span class="meter" role="img" aria-label=${'Intensity '+p.int+' of 5'}>${[1,2,3,4,5].map(i=>html`<i class=${i<=p.int?'on':''}></i>`)}</span></div><div><span class="k">Level</span><b style="font:600 15px/1.1 var(--f-b)">${p.level}</b></div></div>`;
+
 function Programs({go,me}){
-  const [h,setH]=useState(172),[w,setW]=useState(84),[g,setG]=useState('lose');
-  const bmi=w/((h/100)**2);const cat=bmi<18.5?'Below healthy range':bmi<23?'Healthy range':bmi<25?'Overweight range':'Obese range';
-  let rk={lose:'fat',build:'muscle',strong:'power',fit:'begin'}[g];if(g==='lose'&&bmi<18.5)rk='muscle';if(g==='fit'&&bmi>=25)rk='fat';
-  const R=PROGRAMS.find(p=>p.id===rk);const valid=h>=120&&h<=230&&w>=30&&w<=250;
-  return html`<div class="stack view" style="gap:20px">
-    <div class="stack" style="gap:10px"><span class="k brass">Programs</span><h1 class="h1">Find your <span class="it">first program.</span></h1><p class="lead">Every membership includes a personalised workout chart. Start here and your trainer fine-tunes it on day one.</p></div>
-    <div class="g2 st" style="align-items:stretch">
-      <div class="card stack">
-        <div class="g2"><label class="field" for="pH"><span>Height</span><div class="input"><input id="pH" type="number" inputmode="decimal" value=${h} onInput=${e=>setH(+e.target.value)}/><em>cm</em></div></label>
-          <label class="field" for="pW"><span>Weight</span><div class="input"><input id="pW" type="number" inputmode="decimal" value=${w} onInput=${e=>setW(+e.target.value)}/><em>kg</em></div></label></div>
-        <span class="k">Your goal</span>
-        <div class="seg" role="group" aria-label="Goal">${Object.entries(GOALS).map(([k,l])=>html`<button aria-pressed=${g===k} onClick=${()=>setG(k)}>${l}</button>`)}</div>
-        <div class="row between" style="align-items:flex-end;margin-top:6px"><div><span class="k">Your BMI</span><div class="big num" style="font-size:64px">${valid?bmi.toFixed(1):'–'}</div></div><span style="font:italic 400 24px/1 var(--f-s);color:var(--brass)">${valid?cat:'Check your numbers'}</span></div>
-        <div class="scale-bar" aria-hidden="true"><i style="left:0;width:22.5%;background:#6b7f9e;border-radius:999px 0 0 999px"></i><i style="left:22.5%;width:22.5%;background:var(--ok)"></i><i style="left:45%;width:10%;background:var(--brass)"></i><i style="left:55%;width:45%;background:var(--ember);border-radius:0 999px 999px 0"></i><b style=${{left:Math.min(100,Math.max(0,(bmi-14)/20*100))+'%'}}></b></div>
-        <span class="demo-flag">Asian-Indian BMI cut-offs · healthy 18.5–22.9 · BMI does not see muscle</span>
-      </div>
-      <div class="photo" style="min-height:340px"><img src=${R.img} alt=""/><div class="cap"><span class="k brass">Start with</span><b style="font:900 clamp(40px,4vw,60px)/.9 var(--f-d);text-transform:uppercase">${R.n}</b><p style="margin:0;color:var(--chalk);opacity:.85;max-width:44ch">${R.d}</p><div class="row wrap"><a class="btn" href="#book">Book this program</a>${me&&html`<a class="btn ghost" href="#train">See my plan</a>`}</div></div></div>
+  const [step,setStep]=useState(0);const [A,setA]=useState({});const [h,setH]=useState('');const [w,setW]=useState('');
+  const [res,setRes]=useState(()=>{try{const r=JSON.parse(localStorage.getItem('twd-quiz')||'null');return r&&r.A&&r.A.goal?r:null}catch(e){return null}});
+  const [filter,setFilter]=useState('all');const [open,setOpen]=useState(()=>{const x=window.__openProg||null;window.__openProg=null;return x});
+  const quizRef=useRef(),listRef=useRef();
+  const bmiOf=(hh,ww)=>{const H=+hh,W=+ww;return H>=120&&H<=230&&W>=30&&W<=250?W/((H/100)**2):null};
+  const scrollTo=r=>r.current&&r.current.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});
+  const finishQuiz=withBody=>{const r={A,bmi:withBody?bmiOf(h,w):null};setRes(r);try{localStorage.setItem('twd-quiz',JSON.stringify(r))}catch(e){}};
+  const pick=(k,v)=>{setA(a=>({...a,[k]:v}));setTimeout(()=>setStep(x=>Math.min(4,x+1)),RM?0:240)};
+  const restart=()=>{setRes(null);setA({});setStep(0);setH('');setW('');try{localStorage.removeItem('twd-quiz')}catch(e){}scrollTo(quizRef)};
+  const ranked=res?matchScores(res.A,res.bmi):null;const pctOf=id=>ranked?ranked.find(r=>r.p.id===id).pct:0;
+  const book=p=>{window.__prefill={goal:p.book};go('book')};
+  const FIL=[['all','All'],['lose','Lose fat'],['build','Muscle'],['strong','Strength'],['new','Beginners'],['women','Women'],['one','1-on-1']];
+  const list=PROGRAMS.filter(p=>filter==='all'||p.f.includes(filter));const sorted=ranked?[...list].sort((a,b)=>pctOf(b.id)-pctOf(a.id)):list;
+  const Q=PQ[step];const bmiNow=bmiOf(h,w);const top=ranked&&ranked[0];
+  const op=open&&PROGRAMS.find(x=>x.id===open);
+  return html`<div class="stack view" style="gap:22px">
+    <header class="prog-hero">
+      <div class="stack" style="gap:14px"><span class="k brass">Programs</span><h1 class="h1">Find the plan that <span class="it">fits you.</span></h1>
+        <p class="lead" style="color:var(--chalk);opacity:.85">Six programs, built and coached at both branches. Answer four questions and we match you in 30 seconds, or browse them all.</p>
+        <div class="row wrap"><button class="btn" onClick=${()=>scrollTo(quizRef)}>${res?'See my match':'Take the 30-second quiz'} ${I('arrow',16)}</button><button class="btn ghost" onClick=${()=>scrollTo(listRef)}>Browse all six</button></div></div>
+      <div class="ph-stats"><div><b>6</b><span class="k">programs</span></div><div><b>Free</b><span class="k">chart + diet</span></div><div><b>4</b><span class="k">named coaches</span></div></div>
+    </header>
+
+    <section class="quiz" ref=${quizRef} aria-label="Program matcher">
+      ${!res?html`<div><div class="row between wrap"><span class="k brass">Program matcher · step ${step+1} of 5</span>${step>0&&html`<button class="btn sm ghost" onClick=${()=>setStep(step-1)}>${I('back',14)} Back</button>`}</div>
+          <div class="qprog" aria-hidden="true">${[0,1,2,3,4].map(i=>html`<i class=${i<step?'on':i===step?'cur':''}></i>`)}</div></div>
+        <div class="qbody" key=${step}>
+          ${step<4?html`<h2 class="h2">${Q.q}</h2><p class="lead">${Q.sub}</p>
+            <div class=${'opts n'+Q.o.length} role="group" aria-label=${Q.q}>${Q.o.map(([v,l,ic,sub])=>html`<button class="opt" aria-pressed=${A[Q.k]===v} onClick=${()=>pick(Q.k,v)}><span class="oic">${I(ic,22)}</span><b>${l}</b><small>${sub}</small><span class="ock">${I('check',14)}</span></button>`)}</div>`
+          :html`<h2 class="h2">Add your height and weight?</h2><p class="lead">Optional. We check your BMI with the Asian-Indian cut-offs and fine-tune your match.</p>
+            <div class="g2" style="max-width:520px"><label class="field" for="qH"><span>Height</span><div class="input"><input id="qH" type="number" inputmode="decimal" placeholder="172" value=${h} onInput=${e=>setH(e.target.value)}/><em>cm</em></div></label><label class="field" for="qW"><span>Weight</span><div class="input"><input id="qW" type="number" inputmode="decimal" placeholder="84" value=${w} onInput=${e=>setW(e.target.value)}/><em>kg</em></div></label></div>
+            ${bmiNow?html`<span class="pill" style="justify-self:start">BMI ${bmiNow.toFixed(1)} · ${bmiCat(bmiNow)}</span>`:(h||w)?html`<span class="muted" style="font-size:13px">Enter height 120–230 cm and weight 30–250 kg.</span>`:''}
+            <div class="row wrap"><button class="btn" disabled=${!!(h||w)&&!bmiNow} onClick=${()=>finishQuiz(true)}>Show my match ${I('arrow',16)}</button><button class="btn ghost" onClick=${()=>finishQuiz(false)}>Skip this step</button></div>`}
+        </div>`
+      :html`<div class="match">
+          <div class="photo match-img"><img src=${top.p.img} alt=""/><div class="cap"><span class="k brass">${top.p.s}</span><b class="h3" style="font-size:20px">${top.p.who}</b></div>
+            <div class="match-ring"><${Ring} v=${top.pct/100} size=${104} stroke=${9}><b class="num" style="font:900 30px/1 var(--f-d)">${top.pct}%</b><span class="k" style="font-size:8.5px">match</span><//></div></div>
+          <div class="stack" style="align-content:center">
+            <span class="k brass">Your best match</span><h2 style="margin:0;font:900 clamp(52px,6vw,88px)/.85 var(--f-d);text-transform:uppercase">${top.p.n}</h2>
+            <div class="list">${top.why.slice(0,4).map(x=>html`<div class="li" style="padding:10px 0"><span style="color:var(--ok)">${I('check',16)}</span><div class="t"><b style="font-weight:500">${x}</b></div></div>`)}</div>
+            ${res.bmi&&html`<span class="pill" style="justify-self:start">Your BMI ${res.bmi.toFixed(1)} · ${bmiCat(res.bmi)}</span>`}
+            <${PStats} p=${top.p}/>
+            <div class="row wrap"><button class="btn" onClick=${()=>book(top.p)}>Book a trial session ${I('arrow',16)}</button><button class="btn ghost" onClick=${()=>setOpen(top.p.id)}>See the full plan</button><button class="btn ghost sm" onClick=${restart}>Retake quiz</button></div>
+          </div></div>
+        <div class="stack" style="gap:10px"><span class="k">Also a good fit</span><div class="g2 st">${ranked.slice(1,3).map(r=>html`<button class="alt" onClick=${()=>setOpen(r.p.id)}><img src=${r.p.img} alt=""/><div><span class="k brass">${r.pct}% match</span><b class="h3">${r.p.n}</b><small class="muted">${r.p.s}</small></div><span class="muted" aria-hidden="true">›</span></button>`)}</div></div>`}
+    </section>
+
+    <div class="sec-head" ref=${listRef} style="scroll-margin-top:90px"><div class="stack" style="gap:8px"><span class="k">${ranked?'Ranked for you':'All programs'}</span><h2 class="h2">Every <span class="it">program.</span></h2></div>
+      <div class="chips" role="group" aria-label="Filter programs">${FIL.map(([k,l])=>html`<button aria-pressed=${filter===k} onClick=${()=>setFilter(k)}>${l}</button>`)}</div></div>
+    <div class="pgrid">${sorted.map((p,i)=>html`<article class="pcard" key=${p.id} style=${{animationDelay:i*.05+'s'}}>
+      <button class="pc-img" onClick=${()=>setOpen(p.id)} aria-label=${'View the '+p.n+' plan'}><img src=${p.img} alt="" loading="lazy"/><span class="pill solid pc-lv">${p.level}</span>${ranked&&html`<span class="pc-pct num">${pctOf(p.id)}%<small>match</small></span>`}</button>
+      <div class="pc-body"><span class="k brass">${p.s}</span><h3 class="h3" style="font-size:28px">${p.n}</h3><p class="muted" style="margin:0;font-size:14px">${p.d}</p><${PStats} p=${p}/>
+        <div class="row wrap" style="gap:6px">${p.tags.map(t=>html`<span class="pill">${t}</span>`)}</div>
+        <div class="row" style="gap:8px;margin-top:auto"><button class="btn sm" style="flex:1" onClick=${()=>setOpen(p.id)}>View plan</button><button class="btn sm ghost" style="flex:1" onClick=${()=>book(p)}>Book trial</button></div></div></article>`)}</div>
+    ${!sorted.length&&html`<p class="muted">No programs match that filter.</p>`}
+
+    <div class="g2 st" style="align-items:start">
+      <div class="card"><span class="k">Questions</span><div class="faq">
+        <details><summary>Can I switch programs later?</summary><p>Yes. Tell your coach and they rewrite your chart. Your history stays in the app.</p></details>
+        <details><summary>Is the workout chart really free?</summary><p>Yes. Every membership includes a personalised workout chart and diet plan, updated every 2–3 months.</p></details>
+        <details><summary>I have never trained. Where do I start?</summary><p>Beginner start. Three short sessions a week on machines first, with a coach showing you every move.</p></details>
+        <details><summary>Can I train at both branches?</summary><p>Yes. Every plan opens Tagore Town and Civil Lines.</p></details>
+      </div></div>
+      <div class="card hot" style="align-content:space-between;min-height:100%"><div class="stack" style="gap:10px"><span class="k brass">Not sure yet?</span><b class="h2">Try a session <span class="it">first.</span></b><p class="muted" style="margin:0">Book a trial slot at either branch. A coach walks you through the floor and the program that fits.</p></div>
+        <div class="row wrap"><button class="btn" onClick=${()=>go('book')}>Book a trial ${I('arrow',16)}</button>${me&&html`<a class="btn ghost" href="#train">See my current plan</a>`}</div></div>
     </div>
-    <div class="sec-head"><h2 class="h2">All <span class="it">programs</span></h2></div>
-    <div class="g3">${PROGRAMS.map(p=>html`<div class="card" style="padding:0;overflow:hidden;gap:0"><div class="photo" style="border-radius:0;border:0;min-height:180px"><img src=${p.img} alt="" loading="lazy"/></div><div class="stack" style="padding:18px;gap:8px"><span class="k brass">${p.s}</span><b class="h3">${p.n}</b><p class="muted" style="margin:0;font-size:14px">${p.d}</p><div class="row between"><span class="pill">${p.who}</span><a class="btn sm ghost" href=${wa('Hi, I want to join the '+p.n+' program at The Weight Date')} target="_blank" rel="noopener">Enquire</a></div></div></div>`)}</div>
+
+    ${op&&html`<${Sheet} wide=${true} close=${()=>setOpen(null)} label=${op.n+' plan'}>
+      <div class="pd-head"><img src=${op.img} alt=""/><button class="x-btn pd-x" aria-label="Close" onClick=${()=>setOpen(null)}>${I('x',14)}</button>
+        <div class="pd-cap"><span class="k brass">${op.s}${ranked?' · '+pctOf(op.id)+'% match':''}</span><h2 style="margin:0;font:900 clamp(44px,6vw,72px)/.85 var(--f-d);text-transform:uppercase">${op.n}</h2></div></div>
+      <div class="pd-body stack">
+        <p class="lead" style="color:var(--chalk)">${op.d}</p><${PStats} p=${op}/>
+        <span class="k">Your week</span>
+        <div class="week">${['Mon','Tue','Wed','Thu','Fri','Sat'].map((d,i)=>html`<div class=${/Rest|Walk/.test(op.week[i])?'off':''}><span class="k">${d}</span><b>${op.week[i]}</b></div>`)}<div class="off"><span class="k">Sun</span><b>Closed</b></div></div>
+        <div class="g2 st" style="align-items:start">
+          <div class="card" style="background:var(--ink)"><span class="k">${op.id==='pt'?'How it works':'A sample session'}</span><div class="list">${op.sample.map(([n,r],i)=>html`<div class="li"><span class="k" style="width:22px">${String(i+1).padStart(2,'0')}</span><div class="t"><b>${n}</b></div><span class="pill num">${r}</span></div>`)}</div></div>
+          <div class="stack"><div class="card" style="background:var(--ink)"><span class="k">What to expect</span>${op.expect.map(x=>html`<span class="row" style="gap:10px;align-items:flex-start;font-size:14px"><span style="color:var(--brass);flex:0 0 auto;margin-top:2px">${I('star',14)}</span>${x}</span>`)}</div>
+            <div class="card" style="background:var(--ink)"><div class="row"><div class="avatar" style=${{width:'60px',height:'60px',flex:'0 0 60px',backgroundImage:'url('+TR[op.coach].img+')'}}></div><div><span class="k brass">Usually coached by</span><b style="display:block;font:italic 400 28px/1.05 var(--f-s)">${TR[op.coach].name}</b><small class="muted">${TR[op.coach].spec} · ${BR[TR[op.coach].branch].name}</small></div></div></div></div>
+        </div>
+        <div class="row wrap"><button class="btn" onClick=${()=>{setOpen(null);book(op)}}>Book a trial session ${I('arrow',16)}</button><a class="btn ghost" href=${wa('Hi, I want to know more about the '+op.n+' program at The Weight Date')} target="_blank" rel="noopener">Ask on WhatsApp</a></div>
+        <span class="demo-flag">Sample week · your trainer adjusts it to you on day one</span>
+      </div><//>`}
   </div>`;
 }
 
@@ -669,7 +825,7 @@ function Plans({say,me}){
 function Book({me,up,say}){
   const days=[];{const d=nowIST();for(let i=0;days.length<6;i++){const x=addDays(d,i);if(x.getDay()!==0)days.push(iso(x))}}
   const [day,setDay]=useState(days[0]);const [br,setBr]=useState(me?me.branch:'tt');const [slot,setSlot]=useState('Evening');
-  const [name,setName]=useState(me?me.name:'');const [phone,setPhone]=useState(me?me.phone:'');const [goal,setGoal]=useState('Lose weight');const [done,setDone]=useState(null);const [err,setErr]=useState('');
+  const [name,setName]=useState(me?me.name:'');const [phone,setPhone]=useState(me?me.phone:'');const [goal,setGoal]=useState(()=>{const g=window.__prefill&&window.__prefill.goal;window.__prefill=null;return g||'Lose weight'});const [done,setDone]=useState(null);const [err,setErr]=useState('');
   const hr=nowIST().getHours();const closed=hh=>br==='tt'&&hh>=12&&hh<16;
   const submit=()=>{setErr('');
     if(!me){if(!name.trim()){setErr('Add your name so the desk knows who is coming.');return}if(phone.replace(/\D/g,'').length<10){setErr('Enter a 10-digit phone number.');return}}
@@ -684,7 +840,7 @@ function Book({me,up,say}){
         <span class="k">Day</span><div class="daystrip" style="grid-template-columns:repeat(6,1fr)" role="group" aria-label="Day">${days.map(d=>html`<button aria-pressed=${d===day} onClick=${()=>setDay(d)}>${DOW[parse(d).getDay()]}<b>${parse(d).getDate()}</b></button>`)}</div>
         <span class="k">Slot</span><div class="g2">${['Morning','Evening'].map(s=>html`<button class=${'card '+(slot===s?'hot':'')} aria-pressed=${slot===s} onClick=${()=>setSlot(s)} style="padding:16px"><span class="k">${s}</span><span class="num" style="font:800 22px/1 var(--f-d)">${s==='Morning'?'6:00–12:00':(br==='tt'?'16:00–22:00':'12:00–22:00')}</span></button>`)}</div>
         ${!me&&html`<div class="g2"><label class="field" for="bN"><span>Your name</span><div class="input"><input id="bN" autocomplete="name" placeholder="Aman Verma" value=${name} onInput=${e=>setName(e.target.value)}/></div></label><label class="field" for="bP"><span>Phone</span><div class="input"><input id="bP" type="tel" inputmode="tel" autocomplete="tel" placeholder="98765 43210" value=${phone} onInput=${e=>setPhone(e.target.value)}/></div></label></div>`}
-        <label class="field" for="bG"><span>Goal</span><div class="input"><select id="bG" value=${goal} onChange=${e=>setGoal(e.target.value)}>${['Lose weight','Build muscle','Get strong (powerlifting)','General fitness','Personal training'].map(o=>html`<option>${o}</option>`)}</select></div></label>
+        <label class="field" for="bG"><span>Goal</span><div class="input"><select id="bG" value=${goal} onChange=${e=>setGoal(e.target.value)}>${['Lose weight','Build muscle','Get strong (powerlifting)','General fitness',"Women's strength",'Personal training'].map(o=>html`<option>${o}</option>`)}</select></div></label>
         ${err&&html`<p role="alert" style="margin:0;color:#ff8a7a">${err}</p>`}
         <button class="btn full" onClick=${submit}>${me?'Book '+slot.toLowerCase()+' slot':'Prepare my booking'}</button>
       </div>
