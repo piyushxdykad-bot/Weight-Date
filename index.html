@@ -247,6 +247,64 @@ textarea.ta{width:100%;min-height:90px;background:var(--ink);border:1px solid va
 @keyframes tin{from{opacity:0;transform:translate(-50%,10px)}}
 
 
+
+/* membership */
+.mem-hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center;padding:clamp(22px,4vw,48px);border-radius:30px;border:1px solid var(--line);background:radial-gradient(70% 90% at 85% 40%,rgba(210,49,31,.28),transparent 60%),linear-gradient(180deg,var(--steel),var(--iron));overflow:hidden}
+@media (max-width:900px){.mem-hero{grid-template-columns:1fr}}
+.mcard-wrap{perspective:1000px;display:grid;place-items:center;padding:10px 0}
+.mcard{--rx:0deg;--ry:0deg;--sx:30%;--sy:20%;position:relative;width:min(440px,100%);aspect-ratio:1.586;border-radius:22px;padding:clamp(16px,3vw,26px);display:flex;flex-direction:column;justify-content:space-between;color:var(--chalk);background:radial-gradient(120% 90% at 100% 0%,rgba(210,49,31,.55),transparent 55%),linear-gradient(135deg,#1d1716 0%,#0b0909 60%,#1a1212 100%);border:1px solid rgba(239,232,223,.16);box-shadow:0 40px 80px rgba(0,0,0,.55),inset 0 0 0 1px rgba(200,166,106,.12);transform:rotateX(var(--rx)) rotateY(var(--ry));transition:transform .5s var(--ease);overflow:hidden;animation:cardfloat 7s ease-in-out infinite}
+.mcard::after{content:"";position:absolute;inset:0;background:radial-gradient(55% 55% at var(--sx) var(--sy),rgba(255,255,255,.14),transparent 60%);pointer-events:none}
+.mcard>*:not(.mc-plate){position:relative;z-index:1}
+@keyframes cardfloat{50%{translate:0 -8px}}
+.mc-plan{display:block;font:900 clamp(34px,5vw,52px)/.9 var(--f-d);text-transform:uppercase;margin-top:6px}
+.mc-name{display:block;font:600 13px/1.2 var(--f-m);letter-spacing:.06em;margin-top:4px}
+.mc-chip{width:46px;height:34px;border-radius:7px;background:linear-gradient(135deg,#f2d79a,#c8a66a 45%,#8a6a33);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+.mc-foot{display:flex;align-items:center;gap:10px;font:600 10px/1 var(--f-m);letter-spacing:.16em;text-transform:uppercase;color:rgba(239,232,223,.7)}
+.mc-foot i{flex:1;height:1px;background:linear-gradient(90deg,var(--ember),var(--brass))}
+.mc-plate{position:absolute;right:-56px;bottom:-64px;width:230px;height:230px;opacity:.16;pointer-events:none;animation:spin 40s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ptiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding-top:10px}
+@media (max-width:1100px){.ptiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ptile{position:relative;display:grid;gap:10px;align-content:start;text-align:left;padding:20px;border-radius:24px;border:1px solid var(--line);background:var(--iron);transition:transform .4s var(--ease),border-color .3s,background .3s;min-width:0}
+.ptile:hover{transform:translateY(-3px);border-color:rgba(239,232,223,.22)}
+.ptile[aria-checked="true"]{border-color:var(--ember);background:radial-gradient(120% 100% at 100% 0%,rgba(210,49,31,.3),transparent 60%),var(--steel)}
+.ptile .mo{font:900 64px/.8 var(--f-d)}
+.ptile .mo small{font:600 11px var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--ash);margin-left:6px}
+.ptile .radio{position:absolute;top:18px;right:18px;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--ash);display:grid;place-items:center}
+.ptile[aria-checked="true"] .radio{border-color:var(--ember)}
+.ptile[aria-checked="true"] .radio::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--ember)}
+.ptag{position:absolute;top:-11px;left:18px}
+.vbar{height:6px;border-radius:6px;background:var(--graphite);overflow:hidden}
+.vbar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--brass),var(--ember))}
+.save{justify-self:start;padding:6px 10px;border-radius:999px;background:rgba(91,208,138,.12);color:var(--ok);font:600 10px/1 var(--f-m);letter-spacing:.1em;text-transform:uppercase}
+.save.off{background:var(--graphite);color:var(--ash)}
+@media (max-width:520px){.ptile{padding:16px}.ptile .mo{font-size:48px}}
+.mem-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(300px,1fr);gap:16px;align-items:start}
+@media (max-width:980px){.mem-grid{grid-template-columns:1fr}}
+.summary{position:sticky;top:20px}
+@media (max-width:980px){.summary{position:relative;top:0}}
+.perday{display:flex;align-items:baseline;gap:10px;padding:12px 14px;border-radius:14px;background:rgba(13,11,11,.55);border:1px solid var(--line)}
+.perday b{font:900 28px/1 var(--f-d);color:var(--brass)}
+.perday span{color:var(--ash);font-size:13px}
+.ptrow{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px;border-radius:18px;border:1px solid var(--line);background:var(--ink)}
+.switch{position:relative;width:52px;height:30px;border-radius:999px;background:var(--graphite);flex:0 0 auto;transition:background .3s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:var(--chalk);transition:transform .35s var(--ease)}
+.switch[aria-checked="true"]{background:var(--ember)}
+.switch[aria-checked="true"]::after{transform:translateX(22px)}
+.incl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.incl{grid-template-columns:1fr 1fr}}
+.incl>div{padding:14px;border-radius:18px;border:1px solid var(--line);background:var(--ink);display:grid;gap:6px;min-width:0}
+.incl .ic{color:var(--ember)}
+.ctable{width:100%;border-collapse:collapse;font-size:14px;min-width:520px}
+.ctable th,.ctable td{padding:14px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+.ctable th:first-child,.ctable td:first-child{text-align:left}
+.ctable thead th{font:600 10.5px/1 var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--ash)}
+.ctable tbody tr{cursor:pointer;transition:background .3s}
+.ctable tbody tr:hover{background:rgba(239,232,223,.03)}
+.ctable tbody tr.on{background:rgba(210,49,31,.1)}
+.ctable tbody tr.on td:first-child{box-shadow:inset 3px 0 0 var(--ember)}
+.tbtn{font-weight:600}
+.steps{display:flex;gap:6px}.steps i{flex:1;height:4px;border-radius:4px;background:var(--graphite)}.steps i.on{background:var(--ember)}
 /* programs */
 .prog-hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px;align-items:end;padding:clamp(22px,4vw,44px);border-radius:30px;border:1px solid var(--line);background:linear-gradient(90deg,rgba(13,11,11,.96) 20%,rgba(13,11,11,.55)),url("img/functional.jpg") 60% 50%/cover}
 .ph-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border-radius:18px;overflow:hidden;border:1px solid var(--line)}
@@ -794,31 +852,112 @@ function Programs({go,me}){
   </div>`;
 }
 
-function Plans({say,me}){
-  const [pick,setPick]=useState('m3');const [conf,setConf]=useState(false);const P=PLANS.find(p=>p.id===pick);
-  return html`<div class="stack view" style="gap:20px">
-    <div class="stack" style="gap:10px"><span class="k brass">Membership</span><h1 class="h1">One card. <span class="it">Two floors.</span></h1><p class="lead">Train near home in the morning and near work in the evening. Every plan includes both branches, a workout chart and a diet plan.</p></div>
-    <div class="g4">${PLANS.map(p=>html`<button class=${'card '+(pick===p.id?'hot':'')} aria-pressed=${pick===p.id} onClick=${()=>setPick(p.id)} style="gap:10px">
-      <div class="row between"><span class="k">${p.name}</span>${p.tag&&html`<span class="pill solid">${p.tag}</span>`}</div>
-      <div class="row" style="gap:6px;align-items:baseline"><span style="font:800 24px/1 var(--f-d);color:var(--brass)">₹</span><span class="num" style="font:900 clamp(44px,4.4vw,64px)/.85 var(--f-d)">${Math.round(p.price).toLocaleString('en-IN')}</span></div>
-      <span class="muted" style="font-size:13px">${p.months>1?inr(p.price/p.months)+' a month':'Pay monthly'}</span></button>`)}</div>
-    <div class="g2 st">
-      <div class="card"><span class="k">Every plan includes</span><div class="list">${['Both branches: Tagore Town & Civil Lines','Personalised workout chart, free','Diet plan from certified trainers, free','Cardio, functional & powerlifting zones','The member app: plan, logs, goals, booking','Freeze up to 15 days when you travel'].map(t=>html`<div class="li"><span style="color:var(--ok)">${I('check',18)}</span><div class="t"><b style="font-weight:500">${t}</b></div></div>`)}</div></div>
-      <div class="card hot" style="align-content:space-between"><div class="stack"><span class="k brass">Your pick</span><b class="big">${P.name}</b><span class="num" style="font:900 48px/1 var(--f-d)">${inr(P.price)}</span><span class="muted">${P.months} month${P.months>1?'s':''} · both branches</span></div>
-        <div class="stack" style="gap:10px"><button class="btn full" onClick=${()=>setConf(true)}>Join with ${P.name}</button><a class="btn ghost full" href=${wa('Hi, I have a question about the '+P.name+' membership')} target="_blank" rel="noopener">Ask on WhatsApp</a><span class="demo-flag">Sample prices · confirm at the desk</span></div></div>
+const PT_MONTH=3000;
+function AnimNum({v,fmt}){const f=fmt||(x=>Math.round(x).toLocaleString('en-IN'));const [d,setD]=useState(v);const prev=useRef(v);
+  useEffect(()=>{if(RM){setD(v);prev.current=v;return}const a=prev.current,b=v,t0=performance.now();let raf;const st=t=>{const k=Math.min(1,(t-t0)/650);setD(a+(b-a)*(1-Math.pow(1-k,4)));if(k<1)raf=requestAnimationFrame(st)};raf=requestAnimationFrame(st);return()=>{cancelAnimationFrame(raf);prev.current=b}},[v]);
+  return html`<span class="num">${f(d)}</span>`}
+function MemberCard({plan,start,end,name,pt}){const ref=useRef();
+  const mv=e=>{if(RM||!ref.current)return;const r=ref.current.getBoundingClientRect();const x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;const st=ref.current.style;st.setProperty('--ry',((x-.5)*18)+'deg');st.setProperty('--rx',((.5-y)*14)+'deg');st.setProperty('--sx',x*100+'%');st.setProperty('--sy',y*100+'%')};
+  const lv=()=>{if(!ref.current)return;ref.current.style.setProperty('--ry','0deg');ref.current.style.setProperty('--rx','0deg')};
+  return html`<div class="mcard-wrap" onPointerMove=${mv} onPointerLeave=${lv}><div class="mcard" ref=${ref} role="img" aria-label=${plan.name+' membership card, valid '+fmtD(start)+' to '+fmtD(end)}>
+    <svg class="mc-plate" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="96" fill="none" stroke="#d2311f" stroke-width="8"/><circle cx="100" cy="100" r="70" fill="none" stroke="#c8a66a" stroke-width="2"/><circle cx="100" cy="100" r="22" fill="none" stroke="#efe8df" stroke-width="6"/><text x="100" y="62" text-anchor="middle" fill="#efe8df" font-family="Big Shoulders Display,Impact,sans-serif" font-weight="900" font-size="30">25 KG</text></svg>
+    <div class="row between"><span class="brand" style="padding:0;font-size:18px"><${Logo} s=${26}/>Weight<i style="font-size:18px">date</i></span><span class="mc-chip" aria-hidden="true"></span></div>
+    <div><span class="k" style="color:rgba(239,232,223,.6)">Membership</span><b class="mc-plan">${plan.name}${pt?html` <span class="it" style="font-size:.48em">+ PT</span>`:''}</b></div>
+    <div class="row between" style="align-items:flex-end;gap:16px"><div style="min-width:0"><span class="k" style="color:rgba(239,232,223,.55)">Member</span><b class="mc-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name||'Your name'}</b></div><div style="text-align:right;flex:0 0 auto"><span class="k" style="color:rgba(239,232,223,.55)">Valid</span><b class="mc-name num">${fmtD(start)} – ${fmtD(end)}</b></div></div>
+    <div class="mc-foot"><span>Tagore Town</span><i></i><span>Civil Lines</span></div>
+  </div></div>`}
+
+function JoinSheet({P,pt,start,end,total,br,me,close,up,say}){
+  const [st,setSt]=useState(me?2:1);const [name,setName]=useState(me?me.name:'');const [phone,setPhone]=useState(me?me.phone:'');const [err,setErr]=useState('');
+  const msg=(me?'Hi, I would like to renew my membership with the ':'Hi, I would like to join The Weight Date with the ')+P.name+' plan'+(pt?' + personal training':'')+'.\nName: '+name+'\nPhone: '+phone+'\nHome branch: '+BR[br].name+'\nStart: '+fmtDL(start)+'\nValid till: '+fmtDL(end)+'\nTotal: '+inr(total)+' (sample price)';
+  const next=()=>{setErr('');if(!name.trim()){setErr('Add your name so the desk knows who is joining.');return}if(phone.replace(/\D/g,'').length<10){setErr('Enter a 10-digit mobile number.');return}setSt(2)};
+  return html`<${Sheet} close=${close} label=${me?'Renew membership':'Join'}><div class="stack">
+    <div class="row between"><h3 class="h3">${me?'Renew':'Join'} with ${P.name}</h3><button class="x-btn" aria-label="Close" onClick=${close}>${I('x',14)}</button></div>
+    ${!me&&html`<div class="steps" aria-hidden="true"><i class="on"></i><i class=${st>1?'on':''}></i></div><span class="k">Step ${st} of 2 · ${st===1?'Your details':'Review and send'}</span>`}
+    ${st===1?html`<label class="field" for="jN"><span>Full name</span><div class="input"><input id="jN" autocomplete="name" placeholder="Aman Verma" value=${name} onInput=${e=>setName(e.target.value)}/></div></label>
+      <label class="field" for="jP"><span>Mobile number</span><div class="input"><em>+91</em><input id="jP" type="tel" inputmode="tel" autocomplete="tel" placeholder="98765 43210" value=${phone} onInput=${e=>setPhone(e.target.value)}/></div></label>
+      ${err&&html`<p role="alert" style="margin:0;color:#ff8a7a">${err}</p>`}<button class="btn full" onClick=${next}>Review ${I('arrow',16)}</button>`
+    :html`<div class="list"><div class="li"><div class="t"><b>Plan</b><small>Both branches</small></div><b>${P.name}${pt?' + PT':''}</b></div><div class="li"><div class="t"><b>Dates</b><small>${Math.round(P.months*30.4)} days</small></div><b class="num">${fmtD(start)} – ${fmtD(end)}</b></div><div class="li"><div class="t"><b>Home branch</b></div><b>${BR[br].name}</b></div><div class="li"><div class="t"><b>Total</b><small>Sample price</small></div><b class="num" style="font:900 26px/1 var(--f-d)">${inr(total)}</b></div></div>
+      <pre style="margin:0;white-space:pre-wrap;font:500 12.5px/1.6 var(--f-m);background:var(--ink);border:1px solid var(--line);border-radius:14px;padding:14px;overflow-wrap:anywhere">${msg}</pre>
+      <a class="btn full brass" href=${wa(msg)} target="_blank" rel="noopener">${I('msg',16)} Send to the desk on WhatsApp</a>
+      ${me&&html`<button class="btn full" onClick=${()=>{up(s=>{const m=s.members.find(x=>x.id===me.id);const base=m.plan.end>TODAY?m.plan.end:TODAY;m.plan={...m.plan,id:P.id,name:P.name,end:iso(addDays(parse(base),Math.round(P.months*30.4))),price:P.price};m.payments.unshift({d:TODAY,amt:total,what:P.name+(pt?' + PT':'')+' renewal',mode:'Demo'})});confetti();say('Renewed · demo, no payment taken');close()}}>Renew in the app (demo)</button>`}
+      ${!me&&html`<button class="btn ghost full" onClick=${()=>setSt(1)}>${I('back',14)} Edit details</button>`}
+      <span class="muted" style="font-size:13px">The desk confirms your start date and payment. If WhatsApp does not open, call +91 88406 55898.</span>`}
+  </div><//>`}
+
+function Plans({go,me,say,up}){
+  const tomorrow=()=>{let d=addDays(nowIST(),1);if(d.getDay()===0)d=addDays(d,1);return iso(d)};
+  const [pick,setPick]=useState('m3');const [pt,setPt]=useState(false);const [br,setBr]=useState(me?me.branch:'tt');const [join,setJoin]=useState(false);
+  const [start,setStart]=useState(()=>me&&me.plan.end>TODAY?me.plan.end:tomorrow());
+  const P=PLANS.find(p=>p.id===pick);const days=Math.round(P.months*30.4);const end=iso(addDays(parse(start),days));
+  const total=P.price+(pt?PT_MONTH*P.months:0);const save=1500*P.months-P.price;
+  const idx=PLANS.findIndex(p=>p.id===pick);
+  const keys=e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();setPick(PLANS[(idx+1)%PLANS.length].id)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();setPick(PLANS[(idx+PLANS.length-1)%PLANS.length].id)}};
+  const left=me?daysBetween(TODAY,me.plan.end):0;
+  return html`<div class="stack view" style="gap:22px">
+    <header class="mem-hero">
+      <div class="stack" style="gap:16px"><span class="k brass">Membership</span><h1 class="h1">One card. <span class="it">Two floors.</span></h1>
+        <p class="lead" style="color:var(--chalk);opacity:.85">Train near home in the morning and near work in the evening. Every plan opens both branches and includes a free workout chart and diet plan.</p>
+        <div class="row wrap" style="gap:8px"><span class="pill ok">Both branches, every plan</span><span class="pill">★ 5.0 · 837 Google reviews</span></div>
+        ${me&&html`<div class="card" style="background:rgba(13,11,11,.7);grid-template-columns:auto 1fr;align-items:center;gap:14px"><${Ring} v=${Math.max(0,left)/Math.max(1,daysBetween(me.plan.start,me.plan.end))} size=${60} stroke=${6}><b class="num" style="font:800 16px/1 var(--f-d)">${Math.max(0,left)}</b><//><div><span class="k brass">Your ${me.plan.name} plan</span><div style="font-weight:600">${left>0?left+' days left · ends '+fmtD(me.plan.end):'Expired on '+fmtD(me.plan.end)}</div><small class="muted">A renewal starts the day your current plan ends.</small></div></div>`}
+      </div>
+      <${MemberCard} plan=${P} start=${start} end=${end} name=${me?me.name:''} pt=${pt}/>
+    </header>
+
+    <section class="stack" style="gap:14px">
+      <div class="sec-head" style="margin-top:0"><div class="stack" style="gap:8px"><span class="k">Step 1 · Choose how long</span><h2 class="h2">Longer plans, <span class="it">lower price.</span></h2></div></div>
+      <div class="ptiles" role="radiogroup" aria-label="Plan length" onKeyDown=${keys}>${PLANS.map(p=>{const pm=p.price/p.months;const sv=1500*p.months-p.price;return html`<button class="ptile" role="radio" aria-checked=${pick===p.id} tabIndex=${pick===p.id?0:-1} onClick=${()=>setPick(p.id)}>
+        ${p.tag&&html`<span class="pill solid ptag">${p.tag}</span>`}<span class="radio" aria-hidden="true"></span>
+        <span class="k">${p.name}</span><div class="mo num">${p.months}<small>${p.months>1?'months':'month'}</small></div>
+        <b class="num" style="font:900 32px/1 var(--f-d)">${inr(p.price)}</b>
+        <div class="stack" style="gap:6px"><div class="vbar" aria-hidden="true"><i style=${{width:pm/1500*100+'%'}}></i></div><span class="muted num" style="font-size:12px">${inr(pm)} a month · ${inr(p.price/Math.round(p.months*30.4))} a day</span></div>
+        ${sv?html`<span class="save">Save ${inr(sv)} · ${Math.round(sv/(1500*p.months)*100)}%</span>`:html`<span class="save off">Pay as you go</span>`}</button>`})}</div>
+    </section>
+
+    <div class="mem-grid">
+      <div class="stack">
+        <div class="card stack"><span class="k">Step 2 · Make it yours</span>
+          <div class="g2"><label class="field" for="mStart"><span>Start date</span><div class="input"><input id="mStart" type="date" min=${TODAY} value=${start} onInput=${e=>e.target.value&&setStart(e.target.value)}/></div></label>
+            <label class="field" for="mBr"><span>Home branch</span><div class="input"><select id="mBr" value=${br} onChange=${e=>setBr(e.target.value)}>${Object.entries(BR).map(([k,b])=>html`<option value=${k}>${b.name}</option>`)}</select></div></label></div>
+          ${parse(start).getDay()===0&&html`<span class="muted" style="font-size:13px">Both branches are closed on Sunday, so your first visit is Monday.</span>`}
+          <div class="ptrow"><div class="row" style="min-width:0"><div class="avatar" style="background-image:url(img/coach-arms.jpg)"></div><div style="min-width:0"><b>Add personal training</b><div class="muted" style="font-size:13px">A coach beside you every session · sample ${inr(PT_MONTH)} a month</div></div></div>
+            <button class="switch" role="switch" aria-checked=${pt} aria-label="Add personal training" onClick=${()=>setPt(!pt)}></button></div>
+        </div>
+        <div class="card stack"><span class="k">In every plan</span><div class="incl">${[['pin','Both branches','Tagore Town & Civil Lines'],['dumb','Workout chart','Written for you, free'],['bowl','Diet plan','Built on home food, free'],['users','Floor coaching','Form checks every visit'],['flame','Member app','Plan, logs, goals, booking'],['snow','Freeze','Pause up to 15 days']].map(([ic,t,sub])=>html`<div><span class="ic">${I(ic,22)}</span><b>${t}</b><small class="muted" style="font-size:12.5px">${sub}</small></div>`)}</div></div>
+      </div>
+      <aside class="card hot summary" aria-label="Your plan summary">
+        <span class="k brass">Your plan</span>
+        <div><b class="h2">${P.name}${pt?html` <span class="it" style="font-size:.6em">+ PT</span>`:''}</b><div class="muted num" style="font-size:13px;margin-top:6px">${fmtDL(start)} → ${fmtDL(end)} · ${days} days</div></div>
+        <div class="list">
+          <div class="li"><div class="t"><b style="font-weight:500">${P.name} membership</b><small>Both branches</small></div><b class="num">${inr(P.price)}</b></div>
+          ${pt&&html`<div class="li"><div class="t"><b style="font-weight:500">Personal training</b><small>${P.months} × ${inr(PT_MONTH)} · sample</small></div><b class="num">${inr(PT_MONTH*P.months)}</b></div>`}
+          ${save>0&&html`<div class="li"><div class="t"><b style="font-weight:500;color:var(--ok)">You save vs monthly</b></div><b class="num" style="color:var(--ok)">−${inr(save)}</b></div>`}
+          <div class="li"><div class="t"><b style="font-weight:500">Workout chart + diet plan</b></div><b style="color:var(--ok)">Free</b></div>
+        </div>
+        <div class="row between" style="align-items:flex-end"><span class="k">Total</span><span style="font:900 clamp(48px,5vw,68px)/.85 var(--f-d)">₹<${AnimNum} v=${total}/></span></div>
+        <div class="perday"><b>₹<${AnimNum} v=${total/days}/></b><span>a day for both branches</span></div>
+        <button class="btn full" onClick=${()=>setJoin(true)}>${me?'Renew':'Join'} with ${P.name} ${I('arrow',16)}</button>
+        <a class="btn ghost full" href=${wa('Hi, I have a question about the '+P.name+' membership')} target="_blank" rel="noopener">Ask the desk on WhatsApp</a>
+        <span class="demo-flag">Sample prices · confirm at the desk</span>
+      </aside>
     </div>
-    <div class="card"><span class="k">Questions</span><div class="faq">
-      <details><summary>Can I train at both branches?</summary><p>Yes. Every plan opens both Tagore Town and Civil Lines.</p></details>
-      <details><summary>Are the diet and workout charts really free?</summary><p>Yes. Your trainer writes both when you join and updates them every 2–3 months.</p></details>
-      <details><summary>What are the timings?</summary><p>Tagore Town: Mon–Sat 6–12 and 16–22. Civil Lines: Mon–Sat 6:00–22:00. Both closed on Sunday.</p></details>
-      <details><summary>Can I pause my membership?</summary><p>You can freeze 7 days at a time, up to 15 days per plan, from the app.</p></details>
-      <details><summary>Is personal training extra?</summary><p>Yes. Add a dedicated coach to any plan. Ask the desk for current PT rates.</p></details>
-    </div></div>
-    ${conf&&html`<${Sheet} close=${()=>setConf(false)} label="Join"><div class="stack"><h3 class="h3">Join with ${P.name}</h3>
-      <div class="list"><div class="li"><div class="t"><b>Plan</b></div><b>${P.name}</b></div><div class="li"><div class="t"><b>Amount</b></div><b class="num">${inr(P.price)}</b></div><div class="li"><div class="t"><b>Access</b></div><b>Both branches</b></div></div>
-      <p class="muted" style="margin:0;font-size:14px">In the live app this opens UPI or card payment. In this demo, send the request to the desk on WhatsApp.</p>
-      <a class="btn full" href=${wa("Hi, I'd like to join The Weight Date with the "+P.name+' plan ('+inr(P.price)+').'+(me?' Member: '+me.name:''))} target="_blank" rel="noopener" onClick=${()=>{say('Opening WhatsApp');setConf(false)}}>Send to the desk</a>
-      <button class="btn ghost full" onClick=${()=>setConf(false)}>Cancel</button></div><//>`}
+
+    <div class="card"><div class="row between wrap"><span class="k">Compare the cost</span><span class="muted" style="font-size:13px">Tap a plan to pick it</span></div>
+      <div style="overflow-x:auto"><table class="ctable"><thead><tr><th scope="col">Plan</th><th scope="col">Total</th><th scope="col">Per month</th><th scope="col">Per day</th><th scope="col">You save</th></tr></thead>
+        <tbody>${PLANS.map(p=>{const d=Math.round(p.months*30.4);const sv=1500*p.months-p.price;return html`<tr class=${pick===p.id?'on':''} onClick=${()=>setPick(p.id)}><td><button class="tbtn" aria-pressed=${pick===p.id}>${p.name}</button></td><td class="num">${inr(p.price)}</td><td class="num">${inr(p.price/p.months)}</td><td class="num">${inr(p.price/d)}</td><td class="num" style=${{color:sv?'var(--ok)':'var(--ash)'}}>${sv?inr(sv)+' · '+Math.round(sv/(1500*p.months)*100)+'%':'—'}</td></tr>`})}</tbody></table></div></div>
+
+    <div class="g2 st" style="align-items:start">
+      <div class="card"><span class="k">Questions</span><div class="faq">
+        <details><summary>Can I train at both branches?</summary><p>Yes. Every plan opens Tagore Town and Civil Lines.</p></details>
+        <details><summary>Are the diet and workout charts really free?</summary><p>Yes. Your trainer writes both when you join and updates them every 2–3 months.</p></details>
+        <details><summary>What are the timings?</summary><p>Tagore Town: Mon–Sat 6–12 and 16–22. Civil Lines: Mon–Sat 6:00–22:00. Both closed on Sunday.</p></details>
+        <details><summary>Can I pause my membership?</summary><p>You can freeze 7 days at a time, up to 15 days per plan, from the app.</p></details>
+        <details><summary>Can I add personal training later?</summary><p>Yes. Add a coach to any plan at the desk. The price shown here is a sample.</p></details>
+      </div></div>
+      <div class="card" style="align-content:space-between;min-height:100%"><div class="stack" style="gap:10px"><span class="k brass">Not ready to commit?</span><b class="h2">Try a session <span class="it">first.</span></b><p class="muted" style="margin:0">Book a trial slot. A coach shows you both floors and helps you pick a plan.</p></div>
+        <div class="row wrap"><button class="btn" onClick=${()=>go('book')}>Book a trial ${I('arrow',16)}</button><button class="btn ghost" onClick=${()=>go('programs')}>Find my program</button></div></div>
+    </div>
+    ${join&&html`<${JoinSheet} P=${P} pt=${pt} start=${start} end=${end} total=${total} br=${br} me=${me} up=${up} say=${say} close=${()=>setJoin(false)}/>`}
   </div>`;
 }
 
