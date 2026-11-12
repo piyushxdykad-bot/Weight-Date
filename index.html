@@ -251,6 +251,69 @@ textarea.ta{width:100%;min-height:90px;background:var(--ink);border:1px solid va
 
 
 
+
+/* home */
+.hp-start{display:grid;gap:18px;padding:clamp(20px,4vw,40px);border-radius:30px;border:1px solid var(--line);background:radial-gradient(80% 120% at 0% 0%,rgba(210,49,31,.18),transparent 60%),var(--iron)}
+.hp-tabs{display:flex;gap:8px;flex-wrap:wrap}
+.hp-tabs button{padding:12px 18px;border-radius:999px;border:1px solid var(--line);font:600 14px/1 var(--f-b,inherit);color:var(--ash);transition:all .3s var(--ease)}
+.hp-tabs button[aria-selected="true"]{background:var(--chalk);color:var(--ink);border-color:var(--chalk)}
+.hp-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;counter-reset:s}
+@media (max-width:820px){.hp-steps{grid-template-columns:1fr}.hp-step{grid-template-columns:44px minmax(0,1fr);column-gap:14px;row-gap:4px;padding:16px 40px 16px 16px}.hp-step .ic{grid-row:span 2}.hp-step b{font-size:19px;align-self:end}.hp-n{display:none}.hp-go{top:50%;bottom:auto;transform:translateY(-50%)}.hp-step:hover .hp-go{transform:translate(4px,-50%)}}
+.hp-step{position:relative;display:grid;gap:10px;align-content:start;text-align:left;padding:20px;border-radius:22px;border:1px solid var(--line);background:var(--ink);text-decoration:none;color:inherit;transition:transform .5s var(--ease),border-color .3s;animation:qin .55s var(--ease) both;min-width:0}
+.hp-step:hover{transform:translateY(-4px);border-color:rgba(210,49,31,.5)}
+.hp-step .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:rgba(210,49,31,.14);color:var(--ember)}
+.hp-step b{font:800 22px/1 var(--f-d);text-transform:uppercase}
+.hp-step small{color:var(--ash);font-size:14px;line-height:1.45}
+.hp-n{position:absolute;top:16px;right:18px;font:900 44px/1 var(--f-d);color:rgba(239,232,223,.07)}
+.hp-go{position:absolute;right:16px;bottom:16px;color:var(--ember);transition:transform .4s var(--ease)}
+.hp-step:hover .hp-go{transform:translateX(4px)}
+.hp-live{display:grid;gap:16px}
+.blink{animation:ld 1s steps(1) infinite}
+.hp-br{display:grid;grid-template-columns:140px minmax(0,1fr);gap:16px;padding:16px;border-radius:24px;border:1px solid var(--line);background:var(--iron);text-decoration:none;color:inherit;transition:border-color .3s,transform .5s var(--ease)}
+.hp-br:hover{border-color:rgba(210,49,31,.45);transform:translateY(-3px)}
+.hp-br .photo{height:100%}
+@media (max-width:520px){.hp-br{grid-template-columns:1fr}.hp-br .photo{height:110px}}
+.hp-tip{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--ash)}
+.hp-tip b{color:var(--chalk)}
+.hp-tip svg{color:var(--brass)}
+.bento{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(190px,auto);gap:14px}
+.bt{position:relative;overflow:hidden;display:grid;align-content:end;gap:8px;padding:22px;border-radius:26px;border:1px solid var(--line);background:var(--iron);text-decoration:none;color:inherit;transition:transform .5s var(--ease),border-color .3s;min-width:0}
+a.bt:hover{transform:translateY(-4px);border-color:rgba(210,49,31,.45)}
+.bt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;transition:transform 1.4s var(--ease)}
+.bt:hover img{transform:scale(1.05)}
+.bt:has(img)::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(13,11,11,.1) 20%,rgba(13,11,11,.92))}
+.bt-c{position:relative;z-index:1;display:grid;gap:8px}
+.bt small{color:var(--ash);font-size:14px;line-height:1.45}
+.bt-h{font:900 clamp(30px,3.4vw,52px)/.92 var(--f-d);text-transform:uppercase}
+.bt-num{font:900 clamp(56px,6vw,96px)/.8 var(--f-d)}
+.bt-a{grid-column:span 2;grid-row:span 2}
+.bt-b{grid-column:span 2}
+.bt-c2,.bt-d{align-content:space-between}
+.bt-e{grid-column:span 2}
+.bt-f{grid-column:span 2;background:radial-gradient(90% 120% at 100% 0%,rgba(200,166,106,.2),transparent 60%),var(--steel)}
+.bt-route{width:100%;height:auto;margin-top:4px}
+.avs{display:flex}
+.avs span{width:54px;height:54px;border-radius:50%;background:center/cover var(--steel);border:3px solid var(--iron);margin-left:-12px;transition:transform .4s var(--ease)}
+.avs span:first-child{margin-left:0}
+.bt-e:hover .avs span{transform:translateY(-4px)}
+.bt-e:hover .avs span:nth-child(2){transition-delay:.05s}.bt-e:hover .avs span:nth-child(3){transition-delay:.1s}.bt-e:hover .avs span:nth-child(4){transition-delay:.15s}
+@media (max-width:960px){.bento{grid-template-columns:repeat(2,minmax(0,1fr))}.bt-a{grid-row:span 1;min-height:320px}}
+@media (max-width:560px){.bento{grid-template-columns:1fr}.bt-a,.bt-b,.bt-e,.bt-f{grid-column:auto}.bt-b{min-height:240px}}
+.hp-meta{font:500 11px/1 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--chalk);opacity:.75}
+.hp-prog .hp-meta{opacity:0;transform:translateY(6px);transition:opacity .4s,transform .4s var(--ease)}
+.hp-prog:hover .hp-meta,.hp-prog:focus-visible .hp-meta{opacity:.8;transform:none}
+@media (hover:none){.hp-prog .hp-meta{opacity:.8;transform:none}}
+.hp-price{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:center;padding:clamp(22px,4vw,44px);border-radius:30px;border:1px solid var(--line);background:linear-gradient(180deg,var(--steel),var(--iron));margin-top:18px}
+@media (max-width:860px){.hp-price{grid-template-columns:1fr}}
+.seg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:4px;border-radius:999px;border:1px solid var(--line);background:var(--ink);width:100%;max-width:470px}
+.seg button{padding:11px 4px;white-space:nowrap;border-radius:999px;font:600 11px/1 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--ash);transition:all .3s var(--ease)}
+.seg button[aria-checked="true"]{background:var(--ember);color:var(--chalk)}
+.hp-price-card{display:grid;gap:14px;padding:clamp(20px,3vw,32px);border-radius:24px;border:1px solid rgba(210,49,31,.45);background:radial-gradient(100% 100% at 100% 0%,rgba(210,49,31,.25),transparent 60%),var(--ink);animation:qin .5s var(--ease) both}
+.hp-big{font:900 clamp(64px,8vw,112px)/.85 var(--f-d)}
+.hp-incl{display:flex;flex-wrap:wrap;gap:8px 16px}
+.hp-incl span{display:inline-flex;align-items:center;gap:6px;font-size:14px}
+.hp-incl svg{color:#5bd08a}
+.hp-faqrow{margin-top:18px}
 /* gallery */
 .gal-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(20px,4vw,48px);align-items:center;padding:clamp(20px,4vw,44px);border-radius:30px;border:1px solid var(--line);background:linear-gradient(180deg,var(--steel),var(--iron))}
 @media (max-width:960px){.gal-hero{grid-template-columns:1fr}}
@@ -853,24 +916,71 @@ function HeroScrub({me,openLogin}){
   </section></div>`;
 }
 
+const HM_PATHS={
+ new:{l:"I'm new to the gym",t:'Start in three easy steps',steps:[['target','Find your program','Answer 4 questions and get a starting plan.','#programs'],['card','Pick a plan','From ₹1,000 a month on the yearly plan.','#plans'],['msg','Book a free trial','Send one WhatsApp message. A coach meets you.',null]]},
+ switch:{l:'I already train',t:'Switching gyms? See what is different',steps:[['users','Meet the coaches','Powerlifting, strength and personal training.','#coaches'],['pin','Check both branches','Hours, busy times and directions.','#branches'],['card','Compare plans','One card opens both floors.','#plans']]},
+ member:{l:"I'm a member",t:'Everything you need today',steps:[['dumb',"Today's workout",'Sets, rest timer and focus mode.','#today'],['bowl','Diet chart','Tick off meals, track protein.','#diet'],['chart','Goals and weight','Log weight, see progress.','#goals']]}
+};
+function bestTime(b){const n=nowIST();if(n.getDay()===0)return null;const h=n.getHours();let best=null;for(let hh=Math.max(6,h+1);hh<=21;hh++){if(!BR[b].slots.some(([a,z])=>hh>=a&&hh<z))continue;const v=BUSY[hh-6];if(best===null||v<best[1])best=[hh,v]}return best}
+function Clock(){const [t,setT]=useState(nowIST());useEffect(()=>{const id=setInterval(()=>setT(nowIST()),15000);return()=>clearInterval(id)},[]);return html`<span class="num">${String(t.getHours()).padStart(2,'0')}<span class="blink">:</span>${String(t.getMinutes()).padStart(2,'0')}</span>`}
+function PriceTeaser(){const [pid,setPid]=useState('m12');const P=PLANS.find(x=>x.id===pid);const pm=P.price/P.months;const save=Math.round((1-pm/1500)*100);
+  return html`<section class="hp-price">
+    <div class="stack" style="gap:14px;min-width:0"><span class="k brass">Membership</span><h2 class="h2">One card. <span class="it">Both floors.</span></h2>
+      <p class="muted" style="margin:0;max-width:44ch">Every plan includes a free workout chart and diet plan from your trainer. Pick a length to see the monthly cost.</p>
+      <div class="seg" role="radiogroup" aria-label="Plan length">${PLANS.map(x=>html`<button role="radio" aria-checked=${pid===x.id} onClick=${()=>setPid(x.id)}>${x.months===1?'1 month':x.months+' months'}</button>`)}</div></div>
+    <div class="hp-price-card" key=${pid}>
+      <div class="row between"><span class="k">${P.name}</span>${P.tag&&html`<span class="pill" style="color:var(--brass);border-color:rgba(200,166,106,.4)">${P.tag}</span>`}</div>
+      <div class="row" style="align-items:baseline;gap:6px"><b class="hp-big">₹<${AnimNum} v=${Math.round(pm)}/></b><span class="muted">/ month</span></div>
+      <span class="muted">₹${P.price.toLocaleString('en-IN')} paid once${save>0?html` · <b style="color:var(--ok,#5bd08a)">save ${save}%</b> vs monthly`:''}</span>
+      <div class="hp-incl">${['Both branches','Workout chart','Diet plan','Member app'].map(t=>html`<span>${I('check',14)} ${t}</span>`)}</div>
+      <div class="row wrap"><a class="btn" href="#plans">See all plans ${I('arrow',16)}</a><a class="btn ghost" href=${wa('Hi, I want to join on the '+P.name+' plan')} target="_blank" rel="noopener">Ask the desk</a></div>
+    </div></section>`}
+
 function Home({S,go,me,openLogin}){
+  const [path,setPath]=useState(me?'member':'new');const PA=HM_PATHS[path];
+  const coachIds=Object.keys(TR);
   return html`<div class="stack view" style="gap:22px">
     <${HeroScrub} me=${me} openLogin=${openLogin}/>
 
-    <div class="g4">
-      ${[['programs','target','Find your program','BMI + goal → a starting plan'],['coaches','users','Meet the coaches','Four coaches, two floors'],['plans','card','Plans from ₹1,500','One card for both floors'],['branches','pin','Two branches','Tagore Town and Civil Lines']].map(([r,ic,t,s],i)=>html`<a class="qa reveal" style=${{animationDelay:i*.06+'s'}} href=${'#'+r}><span class="ic">${I(ic)}</span><b>${t}</b><small>${s}</small></a>`)}
+    <section class="hp-start">
+      <div class="stack" style="gap:10px"><span class="k brass">Start here</span><h2 class="h2">Where are <span class="it">you starting?</span></h2></div>
+      <div class="hp-tabs" role="tablist" aria-label="Where are you starting">${Object.entries(HM_PATHS).map(([k,v])=>html`<button role="tab" aria-selected=${path===k} onClick=${()=>setPath(k)}>${v.l}</button>`)}</div>
+      <div class="hp-steps" key=${path} role="tabpanel" aria-label=${PA.t}>
+        ${PA.steps.map(([ic,t,d,href],i)=>{const locked=path==='member'&&!me;const inner=html`<span class="hp-n num">0${i+1}</span><span class="ic">${I(ic,22)}</span><b>${t}</b><small>${d}</small><span class="hp-go">${locked?I('lock',16):I('arrow',16)}</span>`;
+          return href===null?html`<a class="hp-step" style=${{animationDelay:i*.08+'s'}} href=${wa('Hi, I am new and would like to book a free trial session at The Weight Date')} target="_blank" rel="noopener">${inner}</a>`
+          :locked?html`<button class="hp-step" style=${{animationDelay:i*.08+'s'}} onClick=${openLogin}>${inner}</button>`
+          :html`<a class="hp-step" style=${{animationDelay:i*.08+'s'}} href=${href}>${inner}</a>`})}
+      </div>
+      ${path==='member'&&!me&&html`<span class="muted" style="font-size:13px">Sign in to open these. Demo code 1234.</span>`}
+    </section>
+
+    <section class="hp-live">
+      <div class="row between wrap" style="gap:12px"><div class="stack" style="gap:8px"><span class="k"><i class="live-dot"></i>Live at the gym</span><h2 class="h2">Right now, <span class="it"><${Clock}/></span> IST</h2></div><a class="btn sm ghost" href="#branches">Branch details</a></div>
+      <div class="g2 st">${['cl','tt'].map(k=>{const b=BR[k];const o=openNow(k);const bz=busyNow(k);const bt=bestTime(k);return html`<a class="hp-br" href="#branches">
+        <div class="photo" style="min-height:0;border-radius:16px"><img src=${b.img} alt="" loading="lazy"/></div>
+        <div class="stack" style="gap:10px;min-width:0">
+          <div class="row between" style="gap:8px"><b class="h3">${b.name}</b><span class=${'pill '+(o.open?'ok':'')}>${untilTxt(k)}</span></div>
+          <${DayBar} b=${k}/>
+          <div class="row" style="gap:8px"><span class="k" style="flex:0 0 auto">Busy now</span><div class="bar" style="flex:1"><i style=${{width:bz*10+'%'}}></i></div><span class="k">${o.open?(bz>=7?'Peak':bz>=4?'Moderate':'Quiet'):'Closed'}</span></div>
+          <span class="hp-tip">${I('timer',15)} ${bt?html`Quietest time left today: <b>${String(bt[0]).padStart(2,'0')}:00</b>`:(nowIST().getDay()===6||nowIST().getDay()===0?'Next open: Monday 06:00':'Closing soon · back tomorrow at 06:00')}</span>
+        </div></a>`})}</div>
+    </section>
+
+    <div class="sec-head"><div class="stack" style="gap:8px"><span class="k">Why members stay</span><h2 class="h2">More than <span class="it">a gym floor.</span></h2></div></div>
+    <div class="bento">
+      <a class="bt bt-a" href="#programs"><img src="img/thali.jpg" alt="" loading="lazy"/><div class="bt-c"><span class="k brass">Free with every plan</span><b class="bt-h">Workout chart <span class="it">+</span> diet plan</b><small>Written by your trainer on day one, built around home food, updated every 2–3 months.</small></div></a>
+      <div class="bt bt-b"><img src="img/medal.jpg" alt="" loading="lazy"/><div class="bt-c"><span class="k brass">District medals</span><b class="bt-num"><${CountUp} to=${17}/></b><small>Most of any gym in the district</small></div></div>
+      <a class="bt bt-c2" href="#branches"><span class="k">Google rating</span><b class="bt-num" style="color:var(--brass)"><${CountUp} to=${5} dec=${1}/></b><span class="stars">★★★★★</span><small><${CountUp} to=${1015} suffix="+"/> reviews across both branches</small></a>
+      <a class="bt bt-d" href="#branches"><span class="k">One card</span><b class="bt-num">2</b><small>branches, ${DIST} km apart. Morning near home, evening near work.</small>
+        <svg viewBox="0 0 200 60" class="bt-route" aria-hidden="true"><path d="M14 44 C 70 10, 130 56, 186 18" fill="none" stroke="#c8a66a" stroke-width="2" stroke-dasharray="5 6" class="route"/><circle cx="14" cy="44" r="6" fill="#d2311f"/><circle cx="186" cy="18" r="6" fill="#c8a66a"/></svg></a>
+      <a class="bt bt-e" href="#coaches"><span class="k">Coaches</span><div class="avs">${coachIds.map(id=>html`<span style=${{backgroundImage:'url('+TR[id].img+')'}} title=${TR[id].name}></span>`)}</div><b class="bt-h" style="font-size:24px">${coachIds.map(id=>TR[id].name).join(' · ')}</b><small>Form checks on every visit</small></a>
+      <a class="bt bt-f" href="#plans"><span class="k">Life happens</span><b class="bt-h" style="font-size:28px">Pause up to <span class="it">15 days</span></b><small>Freeze 7 days at a time from the app.</small></a>
     </div>
 
-    <div class="band">${[[17,0,'','District medals','Most of any gym in the district'],[1015,0,'+','Google reviews','Across both branches'],[5,1,'','Google rating','Civil Lines · 837 reviews'],[2,0,'','Branches','One membership opens both']].map(([n,d,sf,k,sub])=>html`<div><span class="k">${k}</span><b><${CountUp} to=${n} dec=${d} suffix=${sf}/></b><span class="muted" style="font-size:13px">${sub}</span></div>`)}</div>
+    <div class="sec-head"><div class="stack" style="gap:8px"><span class="k">Programs</span><h2 class="h2">Pick your <span class="it">goal.</span></h2></div><a class="btn sm" href="#programs">${I('target',16)} Take the 1-minute quiz</a></div>
+    <div class="hscroll">${PROGRAMS.map(p=>html`<a class="photo hp-prog" href="#programs" onClick=${()=>{window.__openProg=p.id}} style="min-height:320px;text-decoration:none"><img src=${p.img} alt="" loading="lazy"/><div class="cap"><span class="k brass">${p.s}</span><b class="h3" style="font-size:26px">${p.n}</b><span class="hp-meta">${p.days} days/week · ${p.mins} min · ${p.level}</span></div></a>`)}</div>
 
-    <div class="sec-head"><div class="stack" style="gap:8px"><span class="k">Live at the gym</span><h2 class="h2">Right <span class="it">now.</span></h2></div><a class="btn sm ghost" href="#branches">All branch details</a></div>
-    <div class="g2 st">${Object.entries(BR).map(([k,b])=>{const o=openNow(k);const bz=busyNow(k);return html`<a class="card" href="#branches" style="grid-template-columns:120px 1fr;gap:16px;align-items:center">
-      <div class="photo" style="min-height:120px;border-radius:18px"><img src=${b.img} alt=""/></div>
-      <div class="stack" style="gap:8px"><div class="row between"><b class="h3">${b.name}</b><span class=${'pill '+(o.open?'ok':'')}>${o.txt}</span></div><span class="muted" style="font-size:13px">${b.hours} · ★ ${b.rating} (${b.reviews})</span>
-        <div class="row" style="gap:8px"><span class="k" style="flex:0 0 auto">Busy</span><div class="bar" style="flex:1"><i style=${{width:bz*10+'%'}}></i></div><span class="k">${o.open?(bz>=7?'Peak':bz>=4?'Moderate':'Quiet'):'Closed'}</span></div></div></a>`})}</div>
-
-    <div class="sec-head"><div class="stack" style="gap:8px"><span class="k">Programs</span><h2 class="h2">Pick your <span class="it">goal.</span></h2></div><a class="btn sm ghost" href="#programs">Find mine</a></div>
-    <div class="hscroll">${PROGRAMS.map(p=>html`<a class="photo" href="#programs" onClick=${()=>{window.__openProg=p.id}} style="min-height:300px;text-decoration:none"><img src=${p.img} alt="" loading="lazy"/><div class="cap"><span class="k brass">${p.s}</span><b class="h3" style="font-size:26px">${p.n}</b></div></a>`)}</div>
+    <${PriceTeaser}/>
 
     <div class="sec-head"><div class="stack" style="gap:8px"><span class="k">Coaches</span><h2 class="h2">The team <span class="it">in black.</span></h2></div><a class="btn sm ghost" href="#coaches">All coaches</a></div>
     <div class="g4">${Object.entries(TR).map(([cid,t])=>html`<a class="photo" href="#coaches" onClick=${()=>{window.__openCoach=cid;try{localStorage.setItem('twd-coach',cid)}catch(e){}}} style="min-height:clamp(220px,26vw,320px);text-decoration:none"><img src=${t.img} alt="" loading="lazy"/><div class="cap"><span class="k brass">${BR[t.branch].name}</span><b style="font:italic 400 34px/1 var(--f-s)">${t.name}</b><span class="muted" style="font-size:13px">${t.spec}</span></div></a>`)}</div>
@@ -890,13 +1000,26 @@ function Home({S,go,me,openLogin}){
       </div>
     </section>
 
-    <div class="sec-head"><div class="stack" style="gap:8px"><span class="k">Gallery</span><h2 class="h2">Life on <span class="it">the floor.</span></h2></div><a class="btn sm ghost" href="#gallery">Open gallery</a></div>
-    <div class="hscroll" style="grid-auto-columns:minmax(220px,1fr)">${GALLERY.map(([src,c])=>html`<div class="photo" style="min-height:300px"><img src=${src} alt=${c} loading="lazy"/><div class="cap"><b class="h3" style="font-size:20px">${c}</b></div></div>`)}</div>
+    <div class="sec-head"><div class="stack" style="gap:8px"><span class="k">Gallery</span><h2 class="h2">Life on <span class="it">the floor.</span></h2></div><a class="btn sm ghost" href="#gallery">Open gallery · ${GAL.length}</a></div>
+    <div class="hscroll" style="grid-auto-columns:minmax(220px,1fr)">${GAL.slice(0,8).map(g=>html`<a class="photo" href="#gallery" style="min-height:300px;text-decoration:none"><img src=${g.src} alt=${g.c} loading="lazy"/><div class="cap"><span class="k brass">${g.t}</span><b class="h3" style="font-size:20px">${g.c}</b></div></a>`)}</div>
 
-    <section class="card" style="background:var(--ember);border-color:var(--ember);color:var(--ink);padding:clamp(26px,5vw,56px);gap:20px">
+    <div class="g2 st hp-faqrow" style="align-items:start">
+      <div class="stack" style="gap:12px"><span class="k brass">Quick answers</span><h2 class="h2">Before you <span class="it">walk in.</span></h2><p class="muted" style="margin:0;max-width:40ch">Still unsure? The front desk answers on WhatsApp.</p>
+        <div class="row wrap"><a class="btn sm" href=${wa('Hi, I have a question about The Weight Date')} target="_blank" rel="noopener">${I('msg',14)} WhatsApp the desk</a><span class="pill num" style="color:var(--chalk)">+91 88406 55898</span></div></div>
+      <div class="faq">
+        <details open><summary>Can I train at both branches?</summary><p>Yes. Every plan opens Tagore Town and Civil Lines. Switch any day.</p></details>
+        <details><summary>I have never been to a gym. Is that okay?</summary><p>Yes. Start with General fitness. A coach shows you the machines and writes your first chart.</p></details>
+        <details><summary>Are the workout chart and diet plan really free?</summary><p>Yes. Your trainer writes both when you join and updates them every 2–3 months.</p></details>
+        <details><summary>What are the timings?</summary><p>Civil Lines: Mon–Sat 06:00–22:00. Tagore Town: Mon–Sat 06–12 and 16–22. Both closed on Sunday.</p></details>
+        <details><summary>Is there a program for women?</summary><p>Yes. Women's strength is its own program with a coach who plans it with you.</p></details>
+        <details><summary>When is it least crowded?</summary><p>Peak is 18:00–20:00. Early mornings and 14:00–16:00 at Civil Lines are the quietest.</p></details>
+      </div>
+    </div>
+
+    <section class="card hp-final" style="background:var(--ember);border-color:var(--ember);color:var(--ink);padding:clamp(26px,5vw,56px);gap:20px">
       <h2 style="margin:0;font:900 clamp(56px,9vw,140px)/.8 var(--f-d);text-transform:uppercase">Keep the <span style="font:italic 400 1.05em/.8 var(--f-s);color:var(--chalk);text-transform:none">date.</span></h2>
-      <div class="row between wrap"><p style="margin:0;max-width:40ch;font-size:18px;color:#2a0805">Pick a slot, pick a branch, and send one message. Your chart is ready when you walk in.</p>
-        <a class="btn" style="background:var(--ink)" href=${wa('Hi, I would like to book a trial session at The Weight Date')} target="_blank" rel="noopener">Book a trial ${I('arrow',16)}</a></div>
+      <div class="row between wrap"><p style="margin:0;max-width:40ch;font-size:18px;color:#2a0805">Pick a branch, send one message, and your first chart is ready when you walk in.</p>
+        <div class="row wrap"><a class="btn" style="background:var(--ink)" href=${wa('Hi, I would like to book a trial session at The Weight Date')} target="_blank" rel="noopener">Book a trial ${I('arrow',16)}</a><a class="btn" style="background:transparent;border:1px solid var(--ink);color:var(--ink)" href="#plans">See plans</a></div></div>
     </section>
     <footer class="row between wrap muted" style="font:500 12px/1.6 var(--f-m);padding-top:8px"><span>© 2026 The Weight Date Gym, Prayagraj</span><span>Concept web app by Arqora · sample prices · <a href="site/">Scroll website</a> · <a href="app/">Phone app demo</a></span></footer>
   </div>`;
