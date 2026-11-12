@@ -735,7 +735,7 @@ function QR({id}){let s=0;for(const c of id)s=(s*31+c.charCodeAt(0))>>>0;const N
 const Sheet=({close,label,children,wide})=>html`<div class="scrim" onClick=${close}></div><div class=${'sheet'+(wide?' wide':'')} role="dialog" aria-label=${label}><div class="grab"></div>${children}</div>`;
 
 /* ---------- routes ---------- */
-const PUBLIC=[['home','Home','home'],['programs','Programs','target'],['plans','Membership','card'],['book','Book a slot','cal'],['tools','Lift tools','plate'],['coaches','Coaches','users'],['branches','Branches','pin'],['gallery','Gallery','img']];
+const PUBLIC=[['home','Home','home'],['programs','Programs','target'],['plans','Membership','card'],['coaches','Coaches','users'],['branches','Branches','pin'],['gallery','Gallery','img']];
 const MEMBER=[['today','Today','flame'],['train','Training','dumb'],['diet','Diet','bowl'],['goals','Goals','chart'],['myplan','My plan','card']];
 const TRAINER=[['coach','Members','users'],['floor','Floor','pin']];
 const ALL=new Set([...PUBLIC,...MEMBER,...TRAINER].map(r=>r[0]));
@@ -756,11 +756,11 @@ function App(){
   const sess=S.session;const me=sess&&sess.role==='member'?S.members.find(m=>m.id===sess.mid):null;
   const needLogin=MEMBER.some(r=>r[0]===route)&&!me||TRAINER.some(r=>r[0]===route)&&!(sess&&sess.role==='trainer');
   const ctx={S,up,say,go,me,openLogin:()=>setLogin(true),openCmd:()=>setCmd(true)};
-  const Comp=needLogin?Locked:({home:Home,programs:Programs,plans:Plans,book:Book,coaches:Coaches,branches:Branches,gallery:Gallery,tools:Tools,today:Today,train:Train,diet:Diet,goals:Goals,myplan:MyPlan,coach:CoachMembers,floor:Floor})[route];
+  const Comp=needLogin?Locked:({home:Home,programs:Programs,plans:Plans,coaches:Coaches,branches:Branches,gallery:Gallery,today:Today,train:Train,diet:Diet,goals:Goals,myplan:MyPlan,coach:CoachMembers,floor:Floor})[route];
   const navItem=([id,l,ic],locked)=>html`<a class="nav-a" href=${'#'+id} aria-current=${route===id?'page':'false'}>${I(ic,20)}<span>${l}</span>${locked&&html`<span class="lock">${I('lock',14)}</span>`}</a>`;
-  const mtabs=sess&&sess.role==='trainer'?[['home','Gym','home'],['coach','Members','users'],['floor','Floor','pin'],['book','Book','cal'],['plans','Plans','card']]
+  const mtabs=sess&&sess.role==='trainer'?[['home','Gym','home'],['coach','Members','users'],['floor','Floor','pin'],['programs','Programs','target'],['plans','Plans','card']]
     :me?[['home','Gym','home'],['today','Today','flame'],['train','Train','dumb'],['diet','Diet','bowl'],['goals','Goals','chart']]
-    :[['home','Home','home'],['programs','Programs','target'],['book','Book','cal'],['tools','Tools','plate'],['plans','Plans','card']];
+    :[['home','Home','home'],['programs','Programs','target'],['coaches','Coaches','users'],['branches','Branches','pin'],['plans','Plans','card']];
   return html`<div class="shell">
     <aside class="side" aria-label="Sidebar">
       <a class="brand" href="#home"><${Logo}/>Weight<i>date</i></a>
@@ -798,7 +798,7 @@ function Cmdk({S,me,go,close,openLogin,say,up}){const [q,setQ]=useState('');cons
     ...(me?MEMBER.map(([id,l,ic])=>({l,ic,g:'My training',run:()=>go(id)})):[]),
     ...(sess&&sess.role==='trainer'?TRAINER.map(([id,l,ic])=>({l,ic,g:'Coach',run:()=>go(id)})):[]),
     ...(me?[{l:'Start workout in focus mode',ic:'play',g:'Action',run:()=>{window.__pending='focus';go('train')}},{l:"Log today's weight",ic:'chart',g:'Action',run:()=>{window.__pending='weigh';go('goals')}},{l:'Check in at '+BR[me.branch].name,ic:'qr',g:'Action',run:()=>{if(nowIST().getDay()===0){say('Closed on Sunday');return}up(s=>{const m=s.members.find(x=>x.id===me.id);if(!m.attendance.includes(TODAY))m.attendance.push(TODAY)});say('Checked in at '+BR[me.branch].name)}}]:[]),
-    {l:'Plate loader and 1RM calculator',ic:'plate',g:'Tool',run:()=>go('tools')},{l:'Find my program (BMI)',ic:'target',g:'Tool',run:()=>go('programs')},{l:'Copy front desk number',ic:'msg',g:'Action',run:copyDesk},
+    {l:'Find my program (BMI)',ic:'target',g:'Tool',run:()=>go('programs')},{l:'Copy front desk number',ic:'msg',g:'Action',run:copyDesk},
     sess?{l:'Sign out',ic:'out',g:'Account',run:()=>{up(s=>{s.session=null});go('home');say('Signed out')}}:{l:'Member or trainer login',ic:'user',g:'Account',run:openLogin}];
   const f=items.filter(x=>(x.l+' '+x.g).toLowerCase().includes(q.trim().toLowerCase()));const sel=Math.min(i,Math.max(0,f.length-1));const run=x=>{close();setTimeout(()=>x.run(),0)};
   return html`<div class="scrim" style="z-index:69" onClick=${close}></div><div class="cmdk" role="dialog" aria-label="Search">
@@ -845,11 +845,11 @@ function HeroScrub({me,openLogin}){
       <span class="k brass">Prayagraj · Tagore Town & Civil Lines</span>
       <h1 class="split" aria-label="Keep the date.">${ch('Keep the',0)}<br/><span class="it">${ch('date.',9)}</span></h1>
       <p class="lead" style="color:var(--chalk);opacity:.85">Two branches, one membership. Free workout chart and diet plan from certified trainers, and an app to follow both.</p>
-      <div class="row wrap"><a class="btn" href="#book">Book a session ${I('arrow',16)}</a>${me?html`<a class="btn ghost" href="#today">Open my training</a>`:html`<button class="btn ghost" onClick=${openLogin}>Member login</button>`}</div>
+      <div class="row wrap"><a class="btn" href=${wa('Hi, I would like to book a trial session at The Weight Date')} target="_blank" rel="noopener">Book a trial ${I('arrow',16)}</a>${me?html`<a class="btn ghost" href="#today">Open my training</a>`:html`<button class="btn ghost" onClick=${openLogin}>Member login</button>`}</div>
       <div class="row wrap" style="gap:8px">${Object.keys(BR).map(k=>{const o=openNow(k);return html`<span class=${'pill '+(o.open?'ok':'')}>${BR[k].name} · ${untilTxt(k)}</span>`})}</div>
       ${!RM&&html`<span class="scroll-hint"><i></i>Scroll to load the bar</span>`}
     </div>
-    <div class="hero-end" ref=${endR} aria-hidden="true"><span class="k brass">Competition colour code</span><b>Red <span class="it">is</span><br/>25 kg.</b><a class="btn" href="#tools" style="pointer-events:auto">Load your bar ${I('arrow',16)}</a></div>
+    <div class="hero-end" ref=${endR} aria-hidden="true"><span class="k brass">Competition colour code</span><b>Red <span class="it">is</span><br/>25 kg.</b></div>
   </section></div>`;
 }
 
@@ -858,7 +858,7 @@ function Home({S,go,me,openLogin}){
     <${HeroScrub} me=${me} openLogin=${openLogin}/>
 
     <div class="g4">
-      ${[['programs','target','Find your program','BMI + goal → a starting plan'],['book','cal','Book a slot','Morning or evening, either branch'],['plans','card','Plans from ₹1,500','One card for both floors'],['tools','plate','Plate loader','Load the bar in competition colours']].map(([r,ic,t,s],i)=>html`<a class="qa reveal" style=${{animationDelay:i*.06+'s'}} href=${'#'+r}><span class="ic">${I(ic)}</span><b>${t}</b><small>${s}</small></a>`)}
+      ${[['programs','target','Find your program','BMI + goal → a starting plan'],['coaches','users','Meet the coaches','Four coaches, two floors'],['plans','card','Plans from ₹1,500','One card for both floors'],['branches','pin','Two branches','Tagore Town and Civil Lines']].map(([r,ic,t,s],i)=>html`<a class="qa reveal" style=${{animationDelay:i*.06+'s'}} href=${'#'+r}><span class="ic">${I(ic)}</span><b>${t}</b><small>${s}</small></a>`)}
     </div>
 
     <div class="band">${[[17,0,'','District medals','Most of any gym in the district'],[1015,0,'+','Google reviews','Across both branches'],[5,1,'','Google rating','Civil Lines · 837 reviews'],[2,0,'','Branches','One membership opens both']].map(([n,d,sf,k,sub])=>html`<div><span class="k">${k}</span><b><${CountUp} to=${n} dec=${d} suffix=${sf}/></b><span class="muted" style="font-size:13px">${sub}</span></div>`)}</div>
@@ -880,7 +880,7 @@ function Home({S,go,me,openLogin}){
 
     <section class="card hot appmock" style="padding:clamp(22px,4vw,44px)">
       <div class="stack"><span class="k brass">For members</span><h2 class="h2">Your coach's plan, <span class="it">in your pocket.</span></h2>
-        <p class="lead">Sign in to see today's workout, tick off sets with a rest timer, follow your diet chart, log your weight and book slots. Your trainer updates it all from their side.</p>
+        <p class="lead">Sign in to see today's workout, tick off sets with a rest timer, follow your diet chart and log your weight. Your trainer updates it all from their side.</p>
         <div class="row wrap">${me?html`<a class="btn light" href="#today">Open my training</a>`:html`<button class="btn light" onClick=${openLogin}>Try the member login</button>`}<span class="demo-flag">Demo code 1234</span></div></div>
       <div class="mock" aria-hidden="true">
         <div class="row between"><div><div class="k">Good evening</div><b class="h3">Aman</b></div><span class="pill ok">In today</span></div>
@@ -896,7 +896,7 @@ function Home({S,go,me,openLogin}){
     <section class="card" style="background:var(--ember);border-color:var(--ember);color:var(--ink);padding:clamp(26px,5vw,56px);gap:20px">
       <h2 style="margin:0;font:900 clamp(56px,9vw,140px)/.8 var(--f-d);text-transform:uppercase">Keep the <span style="font:italic 400 1.05em/.8 var(--f-s);color:var(--chalk);text-transform:none">date.</span></h2>
       <div class="row between wrap"><p style="margin:0;max-width:40ch;font-size:18px;color:#2a0805">Pick a slot, pick a branch, and send one message. Your chart is ready when you walk in.</p>
-        <a class="btn" style="background:var(--ink)" href="#book">Book a session ${I('arrow',16)}</a></div>
+        <a class="btn" style="background:var(--ink)" href=${wa('Hi, I would like to book a trial session at The Weight Date')} target="_blank" rel="noopener">Book a trial ${I('arrow',16)}</a></div>
     </section>
     <footer class="row between wrap muted" style="font:500 12px/1.6 var(--f-m);padding-top:8px"><span>© 2026 The Weight Date Gym, Prayagraj</span><span>Concept web app by Arqora · sample prices · <a href="site/">Scroll website</a> · <a href="app/">Phone app demo</a></span></footer>
   </div>`;
@@ -932,7 +932,7 @@ function Programs({go,me}){
   const pick=(k,v)=>{setA(a=>({...a,[k]:v}));setTimeout(()=>setStep(x=>Math.min(4,x+1)),RM?0:240)};
   const restart=()=>{setRes(null);setA({});setStep(0);setH('');setW('');try{localStorage.removeItem('twd-quiz')}catch(e){}scrollTo(quizRef)};
   const ranked=res?matchScores(res.A,res.bmi):null;const pctOf=id=>ranked?ranked.find(r=>r.p.id===id).pct:0;
-  const book=p=>{window.__prefill={goal:p.book};go('book')};
+  const book=p=>wa('Hi, I would like to book a trial session for the '+p.n+' program');
   const FIL=[['all','All'],['lose','Lose fat'],['build','Muscle'],['strong','Strength'],['new','Beginners'],['women','Women'],['one','1-on-1']];
   const list=PROGRAMS.filter(p=>filter==='all'||p.f.includes(filter));const sorted=ranked?[...list].sort((a,b)=>pctOf(b.id)-pctOf(a.id)):list;
   const Q=PQ[step];const bmiNow=bmiOf(h,w);const top=ranked&&ranked[0];
@@ -964,7 +964,7 @@ function Programs({go,me}){
             <div class="list">${top.why.slice(0,4).map(x=>html`<div class="li" style="padding:10px 0"><span style="color:var(--ok)">${I('check',16)}</span><div class="t"><b style="font-weight:500">${x}</b></div></div>`)}</div>
             ${res.bmi&&html`<span class="pill" style="justify-self:start">Your BMI ${res.bmi.toFixed(1)} · ${bmiCat(res.bmi)}</span>`}
             <${PStats} p=${top.p}/>
-            <div class="row wrap"><button class="btn" onClick=${()=>book(top.p)}>Book a trial session ${I('arrow',16)}</button><button class="btn ghost" onClick=${()=>setOpen(top.p.id)}>See the full plan</button><button class="btn ghost sm" onClick=${restart}>Retake quiz</button></div>
+            <div class="row wrap"><a class="btn" href=${book(top.p)} target="_blank" rel="noopener">Book a trial session ${I('arrow',16)}</a><button class="btn ghost" onClick=${()=>setOpen(top.p.id)}>See the full plan</button><button class="btn ghost sm" onClick=${restart}>Retake quiz</button></div>
           </div></div>
         <div class="stack" style="gap:10px"><span class="k">Also a good fit</span><div class="g2 st">${ranked.slice(1,3).map(r=>html`<button class="alt" onClick=${()=>setOpen(r.p.id)}><img src=${r.p.img} alt=""/><div><span class="k brass">${r.pct}% match</span><b class="h3">${r.p.n}</b><small class="muted">${r.p.s}</small></div><span class="muted" aria-hidden="true">›</span></button>`)}</div></div>`}
     </section>
@@ -975,7 +975,7 @@ function Programs({go,me}){
       <button class="pc-img" onClick=${()=>setOpen(p.id)} aria-label=${'View the '+p.n+' plan'}><img src=${p.img} alt="" loading="lazy"/><span class="pill solid pc-lv">${p.level}</span>${ranked&&html`<span class="pc-pct num">${pctOf(p.id)}%<small>match</small></span>`}</button>
       <div class="pc-body"><span class="k brass">${p.s}</span><h3 class="h3" style="font-size:28px">${p.n}</h3><p class="muted" style="margin:0;font-size:14px">${p.d}</p><${PStats} p=${p}/>
         <div class="row wrap" style="gap:6px">${p.tags.map(t=>html`<span class="pill">${t}</span>`)}</div>
-        <div class="row" style="gap:8px;margin-top:auto"><button class="btn sm" style="flex:1" onClick=${()=>setOpen(p.id)}>View plan</button><button class="btn sm ghost" style="flex:1" onClick=${()=>book(p)}>Book trial</button></div></div></article>`)}</div>
+        <div class="row" style="gap:8px;margin-top:auto"><button class="btn sm" style="flex:1" onClick=${()=>setOpen(p.id)}>View plan</button><a class="btn sm ghost" style="flex:1" href=${book(p)} target="_blank" rel="noopener">Book trial</a></div></div></article>`)}</div>
     ${!sorted.length&&html`<p class="muted">No programs match that filter.</p>`}
 
     <div class="g2 st" style="align-items:start">
@@ -985,8 +985,8 @@ function Programs({go,me}){
         <details><summary>I have never trained. Where do I start?</summary><p>Beginner start. Three short sessions a week on machines first, with a coach showing you every move.</p></details>
         <details><summary>Can I train at both branches?</summary><p>Yes. Every plan opens Tagore Town and Civil Lines.</p></details>
       </div></div>
-      <div class="card hot" style="align-content:space-between;min-height:100%"><div class="stack" style="gap:10px"><span class="k brass">Not sure yet?</span><b class="h2">Try a session <span class="it">first.</span></b><p class="muted" style="margin:0">Book a trial slot at either branch. A coach walks you through the floor and the program that fits.</p></div>
-        <div class="row wrap"><button class="btn" onClick=${()=>go('book')}>Book a trial ${I('arrow',16)}</button>${me&&html`<a class="btn ghost" href="#train">See my current plan</a>`}</div></div>
+      <div class="card hot" style="align-content:space-between;min-height:100%"><div class="stack" style="gap:10px"><span class="k brass">Not sure yet?</span><b class="h2">Try a session <span class="it">first.</span></b><p class="muted" style="margin:0">Message the desk for a trial at either branch. A coach walks you through the floor and the program that fits.</p></div>
+        <div class="row wrap"><a class="btn" href=${wa('Hi, I would like to book a trial session at The Weight Date')} target="_blank" rel="noopener">Book a trial ${I('arrow',16)}</a>${me&&html`<a class="btn ghost" href="#train">See my current plan</a>`}</div></div>
     </div>
 
     ${op&&html`<${Sheet} wide=${true} close=${()=>setOpen(null)} label=${op.n+' plan'}>
@@ -1001,7 +1001,7 @@ function Programs({go,me}){
           <div class="stack"><div class="card" style="background:var(--ink)"><span class="k">What to expect</span>${op.expect.map(x=>html`<span class="row" style="gap:10px;align-items:flex-start;font-size:14px"><span style="color:var(--brass);flex:0 0 auto;margin-top:2px">${I('star',14)}</span>${x}</span>`)}</div>
             <div class="card" style="background:var(--ink)"><div class="row"><div class="avatar" style=${{width:'60px',height:'60px',flex:'0 0 60px',backgroundImage:'url('+TR[op.coach].img+')'}}></div><div><span class="k brass">Usually coached by</span><b style="display:block;font:italic 400 28px/1.05 var(--f-s)">${TR[op.coach].name}</b><small class="muted">${TR[op.coach].spec} · ${BR[TR[op.coach].branch].name}</small></div></div></div></div>
         </div>
-        <div class="row wrap"><button class="btn" onClick=${()=>{setOpen(null);book(op)}}>Book a trial session ${I('arrow',16)}</button><a class="btn ghost" href=${wa('Hi, I want to know more about the '+op.n+' program at The Weight Date')} target="_blank" rel="noopener">Ask on WhatsApp</a></div>
+        <div class="row wrap"><a class="btn" href=${book(op)} target="_blank" rel="noopener">Book a trial session ${I('arrow',16)}</a><a class="btn ghost" href=${wa('Hi, I want to know more about the '+op.n+' program at The Weight Date')} target="_blank" rel="noopener">Ask on WhatsApp</a></div>
         <span class="demo-flag">Sample week · your trainer adjusts it to you on day one</span>
       </div><//>`}
   </div>`;
@@ -1078,7 +1078,7 @@ function Plans({go,me,say,up}){
           <div class="ptrow"><div class="row" style="min-width:0"><div class="avatar" style="background-image:url(img/coach-arms.jpg)"></div><div style="min-width:0"><b>Add personal training</b><div class="muted" style="font-size:13px">A coach beside you every session · sample ${inr(PT_MONTH)} a month</div></div></div>
             <button class="switch" role="switch" aria-checked=${pt} aria-label="Add personal training" onClick=${()=>setPt(!pt)}></button></div>
         </div>
-        <div class="card stack"><span class="k">In every plan</span><div class="incl">${[['pin','Both branches','Tagore Town & Civil Lines'],['dumb','Workout chart','Written for you, free'],['bowl','Diet plan','Built on home food, free'],['users','Floor coaching','Form checks every visit'],['flame','Member app','Plan, logs, goals, booking'],['snow','Freeze','Pause up to 15 days']].map(([ic,t,sub])=>html`<div><span class="ic">${I(ic,22)}</span><b>${t}</b><small class="muted" style="font-size:12.5px">${sub}</small></div>`)}</div></div>
+        <div class="card stack"><span class="k">In every plan</span><div class="incl">${[['pin','Both branches','Tagore Town & Civil Lines'],['dumb','Workout chart','Written for you, free'],['bowl','Diet plan','Built on home food, free'],['users','Floor coaching','Form checks every visit'],['flame','Member app','Plan, logs, goals, diet'],['snow','Freeze','Pause up to 15 days']].map(([ic,t,sub])=>html`<div><span class="ic">${I(ic,22)}</span><b>${t}</b><small class="muted" style="font-size:12.5px">${sub}</small></div>`)}</div></div>
       </div>
       <aside class="card hot summary" aria-label="Your plan summary">
         <span class="k brass">Your plan</span>
@@ -1109,48 +1109,10 @@ function Plans({go,me,say,up}){
         <details><summary>Can I pause my membership?</summary><p>You can freeze 7 days at a time, up to 15 days per plan, from the app.</p></details>
         <details><summary>Can I add personal training later?</summary><p>Yes. Add a coach to any plan at the desk. The price shown here is a sample.</p></details>
       </div></div>
-      <div class="card" style="align-content:space-between;min-height:100%"><div class="stack" style="gap:10px"><span class="k brass">Not ready to commit?</span><b class="h2">Try a session <span class="it">first.</span></b><p class="muted" style="margin:0">Book a trial slot. A coach shows you both floors and helps you pick a plan.</p></div>
-        <div class="row wrap"><button class="btn" onClick=${()=>go('book')}>Book a trial ${I('arrow',16)}</button><button class="btn ghost" onClick=${()=>go('programs')}>Find my program</button></div></div>
+      <div class="card" style="align-content:space-between;min-height:100%"><div class="stack" style="gap:10px"><span class="k brass">Not ready to commit?</span><b class="h2">Try a session <span class="it">first.</span></b><p class="muted" style="margin:0">Message the desk for a trial. A coach shows you both floors and helps you pick a plan.</p></div>
+        <div class="row wrap"><a class="btn" href=${wa('Hi, I would like to book a trial session at The Weight Date')} target="_blank" rel="noopener">Book a trial ${I('arrow',16)}</a><button class="btn ghost" onClick=${()=>go('programs')}>Find my program</button></div></div>
     </div>
     ${join&&html`<${JoinSheet} P=${P} pt=${pt} start=${start} end=${end} total=${total} br=${br} me=${me} up=${up} say=${say} close=${()=>setJoin(false)}/>`}
-  </div>`;
-}
-
-function Book({me,up,say}){
-  const days=[];{const d=nowIST();for(let i=0;days.length<6;i++){const x=addDays(d,i);if(x.getDay()!==0)days.push(iso(x))}}
-  const [pre]=useState(()=>{const x=window.__prefill||{};window.__prefill=null;return x});
-  const [day,setDay]=useState(days[0]);const [br,setBr]=useState(pre.branch||(me?me.branch:'tt'));const [slot,setSlot]=useState('Evening');
-  const [name,setName]=useState(me?me.name:'');const [phone,setPhone]=useState(me?me.phone:'');const [goal,setGoal]=useState(pre.goal||'Lose weight');const [done,setDone]=useState(null);const [err,setErr]=useState('');
-  const hr=nowIST().getHours();const closed=hh=>br==='tt'&&hh>=12&&hh<16;
-  const submit=()=>{setErr('');
-    if(!me){if(!name.trim()){setErr('Add your name so the desk knows who is coming.');return}if(phone.replace(/\D/g,'').length<10){setErr('Enter a 10-digit phone number.');return}}
-    const msg='Hi The Weight Date! I would like to book a session.\nName: '+(name||'')+'\nPhone: '+phone+'\nBranch: '+BR[br].name+'\nDay: '+fmtDL(day)+'\nSlot: '+slot+'\nGoal: '+goal+(pre.coach?'\nCoach: '+pre.coach:'');
-    if(me)up(s=>{s.members.find(x=>x.id===me.id).bookings.push({d:day,slot,branch:br})});
-    setDone({msg});say(me?'Booked · pass ready':'Booking message ready')};
-  return html`<div class="stack view" style="gap:20px">
-    <div class="stack" style="gap:10px"><span class="k brass">Book a slot</span><h1 class="h1">Set the <span class="it">date.</span></h1><p class="lead">${me?'Book a slot and show your pass at the desk.':'New here? Pick a slot and we will have your first chart ready when you walk in.'}</p>${pre.coach&&html`<span class="pill" style="justify-self:start;color:var(--chalk);border-color:rgba(200,166,106,.5)">${I('user',12)} With Coach ${pre.coach}</span>`}</div>
-    <div class="g2 st" style="align-items:start">
-      <div class="card stack">
-        <span class="k">Branch</span><div class="seg" role="group" aria-label="Branch">${Object.entries(BR).map(([k,b])=>html`<button aria-pressed=${br===k} onClick=${()=>setBr(k)}>${b.name}</button>`)}</div>
-        <span class="k">Day</span><div class="daystrip" style="grid-template-columns:repeat(6,1fr)" role="group" aria-label="Day">${days.map(d=>html`<button aria-pressed=${d===day} onClick=${()=>setDay(d)}>${DOW[parse(d).getDay()]}<b>${parse(d).getDate()}</b></button>`)}</div>
-        <span class="k">Slot</span><div class="g2">${['Morning','Evening'].map(s=>html`<button class=${'card '+(slot===s?'hot':'')} aria-pressed=${slot===s} onClick=${()=>setSlot(s)} style="padding:16px"><span class="k">${s}</span><span class="num" style="font:800 22px/1 var(--f-d)">${s==='Morning'?'6:00–12:00':(br==='tt'?'16:00–22:00':'12:00–22:00')}</span></button>`)}</div>
-        ${!me&&html`<div class="g2"><label class="field" for="bN"><span>Your name</span><div class="input"><input id="bN" autocomplete="name" placeholder="Aman Verma" value=${name} onInput=${e=>setName(e.target.value)}/></div></label><label class="field" for="bP"><span>Phone</span><div class="input"><input id="bP" type="tel" inputmode="tel" autocomplete="tel" placeholder="98765 43210" value=${phone} onInput=${e=>setPhone(e.target.value)}/></div></label></div>`}
-        <label class="field" for="bG"><span>Goal</span><div class="input"><select id="bG" value=${goal} onChange=${e=>setGoal(e.target.value)}>${['Lose weight','Build muscle','Get strong (powerlifting)','General fitness',"Women's strength",'Personal training'].map(o=>html`<option>${o}</option>`)}</select></div></label>
-        ${err&&html`<p role="alert" style="margin:0;color:#ff8a7a">${err}</p>`}
-        <button class="btn full" onClick=${submit}>${me?'Book '+slot.toLowerCase()+' slot':'Prepare my booking'}</button>
-      </div>
-      <div class="stack">
-        <div class="card"><div class="row between"><span class="k">How busy it gets</span><span class="pill">${BR[br].name}</span></div>
-          <div class="crowd" aria-hidden="true">${BUSY.map((v,i)=>{const hh=6+i;return html`<i class=${(v>=7?'b ':'')+(day===TODAY&&hh===hr?'now':'')} style=${{height:(closed(hh)?6:Math.max(6,v*10))+'%',opacity:closed(hh)?.25:1}}></i>`})}</div>
-          <div class="crowd-lbl"><span>6</span><span>10</span><span>14</span><span>18</span><span>21</span></div>
-          <span class="muted" style="font-size:12px">Peak 18:00–20:00. ${br==='tt'?'Tagore Town closes 12–16.':'Civil Lines runs straight through.'} Sample pattern.</span></div>
-        ${me&&me.bookings.filter(b=>b.d>=TODAY).length>0&&html`<div class="card"><span class="k">My upcoming slots</span><div class="list">${me.bookings.filter(b=>b.d>=TODAY).sort((a,b)=>a.d<b.d?-1:1).map(b=>html`<div class="li"><div class="t"><b>${fmtDL(b.d)} · ${b.slot}</b><small>${BR[b.branch].name}</small></div><button class="x-btn" aria-label="Cancel booking" onClick=${()=>{up(s=>{const m=s.members.find(x=>x.id===me.id);m.bookings=m.bookings.filter(x=>!(x.d===b.d&&x.slot===b.slot&&x.branch===b.branch))});say('Booking cancelled')}}>${I('x',14)}</button></div>`)}</div></div>`}
-      </div>
-    </div>
-    ${done&&html`<${Sheet} close=${()=>setDone(null)} label="Booking ready"><div class="stack" style="justify-items:center;text-align:center">
-      ${me?html`<span class="k brass">Show at the desk</span><div class="qr"><${QR} id=${me.id+day+slot}/></div><b class="h3">${me.name}</b><span class="muted">${fmtDL(day)} · ${slot} · ${BR[br].name}</span><span class="demo-flag">Demo pass</span><button class="btn full" onClick=${()=>setDone(null)}>Done</button>`
-      :html`<b class="h3">Your message is ready</b><pre style="margin:0;width:100%;text-align:left;white-space:pre-wrap;font:500 13px/1.6 var(--f-m);background:var(--ink);border:1px solid var(--line);border-radius:14px;padding:14px;overflow-wrap:anywhere">${done.msg}</pre><a class="btn full brass" href=${wa(done.msg)} target="_blank" rel="noopener">Open WhatsApp</a><span class="muted" style="font-size:13px">If WhatsApp does not open, call +91 88406 55898 and read out the message.</span>`}
-    </div><//>`}
   </div>`;
 }
 
@@ -1163,14 +1125,13 @@ const COACHX={
 const GOAL_BOOK={lose:'Lose weight',strong:'Get strong (powerlifting)',build:'Build muscle',pt:'Personal training',women:"Women's strength",new:'General fitness'};
 
 const scrollEl=id=>{const el=document.getElementById(id);el&&el.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})};
-
 function Coaches({go}){
   const ids=Object.keys(TR);const fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;const ORDER=['cl','tt'];
   const [sel,setSel]=useState(()=>{const s={cl:'sujeet',tt:'charlie'};try{const v=localStorage.getItem('twd-coach');if(TR[v])s[TR[v].branch]=v}catch(e){}const oc=window.__openCoach;if(oc&&TR[oc])s[TR[oc].branch]=oc;return s});
   const [fit,setFit]=useState(null);
   useEffect(()=>{const c=window.__openCoach;window.__openCoach=null;if(c&&TR[c])setTimeout(()=>scrollEl('prof-'+TR[c].branch),80)},[]);
   const choose=(id,scroll)=>{const b=TR[id].branch;setSel(s=>({...s,[b]:id}));try{localStorage.setItem('twd-coach',id)}catch(e){}if(scroll)setTimeout(()=>scrollEl('prof-'+b),40)};
-  const book=id=>{window.__prefill={goal:GOAL_BOOK[COACHX[id].goals[0]],branch:TR[id].branch,coach:TR[id].name};go('book')};
+  const book=id=>wa('Hi, I would like to book a session with Coach '+TR[id].name+' at '+BR[TR[id].branch].name);
   const FITS=[['lose','Lose fat'],['strong','Get stronger'],['build','Build muscle'],['pt','Personal training'],['women',"Women's strength"],['new',"I'm a beginner"]];
   const fitId=fit&&ids.find(i=>COACHX[i].goals.includes(fit));const ft=fitId&&TR[fitId];
   return html`<div class="stack view" style="gap:22px">
@@ -1179,7 +1140,7 @@ function Coaches({go}){
     <div class="bjump">${ORDER.map((b,bi)=>html`<button onClick=${()=>scrollEl('sec-'+b)}><span class="k brass">Branch ${String(bi+1).padStart(2,'0')}</span><b>${BR[b].name}</b><span class="row" style="gap:8px">${ids.filter(id=>TR[id].branch===b).map(id=>html`<span class="avatar" style=${{width:'32px',height:'32px',flex:'0 0 32px',backgroundImage:'url('+TR[id].img+')'}}></span>`)}<small class="muted">${ids.filter(id=>TR[id].branch===b).map(id=>TR[id].name).join(' · ')}</small><span class="muted" style="margin-left:auto" aria-hidden="true">↓</span></span></button>`)}</div>
 
     <div class="card coach-fit"><div class="row wrap" style="gap:12px"><span class="k">Which coach fits you?</span><div class="chips" role="group" aria-label="Your goal">${FITS.map(([k,l])=>html`<button aria-pressed=${fit===k} onClick=${()=>{setFit(k);choose(ids.find(i=>COACHX[i].goals.includes(k)),false)}}>${l}</button>`)}</div></div>
-      ${ft&&html`<div class="row wrap fit-res" key=${fit}><div class="avatar" style=${{backgroundImage:'url('+ft.img+')'}}></div><div style="flex:1 1 180px;min-width:0"><b>Coach ${ft.name} fits best</b><div class="muted" style="font-size:13px">${ft.spec} · ${BR[ft.branch].name}</div></div><button class="btn sm" onClick=${()=>scrollEl('prof-'+ft.branch)}>Meet ${ft.name}</button><button class="btn sm ghost" onClick=${()=>book(fitId)}>Book with ${ft.name}</button></div>`}
+      ${ft&&html`<div class="row wrap fit-res" key=${fit}><div class="avatar" style=${{backgroundImage:'url('+ft.img+')'}}></div><div style="flex:1 1 180px;min-width:0"><b>Coach ${ft.name} fits best</b><div class="muted" style="font-size:13px">${ft.spec} · ${BR[ft.branch].name}</div></div><button class="btn sm" onClick=${()=>scrollEl('prof-'+ft.branch)}>Meet ${ft.name}</button><a class="btn sm ghost" href=${book(fitId)} target="_blank" rel="noopener">Book with ${ft.name}</a></div>`}
     </div>
 
     ${ORDER.map((b,bi)=>html`<${BranchCoaches} key=${b} b=${b} idx=${bi} sel=${sel[b]} choose=${choose} book=${book} go=${go} fine=${fine}/>`)}
@@ -1208,7 +1169,7 @@ function BranchCoaches({b,idx,sel,choose,book,go,fine}){
         <div class="stack" style="gap:10px"><span class="k">What members say</span>${x.quotes.map(([q,n])=>html`<figure class="quote"><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><blockquote>“${q}”</blockquote><figcaption>${n} · Google review</figcaption></figure>`)}</div>
         <div class="cprof-meta"><div><span class="k">On the floor at</span><b>${B.name}</b><small class="muted">${B.hours}</small></div><div><span class="k">Right now</span><span class=${'pill '+(o.open?'ok':'')} style="justify-self:start">${untilTxt(b)}</span><small class="muted">Sunday closed</small></div></div>
         ${progs.length>0&&html`<div class="stack" style="gap:8px"><span class="k">Programs ${t.name} usually coaches</span><div class="row wrap" style="gap:8px">${progs.map(p=>html`<button class="pill" style="cursor:pointer;color:var(--chalk)" onClick=${()=>{window.__openProg=p.id;go('programs')}}>${p.n} ›</button>`)}</div></div>`}
-        <div class="row wrap"><button class="btn" onClick=${()=>book(sel)}>Book a session with ${t.name} ${I('arrow',16)}</button><a class="btn ghost" href=${wa('Hi, I would like to train with Coach '+t.name+' at '+B.name)} target="_blank" rel="noopener">${I('msg',16)} Message</a></div>
+        <div class="row wrap"><a class="btn" href=${book(sel)} target="_blank" rel="noopener">Book a session with ${t.name} ${I('arrow',16)}</a><a class="btn ghost" href=${wa('Hi, I would like to train with Coach '+t.name+' at '+B.name)} target="_blank" rel="noopener">${I('msg',16)} Message</a></div>
         <div class="row" style="gap:8px">${ids.map(id=>html`<button class=${'cdot'+(id===sel?' on':'')} aria-label=${'Show Coach '+TR[id].name} onClick=${()=>choose(id,false)}><span style=${{backgroundImage:'url('+TR[id].img+')'}}></span></button>`)}<span class="muted" style="font-size:12px;margin-left:6px">Other ${B.name} coach</span><button class="x-btn" aria-label=${'Next '+B.name+' coach'} onClick=${()=>choose(ids[(ids.indexOf(sel)+1)%ids.length],false)}>${I('arrow',14)}</button></div>
       </div>
     </div>
@@ -1243,7 +1204,7 @@ function Branches({say,go}){
   const B=BR[sel];const o=openNow(sel);const bz=busyNow(sel);const hr=nowIST().getHours();const today=nowIST().getDay();
   const ids=Object.keys(TR).filter(id=>TR[id].branch===sel);
   const TOD=[['morning','Morning','06–12'],['afternoon','Afternoon','12–16'],['evening','Evening','16–22'],['sunday','Sunday','']];
-  const TODR={morning:['Both branches are open 06:00–12:00.',null],afternoon:['Only Civil Lines is open 12:00–16:00. Tagore Town reopens at 16:00.','cl'],evening:['Both are open 16:00–22:00. Peak is 18:00–20:00, so book a slot.',null],sunday:['Both branches are closed on Sunday. Rest day.',null]};
+  const TODR={morning:['Both branches are open 06:00–12:00.',null],afternoon:['Only Civil Lines is open 12:00–16:00. Tagore Town reopens at 16:00.','cl'],evening:['Both are open 16:00–22:00. Peak is 18:00–20:00, so come a little earlier.',null],sunday:['Both branches are closed on Sunday. Rest day.',null]};
   const pickTod=k=>{setTod(k);if(TODR[k][1])setSel(TODR[k][1])};
   const order=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   const closed=hh=>sel==='tt'&&hh>=12&&hh<16;
@@ -1262,7 +1223,7 @@ function Branches({say,go}){
 
     <section class="bdetail" key=${sel} role="tabpanel" aria-label=${B.name}>
       <div class="photo bd-img"><img src=${B.img} alt=${B.name+' training floor'}/><div class="cap" style="gap:10px"><span class=${'pill '+(o.open?'ok':'')} style="justify-self:start">${o.txt}</span><b class="bhead-t" style="font-size:clamp(48px,6vw,92px)">${B.name}</b><span style="color:var(--chalk);opacity:.8">${LANDMARK[sel]}</span>
-        <div class="row wrap"><a class="btn" href=${B.maps} target="_blank" rel="noopener">${I('pin',16)} Directions</a><button class="btn ghost" onClick=${()=>{window.__prefill={branch:sel};go('book')}}>Book a slot here</button></div></div></div>
+        <div class="row wrap"><a class="btn" href=${B.maps} target="_blank" rel="noopener">${I('pin',16)} Directions</a><a class="btn ghost" href=${wa('Hi, I would like to book a trial session at the '+B.name+' branch')} target="_blank" rel="noopener">Book a trial here</a></div></div></div>
       <div class="stack">
         <div class="card"><div class="row between"><span class="k">Today · ${DOW[today]}</span><span class=${'pill '+(o.open?'ok':'')}>${untilTxt(sel)}</span></div><${DayBar} b=${sel}/>
           <div class="row" style="gap:10px"><span class="k" style="flex:0 0 auto">Busy now</span><div class="bar" style="flex:1"><i style=${{width:bz*10+'%'}}></i></div><b style="font:800 16px/1 var(--f-d);text-transform:uppercase;min-width:70px;text-align:right">${o.open?(bz>=7?'Peak':bz>=4?'Moderate':'Quiet'):'Closed'}</b></div></div>
@@ -1287,9 +1248,9 @@ function Branches({say,go}){
       </tbody></table></div></div>
 
     <div class="g2 st" style="align-items:start">
-      <div class="card"><span class="k">Plan your visit</span><div class="list">${[['timer','Peak hours are 18:00–20:00. Come earlier or book a slot.'],['check','Carry a towel and indoor shoes.'],['dumb','Re-rack your weights and wipe equipment after use.'],['card','Your membership works at both branches. Switch any day.'],['pin','Members mention easy parking at Tagore Town.']].map(([ic,t])=>html`<div class="li"><span style="color:var(--ember)">${I(ic,18)}</span><div class="t"><b style="font-weight:500">${t}</b></div></div>`)}</div></div>
+      <div class="card"><span class="k">Plan your visit</span><div class="list">${[['timer','Peak hours are 18:00–20:00. Come before or after for a quieter floor.'],['check','Carry a towel and indoor shoes.'],['dumb','Re-rack your weights and wipe equipment after use.'],['card','Your membership works at both branches. Switch any day.'],['pin','Members mention easy parking at Tagore Town.']].map(([ic,t])=>html`<div class="li"><span style="color:var(--ember)">${I(ic,18)}</span><div class="t"><b style="font-weight:500">${t}</b></div></div>`)}</div></div>
       <div class="card"><span class="k">On both floors</span><div class="row wrap" style="gap:8px">${['Powerlifting platform','VIVA Tunturi dumbbells','Cardio deck','Functional zone','Air conditioned','Wi-Fi','Water cooler','Changing rooms','Annual fire-safety drill'].map(f=>html`<span class="pill" style="color:var(--chalk)">${f}</span>`)}</div>
-        <div class="row wrap" style="margin-top:6px"><button class="btn" onClick=${()=>{window.__prefill={branch:sel};go('book')}}>Book at ${B.name} ${I('arrow',16)}</button></div></div>
+        <div class="row wrap" style="margin-top:6px"><a class="btn" href=${wa('Hi, I would like to book a trial session at the '+B.name+' branch')} target="_blank" rel="noopener">Book a trial at ${B.name} ${I('arrow',16)}</a></div></div>
     </div>
   </div>`;
 }
@@ -1338,7 +1299,7 @@ function Lightbox({items,at,setAt,close,saved,toggle,go}){
     </div>
     <div class="lb-foot">
       <div class="stack" style="gap:6px;min-width:0" key=${'c'+at}><b class="lb-cap">${it.c}</b><span class="muted" style="max-width:56ch">${it.d}</span></div>
-      <button class="btn sm" onClick=${()=>{close();go('book')}}>Train here ${I('arrow',14)}</button>
+      <button class="btn sm" onClick=${()=>{close();go('plans')}}>See plans ${I('arrow',14)}</button>
     </div>
     <div class="lb-thumbs" role="tablist" aria-label="All photos">${items.map((x,i)=>html`<button role="tab" aria-selected=${i===at} class=${i===at?'on':''} onClick=${()=>{setAt(i);setK(z=>z+1)}} aria-label=${x.c}><img src=${x.src} alt="" loading="lazy"/></button>`)}</div>
   </div>`;
@@ -1378,28 +1339,14 @@ function Gallery({go}){
 
     <section class="gal-cta">
       <div class="stack" style="gap:12px;min-width:0"><span class="k brass">See it in person</span><h2 class="h2">The floor looks better <span class="it">from the inside.</span></h2>
-        <p class="muted" style="max-width:52ch">Book a slot at either branch and train with a coach on your first visit.</p></div>
-      <div class="row wrap"><button class="btn" onClick=${()=>go('book')}>Book a slot ${I('arrow',16)}</button><a class="btn ghost" href=${BR.cl.ig} target="_blank" rel="noopener">${BR.cl.igh}</a><a class="btn ghost" href=${BR.tt.ig} target="_blank" rel="noopener">${BR.tt.igh}</a></div>
+        <p class="muted" style="max-width:52ch">Book a trial at either branch and train with a coach on your first visit.</p></div>
+      <div class="row wrap"><a class="btn" href=${wa('Hi, I would like to book a trial session at The Weight Date')} target="_blank" rel="noopener">Book a trial ${I('arrow',16)}</a><a class="btn ghost" href=${BR.cl.ig} target="_blank" rel="noopener">${BR.cl.igh}</a><a class="btn ghost" href=${BR.tt.ig} target="_blank" rel="noopener">${BR.tt.igh}</a></div>
     </section>
     <span class="demo-flag">Images and film generated for this concept</span>
     ${open!=null&&list[open]&&html`<${Lightbox} items=${list} at=${open} setAt=${setOpen} close=${()=>setOpen(null)} saved=${saved} toggle=${toggle} go=${go}/>`}
   </div>`;
 }
 
-function Tools(){const [t,setT]=useState(100);const [w,setW]=useState(80),[r,setR]=useState(5);const one=e1rm(w,r);
-  return html`<div class="stack view" style="gap:20px">
-    <div class="stack" style="gap:10px"><span class="k brass">Lift tools</span><h1 class="h1">Load the bar <span class="it">right.</span></h1><p class="lead">A plate loader in competition colours and a one-rep max estimator. Tap any percentage to load it on the bar.</p></div>
-    <${PlateLoader} target=${t} setTarget=${setT}/>
-    <div class="g2 st" style="align-items:start">
-      <div class="card stack"><span class="k">One-rep max</span>
-        <div class="g2"><label class="field" for="rmW"><span>Weight lifted</span><div class="input"><input id="rmW" type="number" inputmode="decimal" value=${w} onInput=${e=>setW(+e.target.value)}/><em>kg</em></div></label><label class="field" for="rmR"><span>Reps</span><div class="input"><input id="rmR" type="number" inputmode="numeric" min="1" max="12" value=${r} onInput=${e=>setR(Math.max(1,Math.min(12,+e.target.value||1)))}/></div></label></div>
-        <div><span class="k">Estimated 1RM</span><div class="num" style="font:900 clamp(64px,7vw,96px)/.85 var(--f-d)">${w>0?round25(one):'–'}<small style="font:500 14px var(--f-m);color:var(--ash)"> kg</small></div></div>
-        <span class="demo-flag">Epley formula · most accurate under 10 reps</span></div>
-      <div class="card"><span class="k">Training percentages</span><div class="list">${[[95,'1–2'],[90,'3–4'],[85,'5–6'],[80,'7–8'],[75,'9–10'],[70,'11–12'],[65,'13–15'],[60,'16–20']].map(([p,reps])=>{const kg=round25(one*p/100);return html`<button class="li" onClick=${()=>{setT(Math.max(20,kg));const m=document.querySelector('.main');m&&m.scrollTo({top:0,behavior:RM?'auto':'smooth'})}}><span class="pill" style="min-width:58px;justify-content:center">${p}%</span><span class="t"><b class="num">${kg} kg</b><small>${reps} reps</small></span><span class="k brass">Load ›</span></button>`})}</div></div>
-    </div>
-  </div>`}
-
-/* ================= MEMBER VIEWS ================= */
 function Today({S,me,up,say}){
   const [ns,setNs]=useState(false);
   const feed=[...me.notes.map(n=>({d:n.d,t:'Coach '+TR[n.from].name,b:n.text,ic:'msg'})),...S.news.map(n=>({d:n.d,t:n.t,b:n.b,ic:'bell'}))].sort((a,b)=>a.d<b.d?1:-1);const unread=feed.filter(f=>f.d>(me.seen||'')).length;
@@ -1425,7 +1372,7 @@ function Today({S,me,up,say}){
     </div>
     <div class="g2 st">
       ${note?html`<div class="card"><div class="row"><div class="avatar" style=${{backgroundImage:'url('+TR[note.from].img+')'}}></div><div><span class="k brass">From Coach ${TR[note.from].name}</span><div class="muted" style="font-size:12px">${fmtD(note.d)}</div></div></div><p class="coach-note">${note.text}</p></div>`:html`<div class="card"><span class="k">Coach notes</span><p class="muted" style="margin:0">No notes yet.</p></div>`}
-      <div class="card"><div class="row between"><span class="k">Next slot</span><a class="btn sm ghost" href="#book">Book</a></div><b style="font-size:18px">${nb?fmtDL(nb.d)+' · '+nb.slot:'No slot booked'}</b><span class="muted" style="font-size:13px">${nb?BR[nb.branch].name:'Book a morning or evening slot'}</span>
+      <div class="card"><div class="row between"><span class="k">Your floors today</span><a class="btn sm ghost" href="#branches">Branches</a></div><b style="font-size:18px">Civil Lines · ${untilTxt('cl')}</b><span class="muted" style="font-size:13px">Tagore Town · ${untilTxt('tt')}</span>
         <div class="row between" style="margin-top:6px"><span class="k">Membership</span><span class=${'pill '+(left<=7?'warn':'')}>${left<=0?'Expired':left+' days left'}</span></div><div class="bar"><i style=${{width:Math.max(0,Math.min(100,(1-left/span)*100))+'%'}}></i></div></div>
     </div>
     <div class="card"><span class="k">From the gym</span><div class="list">${S.news.map(n=>html`<div class="li"><div class="t"><b>${n.t}</b><small>${n.b}</small></div><span class="k">${fmtD(n.d)}</span></div>`)}</div></div>
