@@ -282,6 +282,20 @@ textarea.ta{width:100%;min-height:90px;background:var(--ink);border:1px solid va
 .cdot span{display:block;width:100%;height:100%;border-radius:50%;background:center/cover;filter:grayscale(.7)}
 .cdot.on{border-color:var(--ember);transform:scale(1.08)}
 .cdot.on span{filter:none}
+
+.bjump{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bjump button{display:grid;gap:8px;text-align:left;padding:16px 18px;border-radius:20px;border:1px solid var(--line);background:var(--iron);transition:border-color .3s,transform .4s var(--ease);min-width:0}
+.bjump button:hover{border-color:rgba(210,49,31,.5);transform:translateY(-2px)}
+.bjump b{font:900 28px/1 var(--f-d);text-transform:uppercase}
+@media (max-width:560px){.bjump{grid-template-columns:1fr}}
+.bsec{display:grid;gap:16px;scroll-margin-top:84px;padding-top:10px}
+.bhead{position:relative;border-radius:28px;overflow:hidden;border:1px solid var(--line);min-height:230px;display:flex;align-items:flex-end;isolation:isolate}
+.bhead img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.bhead::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(13,11,11,.95) 25%,rgba(13,11,11,.4)),linear-gradient(180deg,transparent,rgba(13,11,11,.6))}
+.bhead-in{padding:clamp(20px,3.5vw,36px);display:grid;gap:10px;max-width:680px}
+.bhead-t{margin:0;font:900 clamp(52px,7vw,104px)/.82 var(--f-d);text-transform:uppercase}
+.bsec .roster{height:clamp(380px,54vh,500px)}
+.cprof{scroll-margin-top:84px}
 /* membership */
 .mem-hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center;padding:clamp(22px,4vw,48px);border-radius:30px;border:1px solid var(--line);background:radial-gradient(70% 90% at 85% 40%,rgba(210,49,31,.28),transparent 60%),linear-gradient(180deg,var(--steel),var(--iron));overflow:hidden}
 @media (max-width:900px){.mem-hero{grid-template-columns:1fr}}
@@ -752,7 +766,7 @@ function Home({S,go,me,openLogin}){
     <div class="hscroll">${PROGRAMS.map(p=>html`<a class="photo" href="#programs" onClick=${()=>{window.__openProg=p.id}} style="min-height:300px;text-decoration:none"><img src=${p.img} alt="" loading="lazy"/><div class="cap"><span class="k brass">${p.s}</span><b class="h3" style="font-size:26px">${p.n}</b></div></a>`)}</div>
 
     <div class="sec-head"><div class="stack" style="gap:8px"><span class="k">Coaches</span><h2 class="h2">The team <span class="it">in black.</span></h2></div><a class="btn sm ghost" href="#coaches">All coaches</a></div>
-    <div class="g4">${Object.entries(TR).map(([cid,t])=>html`<a class="photo" href="#coaches" onClick=${()=>{try{localStorage.setItem('twd-coach',cid)}catch(e){}}} style="min-height:clamp(220px,26vw,320px);text-decoration:none"><img src=${t.img} alt="" loading="lazy"/><div class="cap"><span class="k brass">${BR[t.branch].name}</span><b style="font:italic 400 34px/1 var(--f-s)">${t.name}</b><span class="muted" style="font-size:13px">${t.spec}</span></div></a>`)}</div>
+    <div class="g4">${Object.entries(TR).map(([cid,t])=>html`<a class="photo" href="#coaches" onClick=${()=>{window.__openCoach=cid;try{localStorage.setItem('twd-coach',cid)}catch(e){}}} style="min-height:clamp(220px,26vw,320px);text-decoration:none"><img src=${t.img} alt="" loading="lazy"/><div class="cap"><span class="k brass">${BR[t.branch].name}</span><b style="font:italic 400 34px/1 var(--f-s)">${t.name}</b><span class="muted" style="font-size:13px">${t.spec}</span></div></a>`)}</div>
 
     <div class="sec-head"><div class="stack" style="gap:8px"><span class="k">Reviews</span><h2 class="h2">Rated <span class="it">5.0</span> on Google</h2></div><div class="row" style="gap:20px"><div><b class="big num" style="color:var(--brass)">5.0</b><div class="k">Civil Lines · 837</div></div><div><b class="big num" style="color:var(--brass)">4.9</b><div class="k">Tagore Town · 178</div></div></div></div>
     <div class="marq"><div class="marq-t">${[...REVIEWS,...REVIEWS].map(([n,b,t],i)=>html`<figure class="card rev" aria-hidden=${i>=REVIEWS.length?'true':'false'}><span class="stars">★★★★★</span><blockquote>${t}</blockquote><figcaption><b>${n}</b><div class="k">${b} · Google review</div></figcaption></figure>`)}</div></div>
@@ -1041,45 +1055,57 @@ const COACHX={
 };
 const GOAL_BOOK={lose:'Lose weight',strong:'Get strong (powerlifting)',build:'Build muscle',pt:'Personal training',women:"Women's strength",new:'General fitness'};
 
+const scrollEl=id=>{const el=document.getElementById(id);el&&el.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})};
+
 function Coaches({go}){
-  const ids=Object.keys(TR);const fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
-  const [sel,setSel]=useState(()=>{try{const v=localStorage.getItem('twd-coach');return TR[v]?v:'sujeet'}catch(e){return'sujeet'}});
-  const [fit,setFit]=useState(null);const profRef=useRef();
-  const choose=(id,scroll)=>{setSel(id);try{localStorage.setItem('twd-coach',id)}catch(e){}if(scroll&&profRef.current)profRef.current.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})};
+  const ids=Object.keys(TR);const fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;const ORDER=['cl','tt'];
+  const [sel,setSel]=useState(()=>{const s={cl:'sujeet',tt:'charlie'};try{const v=localStorage.getItem('twd-coach');if(TR[v])s[TR[v].branch]=v}catch(e){}const oc=window.__openCoach;if(oc&&TR[oc])s[TR[oc].branch]=oc;return s});
+  const [fit,setFit]=useState(null);
+  useEffect(()=>{const c=window.__openCoach;window.__openCoach=null;if(c&&TR[c])setTimeout(()=>scrollEl('prof-'+TR[c].branch),80)},[]);
+  const choose=(id,scroll)=>{const b=TR[id].branch;setSel(s=>({...s,[b]:id}));try{localStorage.setItem('twd-coach',id)}catch(e){}if(scroll)setTimeout(()=>scrollEl('prof-'+b),40)};
   const book=id=>{window.__prefill={goal:GOAL_BOOK[COACHX[id].goals[0]],branch:TR[id].branch,coach:TR[id].name};go('book')};
   const FITS=[['lose','Lose fat'],['strong','Get stronger'],['build','Build muscle'],['pt','Personal training'],['women',"Women's strength"],['new',"I'm a beginner"]];
-  const pickFit=k=>{setFit(k);choose(ids.find(i=>COACHX[i].goals.includes(k)),false)};
-  const rk=e=>{const i=ids.indexOf(sel);let j=null;if(e.key==='ArrowRight'||e.key==='ArrowDown')j=(i+1)%ids.length;if(e.key==='ArrowLeft'||e.key==='ArrowUp')j=(i+ids.length-1)%ids.length;if(j!==null){e.preventDefault();const el=e.currentTarget;choose(ids[j],false);setTimeout(()=>el&&el.children[j]&&el.children[j].focus(),0)}};
-  const t=TR[sel],x=COACHX[sel];const progs=PROGRAMS.filter(p=>p.coach===sel);const o=openNow(t.branch);
+  const fitId=fit&&ids.find(i=>COACHX[i].goals.includes(fit));const ft=fitId&&TR[fitId];
   return html`<div class="stack view" style="gap:22px">
-    <div class="stack" style="gap:10px"><span class="k brass">Coaches</span><h1 class="h1">The team <span class="it">in black.</span></h1><p class="lead">Four certified coaches across two branches, named again and again in our Google reviews. ${fine?'Hover to preview, click to open their profile.':'Tap a coach to meet them.'}</p></div>
+    <div class="stack" style="gap:10px"><span class="k brass">Coaches</span><h1 class="h1">The team <span class="it">in black.</span></h1><p class="lead">Four certified coaches across two branches, named again and again in our Google reviews. Pick your branch and meet the coaches on that floor.</p></div>
 
-    <div class="card coach-fit"><div class="row wrap" style="gap:12px"><span class="k">Which coach fits you?</span><div class="chips" role="group" aria-label="Your goal">${FITS.map(([k,l])=>html`<button aria-pressed=${fit===k} onClick=${()=>pickFit(k)}>${l}</button>`)}</div></div>
-      ${fit&&html`<div class="row wrap fit-res" key=${fit+sel}><div class="avatar" style=${{backgroundImage:'url('+t.img+')'}}></div><div style="flex:1 1 180px;min-width:0"><b>Coach ${t.name} fits best</b><div class="muted" style="font-size:13px">${t.spec} · ${BR[t.branch].name}</div></div><button class="btn sm" onClick=${()=>profRef.current&&profRef.current.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})}>Meet ${t.name}</button><button class="btn sm ghost" onClick=${()=>book(sel)}>Book with ${t.name}</button></div>`}
+    <div class="bjump">${ORDER.map((b,bi)=>html`<button onClick=${()=>scrollEl('sec-'+b)}><span class="k brass">Branch ${String(bi+1).padStart(2,'0')}</span><b>${BR[b].name}</b><span class="row" style="gap:8px">${ids.filter(id=>TR[id].branch===b).map(id=>html`<span class="avatar" style=${{width:'32px',height:'32px',flex:'0 0 32px',backgroundImage:'url('+TR[id].img+')'}}></span>`)}<small class="muted">${ids.filter(id=>TR[id].branch===b).map(id=>TR[id].name).join(' · ')}</small><span class="muted" style="margin-left:auto" aria-hidden="true">↓</span></span></button>`)}</div>
+
+    <div class="card coach-fit"><div class="row wrap" style="gap:12px"><span class="k">Which coach fits you?</span><div class="chips" role="group" aria-label="Your goal">${FITS.map(([k,l])=>html`<button aria-pressed=${fit===k} onClick=${()=>{setFit(k);choose(ids.find(i=>COACHX[i].goals.includes(k)),false)}}>${l}</button>`)}</div></div>
+      ${ft&&html`<div class="row wrap fit-res" key=${fit}><div class="avatar" style=${{backgroundImage:'url('+ft.img+')'}}></div><div style="flex:1 1 180px;min-width:0"><b>Coach ${ft.name} fits best</b><div class="muted" style="font-size:13px">${ft.spec} · ${BR[ft.branch].name}</div></div><button class="btn sm" onClick=${()=>scrollEl('prof-'+ft.branch)}>Meet ${ft.name}</button><button class="btn sm ghost" onClick=${()=>book(fitId)}>Book with ${ft.name}</button></div>`}
     </div>
 
-    <div class="roster" role="tablist" aria-label="Coaches" onKeyDown=${rk}>${ids.map((id,i)=>{const c=TR[id],cx=COACHX[id],on=id===sel;return html`<button class=${'rp'+(on?' on':'')} role="tab" aria-selected=${on} aria-controls="coach-profile" tabIndex=${on?0:-1} onClick=${()=>choose(id,fine||on)}>
-      <img src=${c.img} alt="" loading="lazy"/><span class="rp-num num">0${i+1}</span><span class="rp-v" aria-hidden="true">${c.name}</span>
-      <span class="rp-in"><span class=${'pill '+(openNow(c.branch).open?'ok':'')}>${BR[c.branch].name}</span><b class="rp-name">${c.name}</b><span class="rp-spec">${c.spec}</span><span class="rp-line">${cx.line}</span></span></button>`})}</div>
-
-    <section id="coach-profile" class="cprof" ref=${profRef} role="tabpanel" aria-label=${'Coach '+t.name} key=${sel}>
-      <div class="photo cprof-img"><img src=${t.img} alt=${'Coach '+t.name}/><div class="cap"><span class="k brass">${BR[t.branch].name}</span><b class="h3" style="font-size:18px">${t.spec}</b></div></div>
-      <div class="stack" style="gap:18px">
-        <div><span class="k brass">Coach ${String(ids.indexOf(sel)+1).padStart(2,'0')} of ${String(ids.length).padStart(2,'0')}</span><h2 class="cprof-name">${t.name}</h2><p class="lead" style="color:var(--chalk);margin:0">${x.line}</p></div>
-        <div class="stack" style="gap:8px"><span class="k">Best for</span><div class="row wrap" style="gap:8px">${x.best.map(b=>html`<span class="pill" style="color:var(--chalk)">${b}</span>`)}</div></div>
-        <div class="stack" style="gap:10px"><span class="k">What members say</span>${x.quotes.map(([q,n])=>html`<figure class="quote"><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><blockquote>“${q}”</blockquote><figcaption>${n} · Google review</figcaption></figure>`)}</div>
-        <div class="cprof-meta"><div><span class="k">On the floor at</span><b>${BR[t.branch].name}</b><small class="muted">${BR[t.branch].hours}</small></div><div><span class="k">Right now</span><span class=${'pill '+(o.open?'ok':'')} style="justify-self:start">${untilTxt(t.branch)}</span><small class="muted">Sunday closed</small></div></div>
-        ${progs.length>0&&html`<div class="stack" style="gap:8px"><span class="k">Programs ${t.name} usually coaches</span><div class="row wrap" style="gap:8px">${progs.map(p=>html`<button class="pill" style="cursor:pointer;color:var(--chalk)" onClick=${()=>{window.__openProg=p.id;go('programs')}}>${p.n} ›</button>`)}</div></div>`}
-        <div class="row wrap"><button class="btn" onClick=${()=>book(sel)}>Book a session with ${t.name} ${I('arrow',16)}</button><a class="btn ghost" href=${wa('Hi, I would like to train with Coach '+t.name+' at '+BR[t.branch].name)} target="_blank" rel="noopener">${I('msg',16)} Message</a></div>
-        <div class="row" style="gap:8px">${ids.map(id=>html`<button class=${'cdot'+(id===sel?' on':'')} aria-label=${'Show Coach '+TR[id].name} onClick=${()=>choose(id,false)}><span style=${{backgroundImage:'url('+TR[id].img+')'}}></span></button>`)}<span class="muted" style="font-size:12px;margin-left:6px">Next coach</span><button class="x-btn" aria-label="Next coach" onClick=${()=>choose(ids[(ids.indexOf(sel)+1)%ids.length],false)}>${I('arrow',14)}</button></div>
-      </div>
-    </section>
-
-    <div class="sec-head"><div class="stack" style="gap:8px"><span class="k">By branch</span><h2 class="h2">Who's on <span class="it">your floor.</span></h2></div></div>
-    <div class="g2 st">${Object.entries(BR).map(([k,b])=>html`<div class="card"><div class="row between wrap"><b class="h3">${b.name}</b><span class=${'pill '+(openNow(k).open?'ok':'')}>${untilTxt(k)}</span></div>
-      <div class="list">${ids.filter(id=>TR[id].branch===k).map(id=>html`<button class="li" onClick=${()=>choose(id,true)}><div class="avatar" style=${{backgroundImage:'url('+TR[id].img+')'}}></div><div class="t"><b>${TR[id].name}</b><small>${TR[id].spec}</small></div><span class="k brass">Profile ›</span></button>`)}</div><span class="muted" style="font-size:12px">${b.hours}</span></div>`)}</div>
+    ${ORDER.map((b,bi)=>html`<${BranchCoaches} key=${b} b=${b} idx=${bi} sel=${sel[b]} choose=${choose} book=${book} go=${go} fine=${fine}/>`)}
     <span class="demo-flag">Coach photos are illustrative · names and quotes from Google reviews</span>
   </div>`;
+}
+
+function BranchCoaches({b,idx,sel,choose,book,go,fine}){
+  const B=BR[b];const ids=Object.keys(TR).filter(id=>TR[id].branch===b);const o=openNow(b);const t=TR[sel],x=COACHX[sel];const progs=PROGRAMS.filter(p=>p.coach===sel);
+  const rk=e=>{const i=ids.indexOf(sel);let j=null;if(e.key==='ArrowRight'||e.key==='ArrowDown')j=(i+1)%ids.length;if(e.key==='ArrowLeft'||e.key==='ArrowUp')j=(i+ids.length-1)%ids.length;if(j!==null){e.preventDefault();const el=e.currentTarget;choose(ids[j],false);setTimeout(()=>el&&el.children[j]&&el.children[j].focus(),0)}};
+  return html`<section class="bsec" id=${'sec-'+b} aria-label=${B.name+' coaches'}>
+    <header class="bhead"><img src=${B.img} alt="" loading="lazy"/><div class="bhead-in">
+      <span class="k brass">Branch ${String(idx+1).padStart(2,'0')} · ${ids.length} coaches</span><h2 class="bhead-t">${B.name}</h2>
+      <p class="muted" style="margin:0">${B.addr}</p>
+      <div class="row wrap" style="gap:8px"><span class=${'pill '+(o.open?'ok':'')}>${untilTxt(b)}</span><span class="pill">${B.hours} · Sun closed</span><a class="btn sm ghost" href=${B.maps} target="_blank" rel="noopener">${I('pin',14)} Directions</a></div></div></header>
+
+    <div class="roster" role="tablist" aria-label=${B.name+' coaches'} onKeyDown=${rk}>${ids.map((id,i)=>{const c=TR[id],cx=COACHX[id],on=id===sel;return html`<button class=${'rp'+(on?' on':'')} role="tab" aria-selected=${on} aria-controls=${'prof-'+b} tabIndex=${on?0:-1} onClick=${()=>choose(id,fine||on)}>
+      <img src=${c.img} alt="" loading="lazy"/><span class="rp-num num">0${i+1}</span><span class="rp-v" aria-hidden="true">${c.name}</span>
+      <span class="rp-in"><span class="pill" style="color:var(--chalk)">${cx.best[0]}</span><b class="rp-name">${c.name}</b><span class="rp-spec">${c.spec}</span><span class="rp-line">${cx.line}</span></span></button>`})}</div>
+
+    <div id=${'prof-'+b} class="cprof" role="tabpanel" aria-label=${'Coach '+t.name} key=${sel}>
+      <div class="photo cprof-img"><img src=${t.img} alt=${'Coach '+t.name}/><div class="cap"><span class="k brass">${B.name}</span><b class="h3" style="font-size:18px">${t.spec}</b></div></div>
+      <div class="stack" style="gap:18px">
+        <div><span class="k brass">${B.name} · coach ${String(ids.indexOf(sel)+1).padStart(2,'0')} of ${String(ids.length).padStart(2,'0')}</span><h3 class="cprof-name">${t.name}</h3><p class="lead" style="color:var(--chalk);margin:0">${x.line}</p></div>
+        <div class="stack" style="gap:8px"><span class="k">Best for</span><div class="row wrap" style="gap:8px">${x.best.map(v=>html`<span class="pill" style="color:var(--chalk)">${v}</span>`)}</div></div>
+        <div class="stack" style="gap:10px"><span class="k">What members say</span>${x.quotes.map(([q,n])=>html`<figure class="quote"><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><blockquote>“${q}”</blockquote><figcaption>${n} · Google review</figcaption></figure>`)}</div>
+        <div class="cprof-meta"><div><span class="k">On the floor at</span><b>${B.name}</b><small class="muted">${B.hours}</small></div><div><span class="k">Right now</span><span class=${'pill '+(o.open?'ok':'')} style="justify-self:start">${untilTxt(b)}</span><small class="muted">Sunday closed</small></div></div>
+        ${progs.length>0&&html`<div class="stack" style="gap:8px"><span class="k">Programs ${t.name} usually coaches</span><div class="row wrap" style="gap:8px">${progs.map(p=>html`<button class="pill" style="cursor:pointer;color:var(--chalk)" onClick=${()=>{window.__openProg=p.id;go('programs')}}>${p.n} ›</button>`)}</div></div>`}
+        <div class="row wrap"><button class="btn" onClick=${()=>book(sel)}>Book a session with ${t.name} ${I('arrow',16)}</button><a class="btn ghost" href=${wa('Hi, I would like to train with Coach '+t.name+' at '+B.name)} target="_blank" rel="noopener">${I('msg',16)} Message</a></div>
+        <div class="row" style="gap:8px">${ids.map(id=>html`<button class=${'cdot'+(id===sel?' on':'')} aria-label=${'Show Coach '+TR[id].name} onClick=${()=>choose(id,false)}><span style=${{backgroundImage:'url('+TR[id].img+')'}}></span></button>`)}<span class="muted" style="font-size:12px;margin-left:6px">Other ${B.name} coach</span><button class="x-btn" aria-label=${'Next '+B.name+' coach'} onClick=${()=>choose(ids[(ids.indexOf(sel)+1)%ids.length],false)}>${I('arrow',14)}</button></div>
+      </div>
+    </div>
+  </section>`;
 }
 function Branches({say}){
   const copy=n=>{try{navigator.clipboard.writeText(n).then(()=>say('Copied '+n),()=>say(n))}catch(e){say(n)}};
